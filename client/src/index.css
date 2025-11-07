@@ -1,6 +1,53 @@
 @import "tailwindcss";
 
-/* Custom utility for line-clamping text */
+@theme {
+  /* Color definitions - these become CSS variables automatically */
+  --color-brand-yellow: #FFD700;
+  --color-brand-orange: #FFA500;
+  --color-brand-black: #1a1a1a;
+  --color-brand-white: #FFFFFF;
+  --color-brand-gray-light: #f8fafc;
+  --color-brand-gray: #e2e8f0;
+
+  /* Light theme as default */
+  --color-background: var(--color-brand-white);
+  --color-foreground: var(--color-brand-black);
+  --color-muted: var(--color-brand-gray);
+
+  /* Dark theme variables */
+  --color-background-dark: var(--color-brand-black);
+  --color-foreground-dark: var(--color-brand-white);
+  --color-muted-dark: #374151;
+}
+
+/* Apply the theme using CSS layers */
+@layer base {
+  :root {
+    color-scheme: light;
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --muted: var(--color-muted);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: var(--color-background-dark);
+    --foreground: var(--color-foreground-dark);
+    --muted: var(--color-muted-dark);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* Custom utilities */
 @layer utilities {
   .line-clamp-3 {
     display: -webkit-box;
@@ -9,31 +56,7 @@
     overflow: hidden;
   }
 
-  /* For Firefox */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: #FFA500 #1a1a1a;
-  }
-
-  /* For Chrome, Safari, and Edge */
-  .scrollbar-thin::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: #1a1a1a;
-    border-radius: 10px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #FFA500;
-    border-radius: 10px;
-    border: 2px solid #1a1a1a;
-  }
-}
-
-@layer base {
-  body {
+  .theme-transition {
+    transition: all 0.3s ease-in-out;
   }
 }
