@@ -20,7 +20,6 @@ export default function NewsSection() {
       } catch (e) {
         setError(e.message);
         console.error('Failed to fetch news:', e);
-        // Set mock data on failure
         setPosts([
           { id: 1, title: 'New Drone Technology', content: 'Discover the latest advancements in drone technology and how they are revolutionizing various industries.' },
           { id: 2, title: 'FPV Racing Championship', content: 'Join us for the annual FPV racing championship featuring the best pilots from around the world.' },
@@ -38,7 +37,7 @@ export default function NewsSection() {
     if (posts.length > 0 && !isPaused) {
       autoRotateRef.current = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % posts.length);
-      }, 4000); // Change card every 4 seconds
+      }, 4000);
 
       return () => clearInterval(autoRotateRef.current);
     }
@@ -55,13 +54,11 @@ export default function NewsSection() {
 
   const navigateCard = (direction) => {
     setIsPaused(true);
-    setActiveIndex((prev) => {
-      if (direction === 'next') {
-        return (prev + 1) % posts.length;
-      } else {
-        return (prev - 1 + posts.length) % posts.length;
-      }
-    });
+    if (direction === 'next') {
+      setActiveIndex((prev) => (prev + 1) % posts.length);
+    } else {
+      setActiveIndex((prev) => (prev - 1 + posts.length) % posts.length);
+    }
 
     // Resume auto-rotation after manual navigation
     setTimeout(() => setIsPaused(false), 5000);
@@ -88,25 +85,25 @@ export default function NewsSection() {
         )}
 
         {/* Carousel Container */}
-        <div className="relative">
+        <div className="relative max-w-6xl mx-auto">
           {/* Navigation Arrows */}
           <button
             onClick={() => navigateCard('prev')}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition -translate-x-4"
           >
             ‹
           </button>
 
           <button
             onClick={() => navigateCard('next')}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition translate-x-4"
           >
             ›
           </button>
 
           {/* Cards Container */}
           <div
-            className="flex justify-center items-center space-x-8 overflow-visible py-8"
+            className="relative h-96 flex items-center justify-center overflow-visible"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -115,30 +112,35 @@ export default function NewsSection() {
                 key={post.id}
                 onMouseEnter={() => handleCardHover(index)}
                 onMouseLeave={handleCardLeave}
-                className="transition-all duration-500 ease-in-out theme-transition"
+                className="absolute transition-all duration-500 ease-in-out"
+                style={{
+                  transform: `translateX(${(index - activeIndex) * 120}%) scale(${index === activeIndex ? 1 : 0.85
+                    })`,
+                  zIndex: index === activeIndex ? 30 : 20 - Math.abs(index - activeIndex),
+                  opacity: Math.abs(index - activeIndex) > 2 ? 0 : 1 - Math.abs(index - activeIndex) * 0.3,
+                }}
               >
                 <NewsCard
                   post={post}
                   isActive={index === activeIndex}
-                  index={index}
-                  totalCards={posts.length}
                 />
               </div>
             ))}
           </div>
 
           {/* Indicators */}
-          <div className="flex justify-center space-x-3 mt-8">
+          <div className="flex justify-center space-x-3 mt-12">
             {posts.map((_, index) => (
               <button
                 key={index}
                 onClick={() => {
                   setIsPaused(true);
                   setActiveIndex(index);
+                  setTimeout(() => setIsPaused(false), 5000);
                 }}
                 className={`w-3 h-3 rounded-full transition-all duration-300 theme-transition ${index === activeIndex
-                    ? 'bg-brand-orange scale-125'
-                    : 'bg-brand-orange/30 hover:bg-brand-orange/60'
+                  ? 'bg-brand-orange scale-125'
+                  : 'bg-brand-orange/30 hover:bg-brand-orange/60'
                   }`}
               />
             ))}
