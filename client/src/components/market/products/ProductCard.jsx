@@ -1,14 +1,22 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useCart } from '../../../context/CartContext';
 
 export default function ProductCard({ product }) {
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const { addToCart } = useCart();
     const imageUrl = product.imageUrl || `https://placehold.co/400x300/1a1a1a/FFA500?text=${encodeURIComponent(product.name)}`;
 
     const toggleWishlist = (e) => {
         e.preventDefault();
         e.stopPropagation();
         setIsWishlisted(!isWishlisted);
+    };
+
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(product);
     };
 
     return (
@@ -37,6 +45,13 @@ export default function ProductCard({ product }) {
                             Sale
                         </div>
                     )}
+
+                    {/* Out of Stock Badge */}
+                    {!product.inStock && (
+                        <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-semibold">
+                            Out of Stock
+                        </div>
+                    )}
                 </div>
 
                 {/* Product Info */}
@@ -50,7 +65,7 @@ export default function ProductCard({ product }) {
                     </p>
 
                     {/* Price */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-2">
                             {product.originalPrice && (
                                 <span className="text-sm text-[color-mix(in_oklab,var(--foreground)_40%,transparent)] line-through theme-transition">
@@ -75,14 +90,14 @@ export default function ProductCard({ product }) {
 
                     {/* Add to Cart Button */}
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Add to cart logic here
-                        }}
-                        className="w-full mt-3 bg-brand-orange text-brand-black font-semibold py-2 px-4 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition"
+                        onClick={handleAddToCart}
+                        disabled={!product.inStock}
+                        className={`w-full font-semibold py-2 px-4 rounded-lg transition-all duration-300 theme-transition ${product.inStock
+                                ? 'bg-brand-orange text-brand-black hover:bg-brand-yellow transform hover:scale-105'
+                                : 'bg-[color-mix(in_oklab,var(--muted)_50%,var(--background))] text-[color-mix(in_oklab,var(--foreground)_40%,transparent)] cursor-not-allowed'
+                            }`}
                     >
-                        Add to Cart
+                        {product.inStock ? 'Add to Cart' : 'Out of Stock'}
                     </button>
                 </div>
             </Link>

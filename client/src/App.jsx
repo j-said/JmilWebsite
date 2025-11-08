@@ -1,28 +1,42 @@
-import { Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-// Pages Imports
+import Header from './components/header/Header';
+import Footer from './components/Footer';
+
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import MarketPage from './pages/MarketPage';
 import EducationPage from './pages/EducationPage';
 
-// Layout components Imports
-import Header from './components/header/Header';
-import Footer from './components/Footer';
+import { CartProvider } from './context/CartContext';
+import CartSidebar from './components/market/cart/CartSidebar';
+
+// Component to conditionally render cart
+function CartConditional() {
+    const location = useLocation();
+    const isMarketPage = location.pathname === '/shop';
+    return isMarketPage ? <CartSidebar /> : null;
+}
 
 export default function App() {
     return (
-        <div className="min-h-screen antialiased overflow-hidden">
-            <Header />
-            <main className="p-4 md:p-8 overflow-hidden">
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/shop" element={<MarketPage />} />
-                    <Route path="/education" element={<EducationPage />} />
-                </Routes>
-            </main>
-            <Footer />
-        </div>
+        <Router>
+            <CartProvider>
+                <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition">
+                    <Header />
+                    <main>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/shop" element={<MarketPage />} />
+                            <Route path="/about" element={<AboutPage />} />
+                            <Route path="/education" element={<EducationPage />} />
+                        </Routes>
+                    </main>
+                    <Footer />
+                    <CartConditional />
+                </div>
+            </CartProvider>
+        </Router>
     );
 }
+

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import PriceRange from '../types/PriceRange';
 import CategoryFilter from '../types/CategoryFilter';
@@ -8,7 +8,7 @@ import FeaturesFilter from '../types/FeaturesFilter';
 export default function MobileFilterSheet({
     isOpen,
     onClose,
-    mode = 'filter', // 'filter' or 'sort'
+    mode = 'filter',
     filters,
     onFiltersChange,
     onClearFilters,
@@ -16,6 +16,11 @@ export default function MobileFilterSheet({
     onSortChange
 }) {
     const [localFilters, setLocalFilters] = useState(filters || {});
+
+    // Sync local filters when props change
+    useEffect(() => {
+        setLocalFilters(filters || {});
+    }, [filters]);
 
     const handleFilterChange = (filterType, value) => {
         const newFilters = { ...localFilters };
@@ -60,21 +65,20 @@ export default function MobileFilterSheet({
         { value: 'name-desc', label: 'Name: Z to A' },
         { value: 'price', label: 'Price: Low to High' },
         { value: 'price-desc', label: 'Price: High to Low' },
-        { value: 'rating', label: 'Highest Rated' },
     ];
-
-    if (!isOpen) return null;
 
     return (
         <>
-            {/* Overlay */}
+            {/* Overlay with smooth transition */}
             <div
-                className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                className={`fixed inset-0 bg-black z-40 transition-all duration-300 lg:hidden ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
+                    }`}
                 onClick={onClose}
             />
 
-            {/* Bottom Sheet */}
-            <div className="fixed bottom-0 left-0 right-0 bg-[var(--background)] rounded-t-2xl shadow-2xl z-50 lg:hidden transform transition-transform duration-300 theme-transition max-h-[85vh] overflow-hidden flex flex-col">
+            {/* Bottom Sheet with smooth slide animation */}
+            <div className={`fixed bottom-0 left-0 right-0 bg-[var(--background)] rounded-t-2xl shadow-2xl z-50 transform transition-transform duration-300 theme-transition max-h-[85vh] overflow-hidden flex flex-col ${isOpen ? 'translate-y-0' : 'translate-y-full'
+                }`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
                     <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition">
@@ -157,9 +161,9 @@ export default function MobileFilterSheet({
                                         onSortChange(option.value);
                                         onClose();
                                     }}
-                                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors duration-200 theme-transition ${option.value === sortBy
-                                        ? 'bg-brand-orange/10 text-brand-orange font-medium border border-brand-orange'
-                                        : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))] border border-transparent'
+                                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 theme-transition ${option.value === sortBy
+                                        ? 'bg-brand-orange/10 text-brand-orange font-medium border border-brand-orange transform scale-105'
+                                        : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))] border border-transparent hover:border-brand-orange/30'
                                         }`}
                                 >
                                     {option.label}
@@ -174,7 +178,7 @@ export default function MobileFilterSheet({
                     <div className="p-4 border-t border-[var(--muted)] flex-shrink-0">
                         <button
                             onClick={handleApply}
-                            className="w-full bg-brand-orange text-brand-black font-semibold py-3 rounded-lg hover:bg-brand-yellow transition-all duration-300"
+                            className="w-full bg-brand-orange text-brand-black font-semibold py-3 rounded-lg hover:bg-brand-yellow transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                         >
                             Apply Filters
                         </button>
