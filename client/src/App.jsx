@@ -3,11 +3,11 @@ import { Routes, Route} from 'react-router-dom';
 // Pages Imports
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
-import ECommercePage from './pages/ECommercePage';
+import MarketPage from './pages/MarketPage';
 import EducationPage from './pages/EducationPage';
 
 // Layout components Imports
-import Header from './components/Header/Header';
+import Header from './components/header/Header';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} />
-                    <Route path="/shop" element={<ECommercePage />} />
+                    <Route path="/shop" element={<MarketPage />} />
                     <Route path="/education" element={<EducationPage />} />
                 </Routes>
             </main>

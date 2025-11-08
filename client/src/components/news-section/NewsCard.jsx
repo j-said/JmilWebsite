@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function NewsCard({ post, isActive }) {
     const imageUrl = post.imageUrl || `https://placehold.co/400x300/1a1a1a/FFA500?text=${encodeURIComponent(post.title)}`;
 
@@ -26,9 +28,12 @@ export default function NewsCard({ post, isActive }) {
                     {post.content}
                 </p>
                 {isActive && (
-                    <button className="mt-4 bg-brand-orange text-brand-black font-semibold py-2 px-4 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition">
+                    <Link
+                        to={`/news/${post.id}`}
+                        className="inline-block mt-4 bg-brand-orange text-brand-black font-semibold py-2 px-4 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition"
+                    >
                         Read More
-                    </button>
+                    </Link>
                 )}
             </div>
         </article>

@@ -1,5 +1,5 @@
-import HeroSection from '../components/HeroSection';
-import NewsFeed from '../components/NewsFeed';
+import HeroSection from '../components/HomeHeroSection';
+import NewsFeed from '../components/news-section/NewsFeed';
 
 export default function HomePage() {
   return (

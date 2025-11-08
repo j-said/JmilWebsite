@@ -43,13 +43,9 @@ export default function NewsSection() {
     }
   }, [posts.length, isPaused]);
 
-  const handleCardHover = (index) => {
+  const handleCardClick = (index) => {
     setIsPaused(true);
     setActiveIndex(index);
-  };
-
-  const handleCardLeave = () => {
-    setIsPaused(false);
   };
 
   const navigateCard = (direction) => {
@@ -69,7 +65,7 @@ export default function NewsSection() {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-b from-[var(--background)] to-[color-mix(in_oklab,var(--background)_95%,var(--muted))] theme-transition">
+    <section className="py-20">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition">
           Latest News
@@ -110,8 +106,7 @@ export default function NewsSection() {
             {posts.map((post, index) => (
               <div
                 key={post.id}
-                onMouseEnter={() => handleCardHover(index)}
-                onMouseLeave={handleCardLeave}
+                onClick={() => handleCardClick(index)}
                 className="absolute transition-all duration-500 ease-in-out"
                 style={{
                   transform: `translateX(${(index - activeIndex) * 120}%) scale(${index === activeIndex ? 1 : 0.85
