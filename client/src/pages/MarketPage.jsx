@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+
 import ProductGrid from '../components/market/products/ProductGrid';
 import FilterSidebar from '../components/market/filters/FilterSidebar';
 import SearchBar from '../components/market/filters/SearchBar';
@@ -6,6 +7,7 @@ import SortDropdown from '../components/market/filters/SortDropdown';
 import ActiveFilters from '../components/market/filters/ActiveFilters';
 import MobileFilterBar from '../components/market/filters/mobile/MobileFilterBar';
 import MobileFilterSheet from '../components/market/filters/mobile/MobileFilterSheet';
+
 import { mockProducts } from '../data/mockProducts';
 
 export default function MarketPage() {

@@ -65,7 +65,7 @@ export default function NewsSection() {
   }
 
   return (
-    <section className="py-20">
+    <section className="py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition">
           Latest News
