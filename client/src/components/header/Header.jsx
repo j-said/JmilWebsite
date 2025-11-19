@@ -42,7 +42,7 @@ export default function Header() {
     };
 
     // Only show cart badge on market page
-    const showCartBadge = location.pathname === '/shop';
+    const showCartBadge = location.pathname === '/shop' || location.pathname.startsWith('/shop/');
 
     return (
         <>

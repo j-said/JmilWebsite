@@ -13,7 +13,13 @@ export const mockProducts = [
         brand: "DJI",
         features: ["4K Camera", "GPS", "Obstacle Avoidance", "Follow Me Mode", "Auto Return Home", "Long Battery Life"],
         inStock: true,
-        imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Mavic+3+Pro"
+        imageUrl: "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Main",
+        images: [
+            "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Front",
+            "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Side",
+            "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Top",
+            "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Camera"
+        ]
     },
     {
         id: 2,
@@ -26,8 +32,13 @@ export const mockProducts = [
         brand: "Autel Robotics",
         features: ["6K Camera", "GPS", "Obstacle Avoidance", "Night Vision", "Auto Return Home"],
         inStock: true,
-        imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=Autel+Evo+Lite+"
+        imageUrl: "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Evo+Lite+",
+        images: [
+             "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Front",
+             "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Back"
+        ]
     },
+    // ... (інші товари можна залишити без images, код це обробить)
     {
         id: 3,
         name: "DJI Inspire 3",
@@ -39,10 +50,9 @@ export const mockProducts = [
         brand: "DJI",
         features: ["8K Camera", "Dual Operator", "GPS", "Obstacle Avoidance", "Cinematic Mode"],
         inStock: true,
-        imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Inspire+3"
+        imageUrl: "https://placehold.co/600x400/1a1a1a/FFA500?text=DJI+Inspire+3"
     },
-
-    // FPV Racing Drones
+    // ... решта товарів з попереднього файлу
     {
         id: 4,
         name: "iFlight Nazgul Evoque F5",
@@ -84,8 +94,6 @@ export const mockProducts = [
         inStock: false,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=GEPRC+Mark5+HD"
     },
-
-    // Camera Drones
     {
         id: 7,
         name: "DJI Mini 4 Pro",
@@ -127,8 +135,6 @@ export const mockProducts = [
         inStock: true,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=HS720G+4K+GPS"
     },
-
-    // Beginner Drones
     {
         id: 10,
         name: "DJI Tello",
@@ -168,8 +174,6 @@ export const mockProducts = [
         inStock: true,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=HS175+Beginner"
     },
-
-    // Accessories
     {
         id: 13,
         name: "DJI Smart Controller",
@@ -209,8 +213,6 @@ export const mockProducts = [
         inStock: true,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=Drone+Backpack"
     },
-
-    // Spare Parts
     {
         id: 16,
         name: "DJI Mavic 3 Pro Battery",
@@ -250,8 +252,6 @@ export const mockProducts = [
         inStock: true,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=FPV+Frame+Kit"
     },
-
-    // Batteries & Chargers
     {
         id: 19,
         name: "Multi-Battery Charging Hub",
@@ -291,8 +291,6 @@ export const mockProducts = [
         inStock: true,
         imageUrl: "https://placehold.co/400x300/1a1a1a/FFA500?text=Battery+Kit"
     },
-
-    // Camera Equipment
     {
         id: 22,
         name: "ND Filter Set",
@@ -334,17 +332,14 @@ export const mockProducts = [
     }
 ];
 
-// Helper function to get unique categories
 export const getUniqueCategories = () => {
     return [...new Set(mockProducts.map(product => product.category))];
 };
 
-// Helper function to get unique brands
 export const getUniqueBrands = () => {
     return [...new Set(mockProducts.map(product => product.brand))];
 };
 
-// Helper function to get all features
 export const getAllFeatures = () => {
     const allFeatures = mockProducts.flatMap(product => product.features);
     return [...new Set(allFeatures)];

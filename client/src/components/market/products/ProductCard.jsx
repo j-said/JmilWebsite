@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
+import { useWishlist } from '../../../context/WishlistContext';
 
 export default function ProductCard({ product }) {
     const [isBouncing, setIsBouncing] = useState(false);
-    const [isWishlisted, setIsWishlisted] = useState(false);
+    const { isInWishlist, toggleWishlist } = useWishlist();
     const { addToCart } = useCart();
+    
+    const isWishlisted = isInWishlist(product.id);
+    
     const imageUrl = product.imageUrl || `https://placehold.co/400x300/1a1a1a/FFA500?text=${encodeURIComponent(product.name)}`;
 
-    const toggleWishlist = (e) => {
+    const handleWishlistClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsWishlisted(!isWishlisted);
+        toggleWishlist(product);
     };
 
     const handleAddToCart = (e) => {
@@ -25,7 +29,6 @@ export default function ProductCard({ product }) {
     return (
         <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isBouncing ? 'animate-bounce-gentle' : ''}`}>
             <Link to={`/shop/${product.id}`} className="block flex-1">
-                {/* Product Image */}
                 <div className="relative overflow-hidden rounded-t-xl">
                     <img
                         src={imageUrl}
@@ -33,9 +36,9 @@ export default function ProductCard({ product }) {
                         className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
 
-                    {/* Wishlist Button (Fixed Hover) */}
+                    {/* Wishlist Button */}
                     <button
-                        onClick={toggleWishlist}
+                        onClick={handleWishlistClick}
                         className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 shadow-md z-10
                             ${isWishlisted
                                 ? 'bg-brand-orange text-brand-black scale-110'
@@ -55,14 +58,12 @@ export default function ProductCard({ product }) {
                         </svg>
                     </button>
 
-                    {/* Sale Badge */}
+                    {/* Badges rendering code... (без змін) */}
                     {product.onSale && (
                         <div className="absolute top-3 left-3 bg-brand-orange text-brand-black px-2 py-1 rounded-md text-sm font-bold shadow-sm">
                             Sale
                         </div>
                     )}
-
-                    {/* Out of Stock Badge */}
                     {!product.inStock && (
                         <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 rounded-md text-sm font-bold shadow-sm">
                             Out of Stock
@@ -70,17 +71,14 @@ export default function ProductCard({ product }) {
                     )}
                 </div>
 
-                {/* Product Info */}
+                {/* Product Info code... (без змін) */}
                 <div className="p-4">
                     <h3 className="font-bold text-[var(--foreground)] mb-2 line-clamp-2 theme-transition-colors group-hover:text-brand-orange">
                         {product.name}
                     </h3>
-
                     <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_70%,transparent)] mb-3 line-clamp-2 theme-transition-colors">
                         {product.description}
                     </p>
-
-                    {/* Price & Rating */}
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex flex-col">
                             {product.originalPrice && (
@@ -92,7 +90,6 @@ export default function ProductCard({ product }) {
                                 ${product.price}
                             </span>
                         </div>
-
                         {product.rating && (
                             <div className="flex items-center space-x-1 bg-[var(--muted)]/30 px-2 py-1 rounded-lg">
                                 <span className="text-yellow-400 text-sm">⭐</span>
@@ -105,7 +102,6 @@ export default function ProductCard({ product }) {
                 </div>
             </Link>
 
-            {/* Add to Cart (Outside Link to avoid nesting issues) */}
             <div className="px-4 pb-4 mt-auto">
                 <button
                     onClick={handleAddToCart}
