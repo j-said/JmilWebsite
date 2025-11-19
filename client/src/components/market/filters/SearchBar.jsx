@@ -39,7 +39,7 @@ export default function SearchBar({ value, onChange, placeholder = "Search produ
                     value={localValue}
                     onChange={(e) => setLocalValue(e.target.value)}
                     placeholder={placeholder}
-                    className="w-full pl-10 pr-10 py-3 border border-[var(--muted)] rounded-xl bg-[var(--background)] text-[var(--foreground)] placeholder-[color-mix(in_oklab,var(--foreground)_40%,transparent)] theme-transition focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+                    className="w-full pl-10 pr-10 py-3 border border-[var(--muted)] rounded-xl bg-[var(--background)] text-[var(--foreground)] placeholder-[color-mix(in_oklab,var(--foreground)_40%,transparent)] theme-transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
                 />
 
                 {/* Clear Button */}
@@ -64,9 +64,9 @@ export default function SearchBar({ value, onChange, placeholder = "Search produ
 
             {/* Search Suggestions (optional) */}
             {localValue && (
-                <div className="absolute z-10 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition">
+                <div className="absolute z-10 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition-colors">
                     <div className="p-2">
-                        <div className="text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] px-3 py-2 theme-transition">
+                        <div className="text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] px-3 py-2 theme-transition-colors">
                             Press Enter to search for "{localValue}"
                         </div>
                     </div>

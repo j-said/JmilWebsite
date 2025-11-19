@@ -19,13 +19,13 @@ export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
 
             {/* Sidebar */}
             <div
-                className={`fixed top-0 right-0 h-full w-80 bg-[var(--background)] theme-transition shadow-2xl z-50 transform transition-transform duration-400 ease-in-out md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed top-0 right-0 h-full w-80 bg-[var(--background)] theme-transition-colors shadow-2xl z-50 transform transition-transform duration-400 ease-in-out md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* Close button */}
                 <div className="flex justify-end p-4 border-b border-[var(--muted)]">
                     <button
                         onClick={onClose}
-                        className="p-2 text-[var(--foreground)] hover:text-brand-orange transition-colors duration-300"
+                        className="p-2 text-[var(--foreground)] hover:text-brand-orange theme-transition-colors duration-300"
                         aria-label="Close menu"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +41,7 @@ export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
                             <Link
                                 key={item.path}
                                 to={item.path}
-                                className="block text-xl font-semibold text-[var(--foreground)] hover:text-brand-orange transition-colors duration-200 py-3 border-b border-[var(--muted)]"
+                                className="block text-xl font-semibold text-[var(--foreground)] hover:text-brand-orange theme-transition-colors duration-200 py-3 border-b border-[var(--muted)]"
                                 onClick={onClose}
                             >
                                 {item.label}

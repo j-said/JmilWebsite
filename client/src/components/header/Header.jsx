@@ -46,10 +46,10 @@ export default function Header() {
 
     return (
         <>
-            <header className="bg-[var(--background)]  p-4 sticky top-0 z-50 shadow-lg border-b border-[var(--muted)] theme-transition">
+            <header className="bg-[var(--background)]  p-4 sticky top-0 z-50 shadow-lg border-b border-[var(--muted)] theme-transition-colors">
                 <nav className="container mx-auto flex justify-between items-center">
 
-                    <Link to="/" className="text-brand-black flex items-center space-x-2 group  dark:text-brand-yellow transition-colors duration-300">
+                    <Link to="/" className="text-brand-black flex items-center space-x-2 group  dark:text-brand-yellow theme-transition-colors duration-300">
                         <Logo className="w-8 h-8" />
                         <span className="text-2xl font-bold">
                             JmilDrones

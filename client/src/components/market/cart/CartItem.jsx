@@ -10,7 +10,7 @@ export default function CartItem({ item }) {
     const subtotal = item.price * item.quantity;
 
     return (
-        <div className="flex items-center space-x-4 p-3 bg-[color-mix(in_oklab,var(--background)_95%,var(--muted))] rounded-lg theme-transition">
+        <div className="flex items-center space-x-4 p-3 bg-[color-mix(in_oklab,var(--background)_95%,var(--muted))] rounded-lg theme-transition-colors">
             {/* Product Image */}
             <img
                 src={item.imageUrl}
@@ -20,10 +20,10 @@ export default function CartItem({ item }) {
 
             {/* Product Info */}
             <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-[var(--foreground)] text-sm line-clamp-2 theme-transition">
+                <h3 className="font-semibold text-[var(--foreground)] text-sm line-clamp-2 theme-transition-colors">
                     {item.name}
                 </h3>
-                <p className="text-brand-orange font-semibold theme-transition">
+                <p className="text-brand-orange font-semibold theme-transition-colors">
                     ${item.price}
                 </p>
             </div>
@@ -37,7 +37,7 @@ export default function CartItem({ item }) {
                     -
                 </button>
 
-                <span className="w-8 text-center text-[var(--foreground)] theme-transition">
+                <span className="w-8 text-center text-[var(--foreground)] theme-transition-colors">
                     {item.quantity}
                 </span>
 

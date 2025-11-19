@@ -125,7 +125,7 @@ export default function MarketPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--background)] theme-transition">
+        <div className="min-h-screen bg-[var(--background)] theme-transition-colors">
             {/* Mobile Filter Bar - Hidden on desktop */}
             <div className="lg:hidden">
                 <MobileFilterBar
@@ -138,7 +138,7 @@ export default function MarketPage() {
             {/* Search and Sort Header - Hidden on mobile */}
             <div className="hidden lg:block container mx-auto px-4 py-6">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-                    <h1 className="text-3xl font-bold text-[var(--foreground)] theme-transition">
+                    <h1 className="text-3xl font-bold text-[var(--foreground)] theme-transition-colors">
                         Drone Shop
                     </h1>
 
@@ -187,7 +187,7 @@ export default function MarketPage() {
 
                         {/* Results Count */}
                         <div className="mb-6">
-                            <p className="text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] theme-transition">
+                            <p className="text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] theme-transition-colors">
                                 Showing {filteredProducts.length} of {mockProducts.length} products
                             </p>
                         </div>

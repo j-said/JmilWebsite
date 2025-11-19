@@ -58,13 +58,13 @@ export default function FilterSidebar({
     const hasActiveFilters = Object.keys(localFilters).length > 0;
 
     // Спільний клас для заголовків фільтрів (жовтий у темній темі, помаранчевий у світлій)
-    const headerClass = "font-bold text-brand-orange dark:text-brand-yellow mb-3 theme-transition";
+    const headerClass = "font-bold text-brand-orange dark:text-brand-yellow mb-3 theme-transition-colors";
 
     return (
-        <div className="w-80 bg-[var(--background)] border border-[var(--muted)] rounded-xl p-6 theme-transition sticky top-24">
+        <div className="w-80 bg-[var(--background)] border border-[var(--muted)] rounded-xl p-6 theme-transition-colors sticky top-24">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-brand-orange dark:text-brand-yellow theme-transition">
+                <h3 className="text-2xl font-bold text-brand-orange dark:text-brand-yellow theme-transition-colors">
                     Filters
                 </h3>
                 {hasActiveFilters && (

@@ -25,7 +25,7 @@ export default function SortDropdown({ value, onChange }) {
             {/* Dropdown Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between px-4 py-3 border border-[var(--muted)] rounded-xl bg-[var(--background)] text-[var(--foreground)] theme-transition hover:border-brand-orange focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
+                className="w-full flex items-center justify-between px-4 py-3 border border-[var(--muted)] rounded-xl bg-[var(--background)] text-[var(--foreground)] theme-transition-colors hover:border-brand-orange focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
             >
@@ -51,7 +51,7 @@ export default function SortDropdown({ value, onChange }) {
                     />
 
                     {/* Options List */}
-                    <div className="absolute z-20 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition">
+                    <div className="absolute z-20 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition-colors">
                         <ul
                             className="py-2 max-h-60 overflow-auto"
                             role="listbox"
@@ -60,7 +60,7 @@ export default function SortDropdown({ value, onChange }) {
                                 <li key={option.value}>
                                     <button
                                         onClick={() => handleSelect(option.value)}
-                                        className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 theme-transition ${option.value === value
+                                        className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 theme-transition-colors ${option.value === value
                                                 ? 'bg-brand-orange/10 text-brand-orange font-medium'
                                                 : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))]'
                                             }`}

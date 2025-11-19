@@ -6,12 +6,12 @@ export default function MobileFilterBar({
     const activeFilterCount = Object.keys(filters).length;
 
     return (
-        <div className="lg:hidden bg-[var(--background)] border-b border-[var(--muted)] theme-transition sticky top-0 z-30">
+        <div className="lg:hidden bg-[var(--background)] border-b border-[var(--muted)] theme-transition-colors sticky top-0 z-30">
             <div className="container mx-auto px-4 py-3">
                 <div className="flex items-center justify-between">
                     {/* Results count */}
                     <div className="flex-1">
-                        <p className="text-sm text-[var(--foreground)] theme-transition">
+                        <p className="text-sm text-[var(--foreground)] theme-transition-colors">
                             <span className="font-semibold">{productCount}</span> products
                         </p>
                     </div>

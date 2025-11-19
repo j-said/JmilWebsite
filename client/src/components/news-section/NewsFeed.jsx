@@ -61,21 +61,21 @@ export default function NewsSection() {
   };
 
   if (posts.length === 0) {
-    return <div className="py-16 text-center theme-transition">Loading news...</div>;
+    return <div className="py-16 text-center theme-transition-colors">Loading news...</div>;
   }
 
   return (
     <section className="py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition">
+        <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition-colors">
           Latest News
         </h2>
-        <p className="text-lg text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] text-center mb-12 max-w-2xl mx-auto theme-transition">
+        <p className="text-lg text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] text-center mb-12 max-w-2xl mx-auto theme-transition-colors">
           Stay updated with the latest developments in drone technology and industry news
         </p>
 
         {error && (
-          <div className="text-center text-red-400 mb-8 bg-red-400/10 py-2 px-4 rounded-lg max-w-md mx-auto theme-transition">
+          <div className="text-center text-red-400 mb-8 bg-red-400/10 py-2 px-4 rounded-lg max-w-md mx-auto theme-transition-colors">
             Could not load news. Displaying mock data.
           </div>
         )}
@@ -85,14 +85,14 @@ export default function NewsSection() {
           {/* Navigation Arrows */}
           <button
             onClick={() => navigateCard('prev')}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition -translate-x-4"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition-colors -translate-x-4"
           >
             ‹
           </button>
 
           <button
             onClick={() => navigateCard('next')}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition translate-x-4"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition-colors translate-x-4"
           >
             ›
           </button>
@@ -133,7 +133,7 @@ export default function NewsSection() {
                   setActiveIndex(index);
                   setTimeout(() => setIsPaused(false), 5000);
                 }}
-                className={`w-3 h-3 rounded-full transition-all duration-300 theme-transition ${index === activeIndex
+                className={`w-3 h-3 rounded-full transition-all duration-300 theme-transition-colors ${index === activeIndex
                   ? 'bg-brand-orange scale-125'
                   : 'bg-brand-orange/30 hover:bg-brand-orange/60'
                   }`}

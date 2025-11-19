@@ -11,9 +11,9 @@ export default function FeaturesFilter({ selected, onChange }) {
                         type="checkbox"
                         checked={selected.includes(feature)}
                         onChange={() => onChange(feature)}
-                        className="w-4 h-4 text-brand-orange border-[var(--muted)] rounded focus:ring-brand-orange focus:ring-2 theme-transition"
+                        className="w-4 h-4 accent-brand-orange cursor-pointer"
                     />
-                    <span className="text-[var(--foreground)] group-hover:text-brand-orange transition-colors duration-200 theme-transition">
+                    <span className="text-[var(--foreground)] group-hover:text-brand-orange transition-colors duration-200 theme-transition-colors">
                         {feature}
                     </span>
                 </label>

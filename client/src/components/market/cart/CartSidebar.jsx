@@ -24,11 +24,11 @@ export default function CartSidebar() {
             />
 
             {/* Cart Sidebar with slide animation */}
-            <div className={`fixed top-0 right-0 h-full w-96 bg-[var(--background)] shadow-2xl z-50 transform transition-transform duration-300 theme-transition overflow-hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'
+            <div className={`fixed top-0 right-0 h-full w-96 bg-[var(--background)] shadow-2xl z-50 transform transition-transform duration-300 theme-transition-colors overflow-hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
-                    <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition">
+                    <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition-colors">
                         Shopping Cart ({itemCount})
                     </h2>
                     <button
@@ -48,7 +48,7 @@ export default function CartSidebar() {
                             <svg className="w-16 h-16 mx-auto text-[var(--muted)] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5.5M7 13l2.5 5.5m0 0L17 21" />
                             </svg>
-                            <p className="text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] theme-transition">
+                            <p className="text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] theme-transition-colors">
                                 Your cart is empty
                             </p>
                         </div>
@@ -66,10 +66,10 @@ export default function CartSidebar() {
                     <div className="border-t border-[var(--muted)] p-4 flex-shrink-0">
                         {/* Total */}
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-lg font-semibold text-[var(--foreground)] theme-transition">
+                            <span className="text-lg font-semibold text-[var(--foreground)] theme-transition-colors">
                                 Total:
                             </span>
-                            <span className="text-xl font-bold text-brand-orange theme-transition">
+                            <span className="text-xl font-bold text-brand-orange theme-transition-colors">
                                 ${total.toFixed(2)}
                             </span>
                         </div>

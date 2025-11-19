@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer className="bg-[var(--background)] text-[var(--foreground)] p-8 mt-16 border-t border-[var(--muted)] theme-transition">
+        <footer className="bg-[var(--background)] text-[var(--foreground)] p-8 mt-16 border-t border-[var(--muted)] theme-transition-colors">
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                     <h3 className="text-xl font-bold text-brand-orange mb-4">JmilDrones</h3>

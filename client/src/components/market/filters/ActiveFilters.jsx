@@ -26,9 +26,9 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
     };
 
     return (
-        <div className="bg-[var(--background)] border border-[var(--muted)] rounded-xl p-4 mb-6 theme-transition">
+        <div className="bg-[var(--background)] border border-[var(--muted)] rounded-xl p-4 mb-6 theme-transition-colors">
             <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium text-[var(--foreground)] theme-transition">
+                <span className="text-sm font-medium text-[var(--foreground)] theme-transition-colors">
                     Active Filters:
                 </span>
 
@@ -36,7 +36,7 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
                     getFilterValues(type, values).map((value) => (
                         <span
                             key={`${type}-${value}`}
-                            className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-brand-orange/10 text-brand-orange theme-transition"
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-brand-orange/10 text-brand-orange theme-transition-colors"
                         >
                             {getFilterLabel(type, value)}
                             <button

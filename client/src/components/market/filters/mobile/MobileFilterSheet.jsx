@@ -77,11 +77,11 @@ export default function MobileFilterSheet({
             />
 
             {/* Bottom Sheet with smooth slide animation */}
-            <div className={`fixed bottom-0 left-0 right-0 bg-[var(--background)] rounded-t-2xl shadow-2xl z-50 transform transition-transform duration-300 theme-transition max-h-[85vh] overflow-hidden flex flex-col ${isOpen ? 'translate-y-0' : 'translate-y-full'
+            <div className={`fixed bottom-0 left-0 right-0 bg-[var(--background)] rounded-t-2xl shadow-2xl z-50 transform transition-transform duration-300 theme-transition-colors max-h-[85vh] overflow-hidden flex flex-col ${isOpen ? 'translate-y-0' : 'translate-y-full'
                 }`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
-                    <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition">
+                    <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition-colors">
                         {mode === 'filter' ? 'Filters' : 'Sort By'}
                     </h2>
                     <button
@@ -112,7 +112,7 @@ export default function MobileFilterSheet({
 
                             {/* Filter Components */}
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition">
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
                                     Price Range
                                 </h4>
                                 <PriceRange
@@ -122,7 +122,7 @@ export default function MobileFilterSheet({
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition">
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
                                     Categories
                                 </h4>
                                 <CategoryFilter
@@ -132,7 +132,7 @@ export default function MobileFilterSheet({
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition">
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
                                     Brands
                                 </h4>
                                 <BrandFilter
@@ -142,7 +142,7 @@ export default function MobileFilterSheet({
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition">
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
                                     Features
                                 </h4>
                                 <FeaturesFilter
@@ -161,7 +161,7 @@ export default function MobileFilterSheet({
                                         onSortChange(option.value);
                                         onClose();
                                     }}
-                                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 theme-transition ${option.value === sortBy
+                                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 theme-transition-colors ${option.value === sortBy
                                         ? 'bg-brand-orange/10 text-brand-orange font-medium border border-brand-orange transform scale-105'
                                         : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))] border border-transparent hover:border-brand-orange/30'
                                         }`}

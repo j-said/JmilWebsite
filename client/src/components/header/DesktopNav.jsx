@@ -14,7 +14,7 @@ export default function DesktopNav() {
                 <Link 
                     key={item.path}
                     to={item.path} 
-                    className="hover:text-brand-yellow transition-colors duration-200"
+                    className="hover:text-brand-yellow theme-transition-colors duration-200"
                 >
                     {item.label}
                 </Link>

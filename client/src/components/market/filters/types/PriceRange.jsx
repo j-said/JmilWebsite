@@ -18,7 +18,7 @@ export default function PriceRange({ value, onChange }) {
         <div className="space-y-3">
             <div className="flex space-x-3">
                 <div className="flex-1">
-                    <label className="block text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] mb-1 theme-transition">
+                    <label className="block text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] mb-1 theme-transition-colors">
                         Min
                     </label>
                     <input
@@ -26,11 +26,11 @@ export default function PriceRange({ value, onChange }) {
                         placeholder="0"
                         value={minPrice}
                         onChange={(e) => setMinPrice(e.target.value)}
-                        className="w-full px-3 py-2 border border-[var(--muted)] rounded-lg bg-[var(--background)] text-[var(--foreground)] theme-transition focus:border-brand-orange focus:outline-none"
+                        className="w-full px-3 py-2 border border-[var(--muted)] rounded-lg bg-[var(--background)] text-[var(--foreground)] theme-transition-colors focus:border-brand-orange focus:outline-none"
                     />
                 </div>
                 <div className="flex-1">
-                    <label className="block text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] mb-1 theme-transition">
+                    <label className="block text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] mb-1 theme-transition-colors">
                         Max
                     </label>
                     <input
@@ -38,7 +38,7 @@ export default function PriceRange({ value, onChange }) {
                         placeholder="10000"
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(e.target.value)}
-                        className="w-full px-3 py-2 border border-[var(--muted)] rounded-lg bg-[var(--background)] text-[var(--foreground)] theme-transition focus:border-brand-orange focus:outline-none"
+                        className="w-full px-3 py-2 border border-[var(--muted)] rounded-lg bg-[var(--background)] text-[var(--foreground)] theme-transition-colors focus:border-brand-orange focus:outline-none"
                     />
                 </div>
             </div>
@@ -57,7 +57,7 @@ export default function PriceRange({ value, onChange }) {
                             setMinPrice(range.min.toString());
                             setMaxPrice(range.max.toString());
                         }}
-                        className="text-xs px-2 py-1 border border-[var(--muted)] rounded-md hover:border-brand-orange hover:text-brand-orange transition-colors duration-200 theme-transition"
+                        className="text-xs px-2 py-1 border border-[var(--muted)] rounded-md hover:border-brand-orange hover:text-brand-orange transition-colors duration-200 theme-transition-colors"
                     >
                         {range.label}
                     </button>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 
 export default function ProductCard({ product }) {
+    const [isShaking, setIsShaking] = useState(false);
     const [isWishlisted, setIsWishlisted] = useState(false);
     const { addToCart } = useCart();
     const imageUrl = product.imageUrl || `https://placehold.co/400x300/1a1a1a/FFA500?text=${encodeURIComponent(product.name)}`;
@@ -17,10 +18,12 @@ export default function ProductCard({ product }) {
         e.preventDefault();
         e.stopPropagation();
         addToCart(product);
+        setIsShaking(true);
+        setTimeout(() => setIsShaking(false), 500);
     };
 
     return (
-        <div className="group relative bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 theme-transition flex flex-col h-full">
+        <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isShaking ? 'animate-shake' : ''}`}>
             <Link to={`/shop/${product.id}`} className="block flex-1">
                 {/* Product Image */}
                 <div className="relative overflow-hidden rounded-t-xl">
@@ -69,11 +72,11 @@ export default function ProductCard({ product }) {
 
                 {/* Product Info */}
                 <div className="p-4">
-                    <h3 className="font-bold text-[var(--foreground)] mb-2 line-clamp-2 theme-transition group-hover:text-brand-orange">
+                    <h3 className="font-bold text-[var(--foreground)] mb-2 line-clamp-2 theme-transition-colors group-hover:text-brand-orange">
                         {product.name}
                     </h3>
 
-                    <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_70%,transparent)] mb-3 line-clamp-2 theme-transition">
+                    <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_70%,transparent)] mb-3 line-clamp-2 theme-transition-colors">
                         {product.description}
                     </p>
 

@@ -21,16 +21,16 @@ export default function NewsCard({ post, isActive }) {
                 className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
             />
             <div className="p-6">
-                <h3 className="text-xl font-bold text-brand-orange mb-3 line-clamp-2 theme-transition">
+                <h3 className="text-xl font-bold text-brand-orange mb-3 line-clamp-2 theme-transition-colors">
                     {post.title}
                 </h3>
-                <p className="text-[var(--foreground)] text-sm line-clamp-3 leading-relaxed theme-transition">
+                <p className="text-[var(--foreground)] text-sm line-clamp-3 leading-relaxed theme-transition-colors">
                     {post.content}
                 </p>
                 {isActive && (
                     <Link
                         to={`/news/${post.id}`}
-                        className="inline-block mt-4 bg-brand-orange text-brand-black font-semibold py-2 px-4 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition"
+                        className="inline-block mt-4 bg-brand-orange text-brand-black font-semibold py-2 px-4 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition-colors"
                     >
                         Read More
                     </Link>
