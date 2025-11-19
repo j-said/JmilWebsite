@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 
 export default function ProductCard({ product }) {
-    const [isShaking, setIsShaking] = useState(false);
+    const [isBouncing, setIsBouncing] = useState(false);
     const [isWishlisted, setIsWishlisted] = useState(false);
     const { addToCart } = useCart();
     const imageUrl = product.imageUrl || `https://placehold.co/400x300/1a1a1a/FFA500?text=${encodeURIComponent(product.name)}`;
@@ -18,12 +18,12 @@ export default function ProductCard({ product }) {
         e.preventDefault();
         e.stopPropagation();
         addToCart(product);
-        setIsShaking(true);
-        setTimeout(() => setIsShaking(false), 500);
+        setIsBouncing(true);
+        setTimeout(() => setIsBouncing(false), 500);
     };
 
     return (
-        <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isShaking ? 'animate-shake' : ''}`}>
+        <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isBouncing ? 'animate-bounce-gentle' : ''}`}>
             <Link to={`/shop/${product.id}`} className="block flex-1">
                 {/* Product Image */}
                 <div className="relative overflow-hidden rounded-t-xl">

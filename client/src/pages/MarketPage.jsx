@@ -47,7 +47,7 @@ export default function MarketPage() {
             );
         }
 
-        // Price range filter
+        //Hv Price range filter
         if (filters.priceRange) {
             results = results.filter(product =>
                 product.price >= filters.priceRange.min &&
@@ -121,7 +121,8 @@ export default function MarketPage() {
     };
 
     const closeMobileSheet = () => {
-        setMobileSheet({ open: false, mode: 'filter' });
+        // FIX: Не скидаємо mode на 'filter', щоб уникнути "стрибка" контенту під час анімації закриття.
+        setMobileSheet(prev => ({ ...prev, open: false }));
     };
 
     return (

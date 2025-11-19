@@ -18,14 +18,12 @@ export default function CartSidebar() {
         <>
             {/* Overlay with smooth transition */}
             <div
-                className={`fixed inset-0 bg-black z-40 transition-all duration-300 ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
-                    }`}
+                className={`slider-overlay ${isOpen ? 'open' : ''}`}
                 onClick={closeCart}
             />
 
             {/* Cart Sidebar with slide animation */}
-            <div className={`fixed top-0 right-0 h-full w-96 bg-[var(--background)] shadow-2xl z-50 transform transition-transform duration-300 theme-transition-colors overflow-hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}>
+            <div className={`slider-panel slider-panel-right w-96 ${isOpen ? 'open' : ''}`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
                     <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition-colors">

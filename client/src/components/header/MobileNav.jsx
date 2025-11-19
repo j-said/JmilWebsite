@@ -13,13 +13,13 @@ export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
         <>
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity duration-400 ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
+                className={`slider-overlay md:hidden ${isOpen ? 'open' : ''}`}
                 onClick={onClose}
             />
 
             {/* Sidebar */}
             <div
-                className={`fixed top-0 right-0 h-full w-80 bg-[var(--background)] theme-transition-colors shadow-2xl z-50 transform transition-transform duration-400 ease-in-out md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`slider-panel slider-panel-right w-80 md:hidden ${isOpen ? 'open' : ''}`}
             >
                 {/* Close button */}
                 <div className="flex justify-end p-4 border-b border-[var(--muted)]">

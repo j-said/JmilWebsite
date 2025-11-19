@@ -1,14 +1,24 @@
 import { useCart } from '../../../context/CartContext';
+import { useState, useEffect } from 'react';
 
 
 export default function CartBadge() {
     const { getCartItemsCount, toggleCart } = useCart();
+    const [isAnimating, setIsAnimating] = useState(false);
     const itemCount = getCartItemsCount();
+
+    useEffect(() => {
+        if (itemCount > 0) {
+            setIsAnimating(true);
+            const timer = setTimeout(() => setIsAnimating(false), 300);
+            return () => clearTimeout(timer);
+        }
+    }, [itemCount]);
 
     return (
         <button
             onClick={toggleCart}
-            className="relative p-2 text-[var(--foreground)] hover:text-brand-orange transition-colors duration-200"
+            className={`relative p-2 text-[var(--foreground)] hover:text-brand-orange transition-colors duration-200 ${isAnimating ? 'animate-bounce-gentle' : ''}`}
             aria-label="Open cart"
         >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

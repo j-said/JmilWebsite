@@ -71,14 +71,12 @@ export default function MobileFilterSheet({
         <>
             {/* Overlay with smooth transition */}
             <div
-                className={`fixed inset-0 bg-black z-40 transition-all duration-300 lg:hidden ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'
-                    }`}
+                className={`slider-overlay lg:hidden ${isOpen ? 'open' : ''}`}
                 onClick={onClose}
             />
 
             {/* Bottom Sheet with smooth slide animation */}
-            <div className={`fixed bottom-0 left-0 right-0 bg-[var(--background)] rounded-t-2xl shadow-2xl z-50 transform transition-transform duration-300 theme-transition-colors max-h-[85vh] overflow-hidden flex flex-col ${isOpen ? 'translate-y-0' : 'translate-y-full'
-                }`}>
+            <div className={`slider-panel slider-panel-bottom lg:hidden ${isOpen ? 'open' : ''}`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
                     <h2 className="text-xl font-bold text-[var(--foreground)] theme-transition-colors">
@@ -98,7 +96,7 @@ export default function MobileFilterSheet({
                 <div className="flex-1 overflow-y-auto p-4">
                     {mode === 'filter' ? (
                         <div className="space-y-6">
-                            {/* Clear All */}
+                            {/*QL Clear All */}
                             {Object.keys(localFilters).length > 0 && (
                                 <div className="text-right">
                                     <button
