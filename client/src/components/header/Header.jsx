@@ -6,6 +6,7 @@ import MobileNav from './MobileNav';
 import ThemeToggle from './ThemeToggle';
 import BurgerButton from './BurgerButton';
 import CartBadge from '../market/cart/CartBadge';
+import Logo from './Logo';
 
 export default function Header() {
     const [isDark, setIsDark] = useState(true);
@@ -45,10 +46,16 @@ export default function Header() {
 
     return (
         <>
-            <header className="bg-[var(--background)] text-[var(--foreground)] p-4 sticky top-0 z-50 shadow-lg border-b border-[var(--muted)] theme-transition">
+            <header className="bg-[var(--background)]  p-4 sticky top-0 z-50 shadow-lg border-b border-[var(--muted)] theme-transition">
                 <nav className="container mx-auto flex justify-between items-center">
-                    <Link to="/" className="text-2xl font-bold text-brand-orange">JmilDrones</Link>
 
+                    <Link to="/" className="text-brand-black flex items-center space-x-2 group  dark:text-brand-yellow transition-colors duration-300">
+                        <Logo className="w-8 h-8" />
+                        <span className="text-2xl font-bold">
+                            JmilDrones
+                        </span>
+                    </Link>
+                    
                     <DesktopNav />
 
                     <div className="flex items-center space-x-4">
