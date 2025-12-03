@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
     return (
-        <section className="text-[var(--foreground)] py-24 px-4 text-center theme-transition-colors">
+        <section className="text-[--foreground] py-24 px-4 text-center theme-transition-colors">
             <div className="container mx-auto max-w-4xl">
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 text-brand-orange dark:text-brand-yellow theme-transition-colors">
                     Welcome to JmilDrones

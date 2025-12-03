@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMemo, useEffect } from 'react'; // Added useEffect
 import { mockProducts } from '../data/mockProducts';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
+import { useCart } from '../hooks/useCart';
+import { useWishlist } from '../hooks/useWishlist';
 
 // Components
 import ProductGallery from '../components/market/products/ProductGallery';

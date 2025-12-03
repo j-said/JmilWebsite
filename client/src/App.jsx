@@ -9,8 +9,6 @@ import MarketPage from './pages/MarketPage';
 import EducationPage from './pages/EducationPage';
 import ProductPage from './pages/ProductPage';
 
-import { CartProvider } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
 import CartSidebar from './components/market/cart/CartSidebar';
 
 function CartConditional() {
@@ -23,24 +21,20 @@ function CartConditional() {
 export default function App() {
     return (
         <Router>
-            <WishlistProvider>
-                <CartProvider>
-                    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition">
-                        <Header />
-                        <main>
-                            <Routes>
-                                <Route path="/" element={<HomePage />} />
-                                <Route path="/shop" element={<MarketPage />} />
-                                <Route path="/shop/:id" element={<ProductPage />} />
-                                <Route path="/about" element={<AboutPage />} />
-                                <Route path="/education" element={<EducationPage />} />
-                            </Routes>
-                        </main>
-                        <Footer />
-                        <CartConditional />
-                    </div>
-                </CartProvider>
-            </WishlistProvider>
+            <div className="min-h-screen bg-[--background] text-[--foreground] theme-transition">
+                <Header />
+                <main>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/shop" element={<MarketPage />} />
+                        <Route path="/shop/:id" element={<ProductPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/education" element={<EducationPage />} />
+                    </Routes>
+                </main>
+                <Footer />
+                <CartConditional />
+            </div>
         </Router>
     );
 }
