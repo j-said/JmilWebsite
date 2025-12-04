@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component } from 'react';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -11,15 +11,15 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("Error caught by boundary:", error, errorInfo);
+    console.error('Error caught by boundary:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[--background] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-[--foreground] mb-4">
+            <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">
               Something went wrong
             </h2>
             <button

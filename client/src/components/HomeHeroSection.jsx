@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
     return (
-        <section className="text-[--foreground] py-24 px-4 text-center theme-transition-colors">
+        <section className="text-[var(--foreground)] py-24 px-4 text-center theme-transition-colors">
             <div className="container mx-auto max-w-4xl">
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 text-brand-orange dark:text-brand-yellow theme-transition-colors">
                     Welcome to JmilDrones
@@ -23,6 +23,12 @@ export default function HeroSection() {
                         className="border-2 border-brand-orange text-brand-orange font-bold py-4 px-8 rounded-xl hover:bg-brand-orange hover:text-brand-black transition-all duration-300 transform hover:scale-105 text-center"
                     >
                         Learn More
+                    </Link>
+                    <Link
+                        to="/about"
+                        className="border-2 border-brand-orange text-brand-orange font-bold py-4 px-8 rounded-xl hover:bg-brand-orange hover:text-brand-black transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                        About Us
                     </Link>
                 </div>
             </div>

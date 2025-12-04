@@ -7,7 +7,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
         <div className="flex flex-col h-full theme-transition-colors">
             {/* Header & Wishlist */}
             <div className="flex justify-between items-start mb-4">
-                <h1 className="text-3xl md:text-4xl font-bold text-[--foreground] theme-transition-colors">
+                <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] theme-transition-colors">
                     {product.name}
                 </h1>
                 <button
@@ -16,7 +16,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                         p-3 rounded-full transition-all duration-300 shadow-sm
                         ${isWishlisted
                             ? 'bg-brand-orange text-brand-black hover:bg-brand-yellow scale-110'
-                            : 'bg-[--background] border border-[--muted] text-[--foreground] hover:border-brand-orange hover:text-brand-orange'
+                            : 'bg-[var(--background)] border border-[var(--muted)] text-[var(--foreground)] hover:border-brand-orange hover:text-brand-orange'
                         }
                     `}
                     aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
@@ -41,15 +41,15 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                         ${product.price}
                     </span>
                     {product.originalPrice && (
-                        <span className="text-lg line-through text-[color-mix(in_oklab,--foreground_50%,transparent)] theme-transition-colors">
+                        <span className="text-lg line-through text-[color-mix(in_oklab,var(--foreground)_50%,transparent)] theme-transition-colors">
                             ${product.originalPrice}
                         </span>
                     )}
                 </div>
 
-                <div className="flex items-center space-x-1 bg-[--muted]/30 px-3 py-1.5 rounded-lg theme-transition-colors">
+                <div className="flex items-center space-x-1 bg-[var(--muted)]/30 px-3 py-1.5 rounded-lg theme-transition-colors">
                     <span className="text-yellow-400">⭐</span>
-                    <span className="font-medium text-[--foreground]">
+                    <span className="font-medium text-[var(--foreground)]">
                         {product.rating} ({product.reviewCount} reviews)
                     </span>
                 </div>
@@ -60,24 +60,24 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
             </div>
 
             {/* Description */}
-            <p className="text-[color-mix(in_oklab,--foreground_80%,transparent)] mb-8 leading-relaxed text-lg theme-transition-colors">
+            <p className="text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] mb-8 leading-relaxed text-lg theme-transition-colors">
                 {product.description}
             </p>
 
             {/* Tags Section (Moved here as requested) */}
             <div className="mb-8 theme-transition-colors">
-                <h4 className="text-xs font-bold mb-3 text-[color-mix(in_oklab,--foreground_60%,transparent)] uppercase tracking-wide">
+                <h4 className="text-xs font-bold mb-3 text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] uppercase tracking-wide">
                     Tags
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-3 py-1.5 bg-[--muted] rounded-full text-[--foreground] theme-transition-colors">
+                    <span className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
                         #{product.brand}
                     </span>
-                    <span className="text-xs px-3 py-1.5 bg-[--muted] rounded-full text-[--foreground] theme-transition-colors">
+                    <span className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
                         #{product.category.replace(/\s+/g, '')}
                     </span>
                     {product.features.slice(0, 3).map((f, i) => (
-                        <span key={i} className="text-xs px-3 py-1.5 bg-[--muted] rounded-full text-[--foreground] theme-transition-colors">
+                        <span key={i} className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
                             #{f.replace(/\s+/g, '')}
                         </span>
                     ))}
@@ -86,7 +86,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
 
             {/* Configuration Placeholder */}
             <div className="mb-8 theme-transition-colors">
-                <h3 className="font-bold mb-3 flex justify-between text-[--foreground]">
+                <h3 className="font-bold mb-3 flex justify-between text-[var(--foreground)]">
                     Configuration <span className="text-xs text-brand-orange border border-brand-orange px-2 py-0.5 rounded">Coming Soon</span>
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -96,7 +96,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                             onClick={() => setSelectedConfig(idx)}
                             className={`px-4 py-3 rounded-xl border transition-all duration-200 text-sm font-medium ${selectedConfig === idx
                                     ? 'border-brand-orange bg-brand-orange/10 text-brand-orange shadow-sm'
-                                    : 'border-[--muted] text-[--foreground] opacity-70 hover:opacity-100 hover:border-brand-orange/50'
+                                    : 'border-[var(--muted)] text-[var(--foreground)] opacity-70 hover:opacity-100 hover:border-brand-orange/50'
                                 }`}
                         >
                             {cfg}
@@ -112,7 +112,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                     disabled={!product.inStock}
                     className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform active:scale-[0.98] duration-200 flex items-center justify-center gap-2 ${product.inStock
                             ? 'bg-brand-orange text-brand-black hover:bg-brand-yellow shadow-lg hover:shadow-xl'
-                            : 'bg-[--muted] text-[--foreground] cursor-not-allowed opacity-50'
+                            : 'bg-[var(--muted)] text-[var(--foreground)] cursor-not-allowed opacity-50'
                         }`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
