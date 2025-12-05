@@ -13,13 +13,13 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    {/* Categories */}
+                    {/* Categories - Updated with exact names from mockProducts */}
                     <div>
                         <h3 className="text-lg font-bold mb-6 border-b border-brand-orange/20 pb-2 inline-block">Shop</h3>
                         <ul className="space-y-3">
-                            <li><Link to="/shop?category=Professional" className="hover:text-brand-orange transition-colors">Professional Drones</Link></li>
-                            <li><Link to="/shop?category=FPV" className="hover:text-brand-orange transition-colors">FPV Racing</Link></li>
-                            <li><Link to="/shop?category=Camera" className="hover:text-brand-orange transition-colors">Camera Drones</Link></li>
+                            <li><Link to="/shop?category=Professional%20Drones" className="hover:text-brand-orange transition-colors">Professional Drones</Link></li>
+                            <li><Link to="/shop?category=FPV%20Racing%20Drones" className="hover:text-brand-orange transition-colors">FPV Racing</Link></li>
+                            <li><Link to="/shop?category=Camera%20Drones" className="hover:text-brand-orange transition-colors">Camera Drones</Link></li>
                             <li><Link to="/shop?category=Accessories" className="hover:text-brand-orange transition-colors">Accessories</Link></li>
                         </ul>
                     </div>

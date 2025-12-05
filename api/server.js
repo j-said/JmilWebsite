@@ -33,6 +33,189 @@ const pool = new Pool({
 // --- API Routes ---
 
 /**
+ * @route   GET /api/products/filters
+ * @desc    Get metadata for filters (brands, categories, price range, features)
+ */
+app.get('/api/products/filters', async (req, res) => {
+    try {
+        // Run queries in parallel for performance
+        const [brandsRes, categoriesRes, priceRes, featuresRes] = await Promise.all([
+            pool.query('SELECT DISTINCT brand FROM products ORDER BY brand'),
+            pool.query('SELECT DISTINCT category FROM products ORDER BY category'),
+            pool.query('SELECT MIN(price) as min_price, MAX(price) as max_price FROM products'),
+            // Unnest array to get unique features
+            pool.query('SELECT DISTINCT unnest(features) as feature FROM products ORDER BY feature')
+        ]);
+
+        res.json({
+            brands: brandsRes.rows.map(r => r.brand),
+            categories: categoriesRes.rows.map(r => r.category),
+            features: featuresRes.rows.map(r => r.feature),
+            priceRange: {
+                min: parseFloat(priceRes.rows[0].min_price),
+                max: parseFloat(priceRes.rows[0].max_price)
+            }
+        });
+    } catch (err) {
+        console.error('Error fetching filters:', err);
+        res.status(500).json({ error: 'Failed to load filters' });
+    }
+});
+
+/**
+ * @route   GET /api/products
+ * @desc    Get products with filtering, sorting, and pagination
+ */
+app.get('/api/products', async (req, res) => {
+    try {
+        const { 
+            page = 1, 
+            limit = 12, 
+            sort = 'name', 
+            search = '',
+            minPrice,
+            maxPrice,
+            category, // Can be array or string
+            brand,    // Can be array or string
+            features  // Can be array or string
+        } = req.query;
+
+        const offset = (page - 1) * limit;
+        const queryParams = [];
+        let queryConditions = ['1=1']; // Base condition
+
+        // 1. Search Filter
+        if (search) {
+            queryParams.push(`%${search}%`);
+            queryConditions.push(`(name ILIKE $${queryParams.length} OR description ILIKE $${queryParams.length})`);
+        }
+
+        // 2. Category Filter (supports multiple)
+        if (category) {
+            const categories = Array.isArray(category) ? category : [category];
+            queryParams.push(categories);
+            // ANY($N) works for matching value against an array
+            queryConditions.push(`category = ANY($${queryParams.length})`);
+        }
+
+        // 3. Brand Filter (supports multiple)
+        if (brand) {
+            const brands = Array.isArray(brand) ? brand : [brand];
+            queryParams.push(brands);
+            queryConditions.push(`brand = ANY($${queryParams.length})`);
+        }
+
+        // 4. Price Range
+        if (minPrice) {
+            queryParams.push(minPrice);
+            queryConditions.push(`price >= $${queryParams.length}`);
+        }
+        if (maxPrice) {
+            queryParams.push(maxPrice);
+            queryConditions.push(`price <= $${queryParams.length}`);
+        }
+
+        // 5. Features Filter (Overlap check)
+        if (features) {
+            const featureList = Array.isArray(features) ? features : [features];
+            queryParams.push(featureList);
+            // The && operator checks if arrays overlap (have common elements)
+            // But here we usually want products that have ALL selected features?
+            // "ActiveFilters" implies narrowing down. Let's use containment (@>) if we want ALL features
+            // OR overlap (&&) if we want ANY feature. Usually Sidebar filters are OR within a group (e.g. Brands) but AND across groups.
+            // But Features are tricky. Let's stick to overlap (&&) for flexibility or containment (@>) for strictness.
+            // Let's use containment (@>) - product must have ALL selected features.
+            queryConditions.push(`features @> $${queryParams.length}`); 
+        }
+
+        // 6. Sorting
+        let orderBy = 'name ASC';
+        switch (sort) {
+            case 'name-desc': orderBy = 'name DESC'; break;
+            case 'price': orderBy = 'price ASC'; break;
+            case 'price-desc': orderBy = 'price DESC'; break;
+            case 'rating': orderBy = 'rating DESC'; break;
+            case 'newest': orderBy = 'created_at DESC'; break;
+            default: orderBy = 'name ASC';
+        }
+
+        // Construct Final Query
+        const whereClause = queryConditions.join(' AND ');
+        
+        // Query for Products
+        const sql = `
+            SELECT * FROM products 
+            WHERE ${whereClause} 
+            ORDER BY ${orderBy} 
+            LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}
+        `;
+
+        // Query for Total Count (for pagination)
+        const countSql = `SELECT COUNT(*) FROM products WHERE ${whereClause}`;
+
+        // Add limit and offset to params
+        const finalParams = [...queryParams, limit, offset];
+        // Count query only needs filter params
+        const countParams = queryParams;
+
+        const [productsRes, countRes] = await Promise.all([
+            pool.query(sql, finalParams),
+            pool.query(countSql, countParams)
+        ]);
+
+        res.json({
+            products: productsRes.rows.map(p => ({
+                ...p,
+                // Ensure numeric types are numbers (pg returns strings for decimals)
+                price: parseFloat(p.price),
+                originalPrice: p.original_price ? parseFloat(p.original_price) : null,
+                rating: parseFloat(p.rating),
+                // Map snake_case to camelCase for frontend
+                imageUrl: p.image_url,
+                inStock: p.in_stock,
+                reviewCount: p.review_count,
+                onSale: p.on_sale
+            })),
+            total: parseInt(countRes.rows[0].count),
+            page: parseInt(page),
+            limit: parseInt(limit)
+        });
+
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).json({ error: 'Failed to fetch products' });
+    }
+});
+
+// Single Product Route
+app.get('/api/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        const p = result.rows[0];
+        const product = {
+            ...p,
+            price: parseFloat(p.price),
+            originalPrice: p.original_price ? parseFloat(p.original_price) : null,
+            rating: parseFloat(p.rating),
+            imageUrl: p.image_url,
+            inStock: p.in_stock,
+            reviewCount: p.review_count,
+            onSale: p.on_sale
+        };
+
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+/**
  * @route   GET /api/news
  * @desc    Get news posts with pagination
  * @query   limit (default 5), offset (default 0)

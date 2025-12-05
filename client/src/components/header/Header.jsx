@@ -6,7 +6,7 @@ import MobileNav from './MobileNav';
 import ThemeToggle from './ThemeToggle';
 import BurgerButton from './BurgerButton';
 import CartBadge from '../market/cart/CartBadge';
-import Logo from './Logo';
+import Logo from '../ui/Logo';
 
 export default function Header() {
     const [isDark, setIsDark] = useState(true);

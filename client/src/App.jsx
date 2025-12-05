@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/header/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ui/ScrollToTop';
+import Loader from './components/ui/Loader';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -19,22 +22,36 @@ function CartConditional() {
 }
 
 export default function App() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <Router>
-            <div className="min-h-screen bg-[--background] text-[--foreground] theme-transition">
-                <Header />
-                <main>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/shop" element={<MarketPage />} />
-                        <Route path="/shop/:id" element={<ProductPage />} />
-                        <Route path="/about" element={<AboutPage />} />
-                        <Route path="/education" element={<EducationPage />} />
-                    </Routes>
-                </main>
-                <Footer />
-                <CartConditional />
+        <>
+            {/* Show Loader if loading */}
+            {isLoading && <Loader />}
+            <div>
+                <Router>
+                    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition-colors relative">
+                        <Header />
+                        <main>
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/shop" element={<MarketPage />} />
+                                <Route path="/shop/:id" element={<ProductPage />} />
+                                <Route path="/about" element={<AboutPage />} />
+                                <Route path="/education" element={<EducationPage />} />
+                            </Routes>
+                        </main>
+                        <Footer />
+                        <CartConditional />
+                        <ScrollToTop />
+                    </div>
+                </Router>
             </div>
-        </Router>
+        </>
     );
 }

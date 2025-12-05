@@ -1,11 +1,7 @@
-import { mockProducts } from '../../../../data/mockProducts';
-
-const categories = [...new Set(mockProducts.map(product => product.category))];
-
-export default function CategoryFilter({ selected, onChange }) {
+export default function CategoryFilter({ selected, onChange, options = [] }) {
     return (
         <div className="space-y-2 max-h-60 overflow-y-auto">
-            {categories.map((category) => (
+            {options.map((category) => (
                 <label key={category} className="flex items-center space-x-3 cursor-pointer group">
                     <input
                         type="checkbox"
