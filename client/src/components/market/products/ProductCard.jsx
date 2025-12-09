@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useCart } from '../../../context/CartContext';
-import { useWishlist } from '../../../context/WishlistContext';
+import { useCart } from '../../../hooks/useCart';
+import { useWishlist } from '../../../hooks/useWishlist';
 
 export default function ProductCard({ product }) {
     const [isBouncing, setIsBouncing] = useState(false);

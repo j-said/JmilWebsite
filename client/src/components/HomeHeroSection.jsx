@@ -24,6 +24,12 @@ export default function HeroSection() {
                     >
                         Learn More
                     </Link>
+                    <Link
+                        to="/about"
+                        className="border-2 border-brand-orange text-brand-orange font-bold py-4 px-8 rounded-xl hover:bg-brand-orange hover:text-brand-black transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                        About Us
+                    </Link>
                 </div>
             </div>
         </section>

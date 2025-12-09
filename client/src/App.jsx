@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/header/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ui/ScrollToTop';
+import Loader from './components/ui/Loader';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -9,8 +12,6 @@ import MarketPage from './pages/MarketPage';
 import EducationPage from './pages/EducationPage';
 import ProductPage from './pages/ProductPage';
 
-import { CartProvider } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
 import CartSidebar from './components/market/cart/CartSidebar';
 
 function CartConditional() {
@@ -21,11 +22,20 @@ function CartConditional() {
 }
 
 export default function App() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <Router>
-            <WishlistProvider>
-                <CartProvider>
-                    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition">
+        <>
+            {/* Show Loader if loading */}
+            {isLoading && <Loader />}
+            <div>
+                <Router>
+                    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition-colors relative">
                         <Header />
                         <main>
                             <Routes>
@@ -38,9 +48,10 @@ export default function App() {
                         </main>
                         <Footer />
                         <CartConditional />
+                        <ScrollToTop />
                     </div>
-                </CartProvider>
-            </WishlistProvider>
-        </Router>
+                </Router>
+            </div>
+        </>
     );
 }

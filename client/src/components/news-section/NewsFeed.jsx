@@ -1,68 +1,112 @@
 import { useState, useEffect, useRef } from 'react';
 import NewsCard from './NewsCard';
+import Pagination from '../ui/Pagination';
 
 export default function NewsSection() {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
+  const [carouselPosts, setCarouselPosts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const autoRotateRef = useRef(null);
 
+  // Ref for scrolling to the grid top
+  const newsGridRef = useRef(null);
+
+  const [showAllNews, setShowAllNews] = useState(false);
+  const [gridPosts, setGridPosts] = useState([]);
+  const [gridPage, setGridPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [isLoadingGrid, setIsLoadingGrid] = useState(false);
+  const [error, setError] = useState(null);
+
+  const CAROUSEL_LIMIT = 5;
+  const GRID_LIMIT = 6;
+
+  // Initial Fetch
   useEffect(() => {
-    async function fetchNews() {
+    async function fetchCarousel() {
       try {
-        const response = await fetch('http://localhost:3001/api/news');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPosts(data);
+        const response = await fetch(`http://localhost:3001/api/news?limit=${CAROUSEL_LIMIT}&offset=0`);
+        const result = await response.json();
+        const posts = Array.isArray(result) ? result : result.data;
+        const total = result.pagination ? result.pagination.total : posts.length;
+        setCarouselPosts(posts);
+        setTotalPosts(total);
       } catch (e) {
         setError(e.message);
-        console.error('Failed to fetch news:', e);
-        setPosts([
-          { id: 1, title: 'New Drone Technology', content: 'Discover the latest advancements in drone technology and how they are revolutionizing various industries.' },
-          { id: 2, title: 'FPV Racing Championship', content: 'Join us for the annual FPV racing championship featuring the best pilots from around the world.' },
-          { id: 3, title: 'Drone Photography Tips', content: 'Learn professional drone photography techniques to capture stunning aerial shots.' },
-          { id: 4, title: 'Agricultural Drones', content: 'How drones are transforming modern agriculture with precision farming techniques.' },
-          { id: 5, title: 'Safety Regulations Update', content: 'Important updates to drone safety regulations and compliance requirements.' },
+        // Fallback data...
+        setCarouselPosts([
+          { id: 1, title: 'New Drone Technology', content: 'Discover...', created_at: '2025-10-05' },
+          { id: 2, title: 'FPV Racing', content: 'Join us...', created_at: '2025-10-04' },
+          { id: 3, title: 'Photography Tips', content: 'Learn...', created_at: '2025-10-03' },
+          { id: 4, title: 'Agri Drones', content: 'Transforming...', created_at: '2025-10-02' },
+          { id: 5, title: 'Safety Update', content: 'Regulations...', created_at: '2025-10-01' },
         ]);
       }
     }
-    fetchNews();
+    fetchCarousel();
   }, []);
 
-  // Auto-rotate functionality
+  // Grid Fetch
   useEffect(() => {
-    if (posts.length > 0 && !isPaused) {
-      autoRotateRef.current = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % posts.length);
-      }, 4000);
+    if (!showAllNews) return;
 
-      return () => clearInterval(autoRotateRef.current);
+    async function fetchGrid() {
+      setIsLoadingGrid(true);
+      try {
+        const offset = (gridPage - 1) * GRID_LIMIT;
+        const response = await fetch(`http://localhost:3001/api/news?limit=${GRID_LIMIT}&offset=${offset}`);
+        const result = await response.json();
+        setGridPosts(result.data || []);
+      } catch (e) {
+        console.error("Grid fetch error", e);
+      } finally {
+        setIsLoadingGrid(false);
+      }
     }
-  }, [posts.length, isPaused]);
+    fetchGrid();
+  }, [showAllNews, gridPage]);
 
-  const handleCardClick = (index) => {
-    setIsPaused(true);
-    setActiveIndex(index);
+  const totalGridPages = Math.ceil(totalPosts / GRID_LIMIT);
+
+  // Handle Page Change with "Smoother" Scroll
+  const handlePageChange = (newPage) => {
+    setGridPage(newPage);
+
+    // Use setTimeout to allow the DOM to update height before scrolling
+    setTimeout(() => {
+      if (newsGridRef.current) {
+        const headerOffset = 150;
+        const elementPosition = newsGridRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100); // 100ms delay to smooth out the transition
   };
 
+  // Auto-Rotate Logic
+  useEffect(() => {
+    if (carouselPosts.length > 0 && !isPaused) {
+      autoRotateRef.current = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % carouselPosts.length);
+      }, 4000);
+      return () => clearInterval(autoRotateRef.current);
+    }
+  }, [carouselPosts.length, isPaused]);
+
+  const handleCardClick = (index) => { setIsPaused(true); setActiveIndex(index); };
   const navigateCard = (direction) => {
     setIsPaused(true);
     if (direction === 'next') {
-      setActiveIndex((prev) => (prev + 1) % posts.length);
+      setActiveIndex((prev) => (prev + 1) % carouselPosts.length);
     } else {
-      setActiveIndex((prev) => (prev - 1 + posts.length) % posts.length);
+      setActiveIndex((prev) => (prev - 1 + carouselPosts.length) % carouselPosts.length);
     }
-
-    // Resume auto-rotation after manual navigation
     setTimeout(() => setIsPaused(false), 5000);
   };
-
-  if (posts.length === 0) {
-    return <div className="py-16 text-center theme-transition-colors">Loading news...</div>;
-  }
 
   return (
     <section className="py-20 overflow-hidden">
@@ -70,77 +114,71 @@ export default function NewsSection() {
         <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition-colors">
           Latest News
         </h2>
-        <p className="text-lg text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] text-center mb-12 max-w-2xl mx-auto theme-transition-colors">
-          Stay updated with the latest developments in drone technology and industry news
-        </p>
-
-        {error && (
-          <div className="text-center text-red-400 mb-8 bg-red-400/10 py-2 px-4 rounded-lg max-w-md mx-auto theme-transition-colors">
-            Could not load news. Displaying mock data.
-          </div>
-        )}
 
         {/* Carousel Container */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => navigateCard('prev')}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition-colors -translate-x-4"
-          >
-            ‹
-          </button>
+        <div className="relative max-w-6xl mx-auto mb-12">
+          <button onClick={() => navigateCard('prev')} className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow shadow-lg -translate-x-2 md:-translate-x-6">‹</button>
+          <button onClick={() => navigateCard('next')} className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow shadow-lg translate-x-2 md:translate-x-6">›</button>
 
-          <button
-            onClick={() => navigateCard('next')}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30 bg-brand-orange text-brand-black p-3 rounded-full hover:bg-brand-yellow transition-all duration-300 shadow-lg theme-transition-colors translate-x-4"
-          >
-            ›
-          </button>
-
-          {/* Cards Container */}
-          <div
-            className="relative h-96 flex items-center justify-center overflow-visible"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {posts.map((post, index) => (
+          <div className="relative h-[450px] flex items-center justify-center" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+            {carouselPosts.map((post, index) => (
               <div
                 key={post.id}
                 onClick={() => handleCardClick(index)}
-                className="absolute transition-all duration-500 ease-in-out"
+                className="absolute transition-all duration-500 ease-in-out cursor-pointer"
                 style={{
-                  transform: `translateX(${(index - activeIndex) * 120}%) scale(${index === activeIndex ? 1 : 0.85
-                    })`,
+                  transform: `translateX(${(index - activeIndex) * 110}%) scale(${index === activeIndex ? 1 : 0.9})`,
                   zIndex: index === activeIndex ? 30 : 20 - Math.abs(index - activeIndex),
                   opacity: Math.abs(index - activeIndex) > 2 ? 0 : 1 - Math.abs(index - activeIndex) * 0.3,
                 }}
               >
-                <NewsCard
-                  post={post}
-                  isActive={index === activeIndex}
-                />
+                <NewsCard post={post} isActive={index === activeIndex} className="w-80 md:w-96" />
               </div>
             ))}
           </div>
-
-          {/* Indicators */}
-          <div className="flex justify-center space-x-3 mt-12">
-            {posts.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setIsPaused(true);
-                  setActiveIndex(index);
-                  setTimeout(() => setIsPaused(false), 5000);
-                }}
-                className={`w-3 h-3 rounded-full transition-all duration-300 theme-transition-colors ${index === activeIndex
-                  ? 'bg-brand-orange scale-125'
-                  : 'bg-brand-orange/30 hover:bg-brand-orange/60'
-                  }`}
-              />
-            ))}
-          </div>
         </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-center">
+          <button
+            onClick={() => setShowAllNews(!showAllNews)}
+            className="bg-brand-orange text-brand-black font-bold py-4 px-8 rounded-xl hover:bg-brand-yellow transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
+          >
+            {showAllNews ? 'Hide News' : 'View More News'}
+          </button>
+        </div>
+
+        {/* Pagination Grid */}
+        {showAllNews && (
+          <div ref={newsGridRef} className="animate-fadeIn p-8 rounded-3xl">
+            {isLoadingGrid ? (
+              <div className="text-center py-12 text-xl text-[var(--foreground)]">Loading...</div>
+            ) : (
+              <>
+                {/* <Pagination
+                  currentPage={gridPage}
+                  totalPages={totalGridPages}
+                  onPageChange={handlePageChange}
+                /> */}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
+                  {gridPosts.map(post => (
+                    <div key={post.id} className="flex justify-center h-full transform hover:scale-[1.02] transition-transform duration-300">
+                      <NewsCard post={post} isActive={true} className="w-full h-full" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bottom Pagination */}
+                <Pagination
+                  currentPage={gridPage}
+                  totalPages={totalGridPages}
+                  onPageChange={handlePageChange}
+                />
+              </>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

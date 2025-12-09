@@ -13,7 +13,8 @@ export default function MobileFilterSheet({
     onFiltersChange,
     onClearFilters,
     sortBy,
-    onSortChange
+    onSortChange,
+    availableFilters 
 }) {
     const [localFilters, setLocalFilters] = useState(filters || {});
 
@@ -96,7 +97,7 @@ export default function MobileFilterSheet({
                 <div className="flex-1 overflow-y-auto p-4">
                     {mode === 'filter' ? (
                         <div className="space-y-6">
-                            {/*QL Clear All */}
+                            {/* Clear All */}
                             {Object.keys(localFilters).length > 0 && (
                                 <div className="text-right">
                                     <button
@@ -126,6 +127,7 @@ export default function MobileFilterSheet({
                                 <CategoryFilter
                                     selected={localFilters.categories || []}
                                     onChange={(value) => handleFilterChange('categories', value)}
+                                    options={availableFilters?.categories || []}
                                 />
                             </div>
 
@@ -136,6 +138,7 @@ export default function MobileFilterSheet({
                                 <BrandFilter
                                     selected={localFilters.brands || []}
                                     onChange={(value) => handleFilterChange('brands', value)}
+                                    options={availableFilters?.brands || []}
                                 />
                             </div>
 
@@ -146,6 +149,7 @@ export default function MobileFilterSheet({
                                 <FeaturesFilter
                                     selected={localFilters.features || []}
                                     onChange={(value) => handleFilterChange('features', value)}
+                                    options={availableFilters?.features || []}
                                 />
                             </div>
                         </div>

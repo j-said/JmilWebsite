@@ -1,20 +1,20 @@
 export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
-    if (Object.keys(filters).length === 0) {
+    const hasActiveFilters = Object.entries(filters).some(([type, value]) => {
+        if (type === 'priceRange') return true;
+        return Array.isArray(value) && value.length > 0;
+    });
+
+    if (!hasActiveFilters) {
         return null;
     }
 
     const getFilterLabel = (type, value) => {
         switch (type) {
-            case 'categories':
-                return value;
-            case 'brands':
-                return `Brand: ${value}`;
-            case 'features':
-                return value;
-            case 'priceRange':
-                return `Price: $${filters.priceRange.min} - $${filters.priceRange.max}`;
-            default:
-                return value;
+            case 'categories': return value;
+            case 'brands': return `Brand: ${value}`;
+            case 'features': return value;
+            case 'priceRange': return `Price: $${filters.priceRange.min} - $${filters.priceRange.max}`;
+            default: return value;
         }
     };
 
@@ -26,14 +26,16 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
     };
 
     return (
-        <div className="bg-[var(--background)] border border-[var(--muted)] rounded-xl p-4 mb-6 theme-transition-colors">
+        <div className="bg-[var(--background)] border border-[var(--muted)] rounded-xl p-4 mb-6 theme-transition-colors animate-fadeIn">
             <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium text-[var(--foreground)] theme-transition-colors">
                     Active Filters:
                 </span>
 
-                {Object.entries(filters).map(([type, values]) =>
-                    getFilterValues(type, values).map((value) => (
+                {Object.entries(filters).map(([type, values]) => {
+                    if (Array.isArray(values) && values.length === 0) return null;
+
+                    return getFilterValues(type, values).map((value) => (
                         <span
                             key={`${type}-${value}`}
                             className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-brand-orange/10 text-brand-orange theme-transition-colors"
@@ -47,8 +49,8 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
                                 ×
                             </button>
                         </span>
-                    ))
-                )}
+                    ));
+                })}
 
                 <button
                     onClick={onClearAll}

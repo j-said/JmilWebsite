@@ -1,11 +1,7 @@
-import { mockProducts } from '../../../../data/mockProducts';
-
-const allFeatures = [...new Set(mockProducts.flatMap(product => product.features))];
-
-export default function FeaturesFilter({ selected, onChange }) {
+export default function FeaturesFilter({ selected, onChange, options = [] }) {
     return (
         <div className="space-y-2 max-h-60 overflow-y-auto">
-            {allFeatures.map((feature) => (
+            {options.map((feature) => (
                 <label key={feature} className="flex items-center space-x-3 cursor-pointer group">
                     <input
                         type="checkbox"

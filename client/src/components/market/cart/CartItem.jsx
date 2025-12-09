@@ -1,4 +1,4 @@
-import { useCart } from '../../../context/CartContext';
+import { useCart } from '../../../hooks/useCart';
 
 export default function CartItem({ item }) {
     const { removeFromCart, updateQuantity } = useCart();
