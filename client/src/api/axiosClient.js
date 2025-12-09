@@ -5,6 +5,21 @@ const axiosClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    // params serial (brand=A&brand=B)
+    paramsSerializer: {
+        serialize: (params) => {
+            const searchParams = new URLSearchParams();
+            for (const key in params) {
+                const value = params[key];
+                if (Array.isArray(value)) {
+                    value.forEach(val => searchParams.append(key, val));
+                } else if (value !== undefined && value !== null && value !== '') {
+                    searchParams.append(key, value);
+                }
+            }
+            return searchParams.toString();
+        }
+    }
 });
 
 axiosClient.interceptors.response.use(

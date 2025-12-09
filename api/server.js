@@ -68,44 +68,47 @@ app.get('/api/products/filters', async (req, res) => {
  */
 app.get('/api/products', async (req, res) => {
     try {
-        const { 
-            page = 1, 
-            limit = 12, 
-            sort = 'name', 
+        const {
+            page = 1,
+            limit = 12,
+            sort = 'name',
             search = '',
             minPrice,
             maxPrice,
-            category, // Can be array or string
-            brand,    // Can be array or string
-            features  // Can be array or string
+            category, categories, // support both
+            brand, brands,       // support both
+            features
         } = req.query;
 
         const offset = (page - 1) * limit;
         const queryParams = [];
-        let queryConditions = ['1=1']; // Base condition
+        let queryConditions = ['1=1'];
 
-        // 1. Search Filter
+        const filterCategories = categories || category;
+        const filterBrands = brands || brand;
+
+        // Search Filter
         if (search) {
             queryParams.push(`%${search}%`);
             queryConditions.push(`(name ILIKE $${queryParams.length} OR description ILIKE $${queryParams.length})`);
         }
 
-        // 2. Category Filter (supports multiple)
-        if (category) {
-            const categories = Array.isArray(category) ? category : [category];
-            queryParams.push(categories);
-            // ANY($N) works for matching value against an array
+        // Category Filter
+        if (filterCategories) {
+            // Перетворюємо на масив, якщо прийшов рядок
+            const cats = Array.isArray(filterCategories) ? filterCategories : [filterCategories];
+            queryParams.push(cats);
             queryConditions.push(`category = ANY($${queryParams.length})`);
         }
 
-        // 3. Brand Filter (supports multiple)
-        if (brand) {
-            const brands = Array.isArray(brand) ? brand : [brand];
-            queryParams.push(brands);
+        // Brand Filter
+        if (filterBrands) {
+            const brnds = Array.isArray(filterBrands) ? filterBrands : [filterBrands];
+            queryParams.push(brnds);
             queryConditions.push(`brand = ANY($${queryParams.length})`);
         }
 
-        // 4. Price Range
+        // Price Range
         if (minPrice) {
             queryParams.push(minPrice);
             queryConditions.push(`price >= $${queryParams.length}`);
@@ -115,20 +118,14 @@ app.get('/api/products', async (req, res) => {
             queryConditions.push(`price <= $${queryParams.length}`);
         }
 
-        // 5. Features Filter (Overlap check)
+        // Features Filter
         if (features) {
             const featureList = Array.isArray(features) ? features : [features];
             queryParams.push(featureList);
-            // The && operator checks if arrays overlap (have common elements)
-            // But here we usually want products that have ALL selected features?
-            // "ActiveFilters" implies narrowing down. Let's use containment (@>) if we want ALL features
-            // OR overlap (&&) if we want ANY feature. Usually Sidebar filters are OR within a group (e.g. Brands) but AND across groups.
-            // But Features are tricky. Let's stick to overlap (&&) for flexibility or containment (@>) for strictness.
-            // Let's use containment (@>) - product must have ALL selected features.
-            queryConditions.push(`features @> $${queryParams.length}`); 
+            queryConditions.push(`features @> $${queryParams.length}`);
         }
 
-        // 6. Sorting
+        // Sorting
         let orderBy = 'name ASC';
         switch (sort) {
             case 'name-desc': orderBy = 'name DESC'; break;
@@ -139,10 +136,8 @@ app.get('/api/products', async (req, res) => {
             default: orderBy = 'name ASC';
         }
 
-        // Construct Final Query
         const whereClause = queryConditions.join(' AND ');
-        
-        // Query for Products
+
         const sql = `
             SELECT * FROM products 
             WHERE ${whereClause} 
@@ -150,12 +145,9 @@ app.get('/api/products', async (req, res) => {
             LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}
         `;
 
-        // Query for Total Count (for pagination)
         const countSql = `SELECT COUNT(*) FROM products WHERE ${whereClause}`;
 
-        // Add limit and offset to params
         const finalParams = [...queryParams, limit, offset];
-        // Count query only needs filter params
         const countParams = queryParams;
 
         const [productsRes, countRes] = await Promise.all([
@@ -166,11 +158,9 @@ app.get('/api/products', async (req, res) => {
         res.json({
             products: productsRes.rows.map(p => ({
                 ...p,
-                // Ensure numeric types are numbers (pg returns strings for decimals)
                 price: parseFloat(p.price),
                 originalPrice: p.original_price ? parseFloat(p.original_price) : null,
                 rating: parseFloat(p.rating),
-                // Map snake_case to camelCase for frontend
                 imageUrl: p.image_url,
                 inStock: p.in_stock,
                 reviewCount: p.review_count,
@@ -192,7 +182,7 @@ app.get('/api/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
-        
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Product not found' });
         }

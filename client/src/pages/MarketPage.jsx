@@ -31,7 +31,7 @@ export default function MarketPage() {
 
     const ITEMS_PER_PAGE = 12;
 
-    // 1. Initial Load: Get Filter Options (Brands, Categories from DB)
+    // Initial Load
     useEffect(() => {
         async function fetchFilters() {
             try {
@@ -39,13 +39,12 @@ export default function MarketPage() {
                 setAvailableFilters(data);
             } catch (error) {
                 console.error("Failed to load filters", error);
-                // Fallback or empty state could be set here
             }
         }
         fetchFilters();
     }, []);
 
-    // 2. Sync URL Params -> State
+    // Sync URL Params -> State
     useEffect(() => {
         const categoryParam = searchParams.get('category');
         const brandParam = searchParams.get('brand');
@@ -61,19 +60,24 @@ export default function MarketPage() {
         }
     }, [searchParams]);
 
-    // 3. Main Data Fetching (Products)
+    // Main Data Fetching (Simple & Clean)
     useEffect(() => {
         async function fetchProducts() {
             setIsLoading(true);
             try {
-                // Construct API params
                 const params = {
                     page: currentPage,
                     limit: ITEMS_PER_PAGE,
                     sort: sortBy,
                     search: searchQuery,
-                    ...filters
+                    ...filters,
                 };
+
+                if (filters.priceRange) {
+                    params.minPrice = filters.priceRange.min;
+                    params.maxPrice = filters.priceRange.max;
+                    delete params.priceRange;
+                }
 
                 const data = await shopService.getProducts(params);
 
@@ -104,7 +108,7 @@ export default function MarketPage() {
 
     const handleFiltersChange = (newFilters) => {
         setFilters(newFilters);
-        setCurrentPage(1); // Reset to page 1 on filter change
+        setCurrentPage(1);
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     };
 
@@ -171,7 +175,7 @@ export default function MarketPage() {
                             filters={filters}
                             onFiltersChange={handleFiltersChange}
                             onClearFilters={clearAllFilters}
-                            availableFilters={availableFilters} 
+                            availableFilters={availableFilters}
                         />
                     </div>
 
@@ -220,7 +224,7 @@ export default function MarketPage() {
                 onClearFilters={clearAllFilters}
                 sortBy={sortBy}
                 onSortChange={setSortBy}
-                availableFilters={availableFilters} 
+                availableFilters={availableFilters}
             />
         </div>
     );

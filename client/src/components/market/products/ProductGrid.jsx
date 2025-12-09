@@ -45,11 +45,11 @@ export default function ProductGrid({ products, title, subtitle }) {
                 </div>
 
                 {/* Load More (optional) */}
-                <div className="text-center mt-8">
+                {/* <div className="text-center mt-8">
                     <button className="bg-brand-orange text-brand-black font-semibold py-3 px-8 rounded-lg hover:bg-brand-yellow transition-all duration-300 theme-transition-colors">
                         Load More Products
                     </button>
-                </div>
+                </div> */}
             </div>
         </section>
     );
