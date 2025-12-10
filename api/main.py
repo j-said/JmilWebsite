@@ -41,6 +41,7 @@ async def log_requests(request: Request, call_next):
         raise e
 
 
+# --- Products ---
 @app.get("/api/products/filters", response_model=schemas.FilterResponse)
 async def get_filters(db: AsyncSession = Depends(database.get_db)):
     return await crud.get_filters_data(db)
@@ -77,6 +78,7 @@ async def get_product(id: int, db: AsyncSession = Depends(database.get_db)):
     return product
 
 
+# --- News Posts ---
 @app.get("/api/news", response_model=schemas.NewsResponse)
 async def get_news(
     limit: int = 5, offset: int = 0, db: AsyncSession = Depends(database.get_db)
@@ -86,3 +88,18 @@ async def get_news(
         "data": posts,
         "pagination": {"total": total, "limit": limit, "offset": offset},
     }
+
+
+# --- Orders ---
+@app.post("/api/orders", response_model=schemas.OrderResponse, status_code=201)
+async def create_order_endpoint(
+    order: schemas.OrderCreate, db: AsyncSession = Depends(database.get_db)
+):
+    if not order.items:
+        raise HTTPException(
+            status_code=400, detail="Order must contain at least one item"
+        )
+
+    new_order = await crud.create_order(db, order)
+
+    return {"id": new_order.id, "message": "Order registered successfully"}

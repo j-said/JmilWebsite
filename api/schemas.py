@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 from datetime import datetime
 
@@ -47,3 +47,29 @@ class NewsPostSchema(BaseModel):
 class NewsResponse(BaseModel):
     data: List[NewsPostSchema]
     pagination: dict
+
+
+class CustomerBase(BaseModel):
+    firstName: str
+    lastName: str
+    email: EmailStr
+    phone: str
+    notes: Optional[str] = None
+    terms: bool
+
+
+class OrderItemBase(BaseModel):
+    id: int  # Product ID
+    quantity: int
+    price: float
+
+
+class OrderCreate(BaseModel):
+    customer: CustomerBase
+    items: List[OrderItemBase]
+    total: float
+
+
+class OrderResponse(BaseModel):
+    id: int
+    message: str = "Order registered successfully"

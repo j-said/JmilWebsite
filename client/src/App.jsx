@@ -11,6 +11,8 @@ import AboutPage from './pages/AboutPage';
 import MarketPage from './pages/MarketPage';
 import EducationPage from './pages/EducationPage';
 import ProductPage from './pages/ProductPage';
+import CheckoutPage from './pages/CheckoutPage';
+import SuccessPage from './pages/SuccessPage';
 
 import CartSidebar from './components/market/cart/CartSidebar';
 
@@ -44,6 +46,8 @@ export default function App() {
                                 <Route path="/shop/:id" element={<ProductPage />} />
                                 <Route path="/about" element={<AboutPage />} />
                                 <Route path="/education" element={<EducationPage />} />
+                                <Route path="/checkout" element={<CheckoutPage />} />
+                                <Route path="/success" element={<SuccessPage />} />
                             </Routes>
                         </main>
                         <Footer />

@@ -3,10 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_, desc, asc
 from typing import List, Optional
 import database
+import schemas
 
 logger = logging.getLogger("crud")
 
 
+# --- Products ---
 async def get_filters_data(db: AsyncSession):
     brands = (
         (
@@ -105,6 +107,7 @@ async def get_product_by_id(db: AsyncSession, product_id: int):
     return result.scalar_one_or_none()
 
 
+# --- News Posts ---
 async def get_news_list(db: AsyncSession, limit: int, offset: int):
     total = (
         await db.execute(select(func.count()).select_from(database.NewsPost))
@@ -117,3 +120,42 @@ async def get_news_list(db: AsyncSession, limit: int, offset: int):
     )
     posts = (await db.execute(query)).scalars().all()
     return posts, total
+
+
+# --- Order Creation ---
+async def create_order(db: AsyncSession, order_data: schemas.OrderCreate):
+    try:
+        # 1. Create the Order record
+        new_order = database.Order(
+            first_name=order_data.customer.firstName,
+            last_name=order_data.customer.lastName,
+            email=order_data.customer.email,
+            phone=order_data.customer.phone,
+            notes=order_data.customer.notes,
+            total_price=order_data.total,
+            status="pending",
+        )
+
+        db.add(new_order)
+        await db.flush()  # Flush to get the new_order.id before commit
+
+        # 2. Create Order Items
+        for item in order_data.items:
+            new_item = database.OrderItem(
+                order_id=new_order.id,
+                product_id=item.id,
+                quantity=item.quantity,
+                price=item.price,
+            )
+            db.add(new_item)
+
+        await db.commit()
+        await db.refresh(new_order)
+
+        logger.info(f"Order #{new_order.id} created successfully for {new_order.email}")
+        return new_order
+
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"Error creating order: {e}")
+        raise e
