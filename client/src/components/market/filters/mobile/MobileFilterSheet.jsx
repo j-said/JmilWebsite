@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SORT_OPTIONS } from '../../../../constants/sortOptions'; 
 
 import PriceRange from '../types/PriceRange';
 import CategoryFilter from '../types/CategoryFilter';
@@ -61,22 +62,15 @@ export default function MobileFilterSheet({
         onClearFilters(emptyFilters);
     };
 
-    const sortOptions = [
-        { value: 'name', label: 'Name: A to Z' },
-        { value: 'name-desc', label: 'Name: Z to A' },
-        { value: 'price', label: 'Price: Low to High' },
-        { value: 'price-desc', label: 'Price: High to Low' },
-    ];
-
     return (
         <>
-            {/* Overlay with smooth transition */}
+            {/* Overlay */}
             <div
                 className={`slider-overlay lg:hidden ${isOpen ? 'open' : ''}`}
                 onClick={onClose}
             />
 
-            {/* Bottom Sheet with smooth slide animation */}
+            {/* Bottom Sheet */}
             <div className={`slider-panel slider-panel-bottom lg:hidden ${isOpen ? 'open' : ''}`}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--muted)] flex-shrink-0">
@@ -111,19 +105,12 @@ export default function MobileFilterSheet({
 
                             {/* Filter Components */}
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
-                                    Price Range
-                                </h4>
-                                <PriceRange
-                                    value={localFilters.priceRange}
-                                    onChange={handlePriceRangeChange}
-                                />
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">Price Range</h4>
+                                <PriceRange value={localFilters.priceRange} onChange={handlePriceRangeChange} />
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
-                                    Categories
-                                </h4>
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">Categories</h4>
                                 <CategoryFilter
                                     selected={localFilters.categories || []}
                                     onChange={(value) => handleFilterChange('categories', value)}
@@ -132,9 +119,7 @@ export default function MobileFilterSheet({
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
-                                    Brands
-                                </h4>
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">Brands</h4>
                                 <BrandFilter
                                     selected={localFilters.brands || []}
                                     onChange={(value) => handleFilterChange('brands', value)}
@@ -143,9 +128,7 @@ export default function MobileFilterSheet({
                             </div>
 
                             <div>
-                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">
-                                    Features
-                                </h4>
+                                <h4 className="font-semibold text-[var(--foreground)] mb-3 theme-transition-colors">Features</h4>
                                 <FeaturesFilter
                                     selected={localFilters.features || []}
                                     onChange={(value) => handleFilterChange('features', value)}
@@ -154,9 +137,9 @@ export default function MobileFilterSheet({
                             </div>
                         </div>
                     ) : (
-                        /* Sort Options */
+                        /* Sort Options using Shared Constant */
                         <div className="space-y-2">
-                            {sortOptions.map((option) => (
+                            {SORT_OPTIONS.map((option) => (
                                 <button
                                     key={option.value}
                                     onClick={() => {
@@ -175,7 +158,7 @@ export default function MobileFilterSheet({
                     )}
                 </div>
 
-                {/* Apply Button (only for filters) */}
+                {/* Apply Button */}
                 {mode === 'filter' && (
                     <div className="p-4 border-t border-[var(--muted)] flex-shrink-0">
                         <button

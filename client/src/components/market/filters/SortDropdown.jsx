@@ -1,19 +1,10 @@
 import { useState } from 'react';
-
-const sortOptions = [
-    { value: 'name', label: 'Name: A to Z' },
-    { value: 'name-desc', label: 'Name: Z to A' },
-    { value: 'price', label: 'Price: Low to High' },
-    { value: 'price-desc', label: 'Price: High to Low' },
-    { value: 'rating', label: 'Highest Rated' },
-    { value: 'newest', label: 'Newest First' },
-    { value: 'bestselling', label: 'Best Selling' },
-];
+import { SORT_OPTIONS } from '../../../constants/sortOptions';
 
 export default function SortDropdown({ value, onChange }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const selectedOption = sortOptions.find(option => option.value === value) || sortOptions[0];
+    const selectedOption = SORT_OPTIONS.find(option => option.value === value) || SORT_OPTIONS[0];
 
     const handleSelect = (optionValue) => {
         onChange(optionValue);
@@ -43,26 +34,16 @@ export default function SortDropdown({ value, onChange }) {
             {/* Dropdown Menu */}
             {isOpen && (
                 <>
-                    {/* Backdrop */}
-                    <div
-                        className="fixed inset-0 z-10"
-                        onClick={() => setIsOpen(false)}
-                        aria-hidden="true"
-                    />
-
-                    {/* Options List */}
+                    <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} aria-hidden="true" />
                     <div className="absolute z-20 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition-colors">
-                        <ul
-                            className="py-2 max-h-60 overflow-auto"
-                            role="listbox"
-                        >
-                            {sortOptions.map((option) => (
+                        <ul className="py-2 max-h-60 overflow-auto" role="listbox">
+                            {SORT_OPTIONS.map((option) => (
                                 <li key={option.value}>
                                     <button
                                         onClick={() => handleSelect(option.value)}
                                         className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 theme-transition-colors ${option.value === value
-                                                ? 'bg-brand-orange/10 text-brand-orange font-medium'
-                                                : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))]'
+                                            ? 'bg-brand-orange/10 text-brand-orange font-medium'
+                                            : 'text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_5%,var(--background))]'
                                             }`}
                                         role="option"
                                         aria-selected={option.value === value}
