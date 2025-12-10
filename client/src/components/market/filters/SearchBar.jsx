@@ -3,14 +3,19 @@ import { useState, useEffect } from 'react';
 export default function SearchBar({ value, onChange, placeholder = "Search products..." }) {
     const [localValue, setLocalValue] = useState(value || '');
 
-    // Debounce search input
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            onChange(localValue);
-        }, 300);
+        setLocalValue(value || '');
+    }, [value]);
 
-        return () => clearTimeout(timeoutId);
-    }, [localValue, onChange]);
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            onChange(localValue);
+        }
+    };
+
+    const handleSearchClick = () => {
+        onChange(localValue);
+    };
 
     const clearSearch = () => {
         setLocalValue('');
@@ -18,60 +23,42 @@ export default function SearchBar({ value, onChange, placeholder = "Search produ
     };
 
     return (
-        <div className="relative w-full sm:w-80">
-            <div className="relative">
-                {/* Search Icon */}
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-[color-mix(in_oklab,var(--foreground)_40%,transparent)]"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-
-                {/* Search Input */}
+        <div className="relative w-full sm:w-96">
+            <div className="relative flex items-center">
+                {/* Input */}
                 <input
                     type="text"
                     value={localValue}
                     onChange={(e) => setLocalValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder={placeholder}
-                    className="w-full pl-10 pr-10 py-3 border border-[var(--muted)] rounded-xl bg-[var(--background)] text-[var(--foreground)] placeholder-[color-mix(in_oklab,var(--foreground)_40%,transparent)] theme-transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+                    className="w-full pl-4 pr-12 py-3 border border-[var(--muted)] rounded-full bg-[var(--background)] text-[var(--foreground)] placeholder-[color-mix(in_oklab,var(--foreground)_40%,transparent)] theme-transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20 shadow-sm"
                 />
 
-                {/* Clear Button */}
+                {/* Clear 'X' Button */}
                 {localValue && (
                     <button
                         onClick={clearSearch}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        className="absolute right-12 p-1 text-[color-mix(in_oklab,var(--foreground)_40%,transparent)] hover:text-[var(--foreground)] transition-colors"
                         aria-label="Clear search"
                     >
-                        <svg className="h-5 w-5 text-[color-mix(in_oklab,var(--foreground)_40%,transparent)] hover:text-[var(--foreground)] transition-colors duration-200"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 )}
-            </div>
 
-            {/* Search Suggestions (optional) */}
-            {localValue && (
-                <div className="absolute z-10 w-full mt-1 bg-[var(--background)] border border-[var(--muted)] rounded-xl shadow-lg theme-transition-colors">
-                    <div className="p-2">
-                        <div className="text-sm text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] px-3 py-2 theme-transition-colors">
-                            Press Enter to search for "{localValue}"
-                        </div>
-                    </div>
-                </div>
-            )}
+                {/* Round Search Button */}
+                <button
+                    onClick={handleSearchClick}
+                    className="absolute right-1 p-2 bg-brand-orange text-brand-black rounded-full hover:bg-brand-yellow transition-all duration-300 transform hover:scale-105 shadow-md flex items-center justify-center"
+                    aria-label="Search"
+                >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+            </div>
         </div>
     );
 }

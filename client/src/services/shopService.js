@@ -18,5 +18,10 @@ export const shopService = {
     async getProductById(id) {
         const response = await axiosClient.get(`/products/${id}`);
         return response.data;
+    },
+
+    async createOrder(orderData) {
+        const response = await axiosClient.post('/orders', orderData);
+        return response.data;
     }
 };

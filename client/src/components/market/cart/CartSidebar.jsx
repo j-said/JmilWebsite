@@ -1,7 +1,9 @@
 import { useCart } from '../../../hooks/useCart';
+import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 
 export default function CartSidebar() {
+
     const {
         items,
         isOpen,
@@ -13,6 +15,12 @@ export default function CartSidebar() {
 
     const itemCount = getCartItemsCount();
     const total = getCartTotal();
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        closeCart();
+        navigate('/checkout');
+    };
 
     return (
         <>
@@ -74,7 +82,10 @@ export default function CartSidebar() {
 
                         {/* Actions */}
                         <div className="space-y-3">
-                            <button className="w-full bg-brand-orange text-brand-black font-semibold py-3 rounded-lg hover:bg-brand-yellow transition-all duration-300 transform hover:scale-105">
+                            <button
+                                onClick={handleCheckout} // <--- Оновлено
+                                className="w-full bg-brand-orange text-brand-black font-semibold py-3 rounded-lg hover:bg-brand-yellow transition-all duration-300 transform hover:scale-105"
+                            >
                                 Checkout
                             </button>
 

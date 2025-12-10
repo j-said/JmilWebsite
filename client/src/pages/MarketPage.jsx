@@ -44,23 +44,37 @@ export default function MarketPage() {
         fetchFilters();
     }, []);
 
-    // Sync URL Params -> State
+    // Sync URL Params -> State (FIXED: Handles removal of filters)
     useEffect(() => {
         const categoryParam = searchParams.get('category');
         const brandParam = searchParams.get('brand');
 
-        if (categoryParam || brandParam) {
-            setFilters(prev => ({
-                ...prev,
-                categories: categoryParam ? [decodeURIComponent(categoryParam)] : [],
-                brands: brandParam ? [decodeURIComponent(brandParam)] : []
-            }));
-            setSearchQuery('');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        setFilters(prev => {
+            const newFilters = { ...prev };
+
+            // 1. Handle Category
+            if (categoryParam) {
+                newFilters.categories = [decodeURIComponent(categoryParam)];
+            } else {
+                delete newFilters.categories; // Explicitly remove if missing
+            }
+
+            // 2. Handle Brand
+            if (brandParam) {
+                newFilters.brands = [decodeURIComponent(brandParam)];
+            } else {
+                delete newFilters.brands; // Explicitly remove if missing
+            }
+
+            return newFilters;
+        });
+
+        if (!categoryParam && !brandParam) setSearchQuery('');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [searchParams]);
 
-    // Main Data Fetching (Simple & Clean)
+    // Main Data Fetching
     useEffect(() => {
         async function fetchProducts() {
             setIsLoading(true);
@@ -69,7 +83,7 @@ export default function MarketPage() {
                     page: currentPage,
                     limit: ITEMS_PER_PAGE,
                     sort: sortBy,
-                    search: searchQuery,
+                    search: searchQuery, // Triggered only on Enter/Click now
                     ...filters,
                 };
 
@@ -91,12 +105,8 @@ export default function MarketPage() {
             }
         }
 
-        // Debounce search slightly to avoid too many requests
-        const timeoutId = setTimeout(() => {
-            fetchProducts();
-        }, 300);
+        fetchProducts();
 
-        return () => clearTimeout(timeoutId);
     }, [filters, searchQuery, sortBy, currentPage]);
 
 
@@ -121,8 +131,13 @@ export default function MarketPage() {
             if (newFilters[type].length === 0) delete newFilters[type];
         }
         setFilters(newFilters);
-        if ((type === 'categories' || type === 'brands') && searchParams.size > 0) {
-            setSearchParams({});
+
+        // Remove from URL if it exists there
+        if ((type === 'categories' || type === 'brands')) {
+            const newParams = new URLSearchParams(searchParams);
+            if (type === 'categories') newParams.delete('category');
+            if (type === 'brands') newParams.delete('brand');
+            setSearchParams(newParams);
         }
     };
 
