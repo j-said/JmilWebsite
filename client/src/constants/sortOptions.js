@@ -5,5 +5,5 @@ export const SORT_OPTIONS = [
     { value: 'price-desc', label: 'Price: High to Low' },
     { value: 'rating', label: 'Highest Rated' },
     { value: 'newest', label: 'Newest First' },
-    { value: 'bestselling', label: 'Best Selling' },
+    { value: 'popular', label: 'Most Popular' },
 ];

@@ -1,12 +1,8 @@
 import { Link } from 'react-router-dom';
+import { NAV_ITEMS } from '../../constants/navItems';
 import ThemeToggle from './ThemeToggle';
+import AccountLink from './AccountLink';
 
-const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/shop', label: 'Shop' },
-    { path: '/education', label: 'Education' },
-    { path: '/about', label: 'About' }
-];
 
 export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
     return (
@@ -37,7 +33,7 @@ export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
                 {/* Navigation Links */}
                 <nav className="p-6">
                     <div className="space-y-6">
-                        {navItems.map((item) => (
+                        {NAV_ITEMS.map((item) => (
                             <Link
                                 key={item.path}
                                 to={item.path}
@@ -47,6 +43,10 @@ export default function MobileNav({ isOpen, onClose, isDark, toggleTheme }) {
                                 {item.label}
                             </Link>
                         ))}
+                        <AccountLink
+                            onClick={onClose}
+                            className="block text-xl font-semibold text-[var(--foreground)] py-3 border-b border-[var(--muted)]"
+                        />
                     </div>
 
                     {/* Theme toggle */}

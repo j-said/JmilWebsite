@@ -1,27 +1,19 @@
 import axiosClient from '../api/axiosClient';
 
 export const shopService = {
-    // Get paginated and filtered products
-    async getProducts(params) {
-        // params structure: { page, limit, category, brand, minPrice, maxPrice, sort, search }
-        const response = await axiosClient.get('/products', { params });
-        return response.data;
+    /** params: { page, limit, sort, search, category[], brand[], feature[], minPrice, maxPrice } */
+    async getProducts(params, { signal } = {}) {
+        const { data } = await axiosClient.get('/products', { params, signal });
+        return data;
     },
 
-    // Get metadata for filters (available brands, categories, price range)
-    async getFiltersInfo() {
-        const response = await axiosClient.get('/products/filters');
-        return response.data;
+    async getFacets() {
+        const { data } = await axiosClient.get('/products/facets');
+        return data;
     },
 
-    // Get single product details
-    async getProductById(id) {
-        const response = await axiosClient.get(`/products/${id}`);
-        return response.data;
+    async getProductById(id, { signal } = {}) {
+        const { data } = await axiosClient.get(`/products/${id}`, { signal });
+        return data;
     },
-
-    async createOrder(orderData) {
-        const response = await axiosClient.post('/orders', orderData);
-        return response.data;
-    }
 };

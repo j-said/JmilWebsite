@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/header/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ui/ScrollToTop';
-import Loader from './components/ui/Loader';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import CartSidebar from './components/market/cart/CartSidebar';
+import { fetchMe } from './redux/authSlice';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -13,8 +16,11 @@ import EducationPage from './pages/EducationPage';
 import ProductPage from './pages/ProductPage';
 import CheckoutPage from './pages/CheckoutPage';
 import SuccessPage from './pages/SuccessPage';
-
-import CartSidebar from './components/market/cart/CartSidebar';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
+import NewsPostPage from './pages/NewsPostPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function CartConditional() {
     const location = useLocation();
@@ -23,39 +29,44 @@ function CartConditional() {
     return showCart ? <CartSidebar /> : null;
 }
 
-export default function App() {
-    const [isLoading, setIsLoading] = useState(true);
-
+/** Restores the session from a stored token on startup. */
+function useSessionRestore() {
+    const dispatch = useDispatch();
+    const status = useSelector((state) => state.auth.status);
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 1000);
-        return () => clearTimeout(timer);
-    }, []);
+        if (status === 'idle') dispatch(fetchMe());
+    }, [status, dispatch]);
+}
+
+export default function App() {
+    useSessionRestore();
 
     return (
-        <>
-            {/* Show Loader if loading */}
-            {isLoading && <Loader />}
-            <div>
-                <Router>
-                    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition-colors relative">
-                        <Header />
-                        <main>
-                            <Routes>
-                                <Route path="/" element={<HomePage />} />
-                                <Route path="/shop" element={<MarketPage />} />
-                                <Route path="/shop/:id" element={<ProductPage />} />
-                                <Route path="/about" element={<AboutPage />} />
-                                <Route path="/education" element={<EducationPage />} />
-                                <Route path="/checkout" element={<CheckoutPage />} />
-                                <Route path="/success" element={<SuccessPage />} />
-                            </Routes>
-                        </main>
-                        <Footer />
-                        <CartConditional />
-                        <ScrollToTop />
-                    </div>
-                </Router>
+        <Router>
+            <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] theme-transition-colors relative">
+                <Header />
+                <main>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/shop" element={<MarketPage />} />
+                        <Route path="/shop/:id" element={<ProductPage />} />
+                        <Route path="/news/:id" element={<NewsPostPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/education" element={<EducationPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route element={<ProtectedRoute />}>
+                            <Route path="/checkout" element={<CheckoutPage />} />
+                            <Route path="/success" element={<SuccessPage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
+                        </Route>
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                </main>
+                <Footer />
+                <CartConditional />
+                <ScrollToTop />
             </div>
-        </>
+        </Router>
     );
 }

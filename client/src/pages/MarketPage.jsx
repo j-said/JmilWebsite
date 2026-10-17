@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import ProductGrid from '../components/market/products/ProductGrid';
 import FilterSidebar from '../components/market/filters/FilterSidebar';
@@ -12,146 +11,60 @@ import Pagination from '../components/ui/Pagination';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 
 import { shopService } from '../services/shopService';
+import { useCatalogQuery } from '../hooks/useCatalogQuery';
+
+const ITEMS_PER_PAGE = 12;
 
 export default function MarketPage() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const catalog = useCatalogQuery();
+    const { filters, search, sort, page, apiParams } = catalog;
 
-    // Data States
-    const [products, setProducts] = useState([]);
-    const [availableFilters, setAvailableFilters] = useState({ categories: [], brands: [], features: [] });
+    const [result, setResult] = useState({ items: [], total: 0, pages: 0 });
+    const [facets, setFacets] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [totalProducts, setTotalProducts] = useState(0);
-
-    // Filter States
-    const [filters, setFilters] = useState({});
-    const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('name');
+    const [error, setError] = useState(null);
     const [mobileSheet, setMobileSheet] = useState({ open: false, mode: 'filter' });
-    const [currentPage, setCurrentPage] = useState(1);
 
-    const ITEMS_PER_PAGE = 12;
-
-    // Initial Load
     useEffect(() => {
-        async function fetchFilters() {
-            try {
-                const data = await shopService.getFiltersInfo();
-                setAvailableFilters(data);
-            } catch (error) {
-                console.error("Failed to load filters", error);
-            }
-        }
-        fetchFilters();
+        shopService.getFacets().then(setFacets).catch(() => setFacets(null));
     }, []);
 
-    // Sync URL Params -> State (FIXED: Handles removal of filters)
+    // Re-fetch whenever the URL query changes. The abort signal drops stale
+    // responses, so a slow earlier request can't overwrite a newer one.
+    const queryKey = JSON.stringify(apiParams);
     useEffect(() => {
-        const categoryParam = searchParams.get('category');
-        const brandParam = searchParams.get('brand');
-
-        setFilters(prev => {
-            const newFilters = { ...prev };
-
-            // 1. Handle Category
-            if (categoryParam) {
-                newFilters.categories = [decodeURIComponent(categoryParam)];
-            } else {
-                delete newFilters.categories; // Explicitly remove if missing
-            }
-
-            // 2. Handle Brand
-            if (brandParam) {
-                newFilters.brands = [decodeURIComponent(brandParam)];
-            } else {
-                delete newFilters.brands; // Explicitly remove if missing
-            }
-
-            return newFilters;
-        });
-
-        if (!categoryParam && !brandParam) setSearchQuery('');
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [searchParams]);
-
-    // Main Data Fetching
-    useEffect(() => {
-        async function fetchProducts() {
-            setIsLoading(true);
-            try {
-                const params = {
-                    page: currentPage,
-                    limit: ITEMS_PER_PAGE,
-                    sort: sortBy,
-                    search: searchQuery, // Triggered only on Enter/Click now
-                    ...filters,
-                };
-
-                if (filters.priceRange) {
-                    params.minPrice = filters.priceRange.min;
-                    params.maxPrice = filters.priceRange.max;
-                    delete params.priceRange;
-                }
-
-                const data = await shopService.getProducts(params);
-
-                setProducts(data.products || []);
-                setTotalProducts(data.total || 0);
-            } catch (error) {
-                console.error("Failed to fetch products", error);
-                setProducts([]);
-            } finally {
+        const controller = new AbortController();
+        setIsLoading(true);
+        setError(null);
+        shopService
+            .getProducts({ ...JSON.parse(queryKey), limit: ITEMS_PER_PAGE }, { signal: controller.signal })
+            .then((data) => {
+                setResult(data);
                 setIsLoading(false);
-            }
-        }
-
-        fetchProducts();
-
-    }, [filters, searchQuery, sortBy, currentPage]);
-
-
-    // Handlers
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
-    };
-
-    const handleFiltersChange = (newFilters) => {
-        setFilters(newFilters);
-        setCurrentPage(1);
-        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
-    };
+            })
+            .catch((err) => {
+                if (controller.signal.aborted) return;
+                setError(err);
+                setResult({ items: [], total: 0, pages: 0 });
+                setIsLoading(false);
+            });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return () => controller.abort();
+    }, [queryKey]);
 
     const removeFilter = (type, value) => {
-        const newFilters = { ...filters };
+        const next = { ...filters };
         if (type === 'priceRange') {
-            delete newFilters.priceRange;
-        } else if (Array.isArray(newFilters[type])) {
-            newFilters[type] = newFilters[type].filter(item => item !== value);
-            if (newFilters[type].length === 0) delete newFilters[type];
+            delete next.priceRange;
+        } else {
+            next[type] = next[type].filter((item) => item !== value);
+            if (!next[type].length) delete next[type];
         }
-        setFilters(newFilters);
-
-        // Remove from URL if it exists there
-        if ((type === 'categories' || type === 'brands')) {
-            const newParams = new URLSearchParams(searchParams);
-            if (type === 'categories') newParams.delete('category');
-            if (type === 'brands') newParams.delete('brand');
-            setSearchParams(newParams);
-        }
-    };
-
-    const clearAllFilters = () => {
-        setFilters({});
-        setSearchQuery('');
-        setSearchParams({});
-        setCurrentPage(1);
+        catalog.setFilters(next);
     };
 
     const openMobileSheet = (mode) => setMobileSheet({ open: true, mode });
-    const closeMobileSheet = () => setMobileSheet(prev => ({ ...prev, open: false }));
-
-    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+    const closeMobileSheet = () => setMobileSheet((prev) => ({ ...prev, open: false }));
 
     return (
         <div className="min-h-screen bg-[var(--background)] theme-transition-colors">
@@ -159,7 +72,7 @@ export default function MarketPage() {
                 <MobileFilterBar
                     filters={filters}
                     onOpenMobileSheet={openMobileSheet}
-                    productCount={totalProducts}
+                    productCount={result.total}
                 />
             </div>
 
@@ -173,14 +86,14 @@ export default function MarketPage() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                        <SearchBar value={searchQuery} onChange={setSearchQuery} />
-                        <SortDropdown value={sortBy} onChange={setSortBy} />
+                        <SearchBar value={search} onChange={catalog.setSearch} />
+                        <SortDropdown value={sort} onChange={catalog.setSort} />
                     </div>
                 </div>
             </div>
 
             <div className="lg:hidden container mx-auto px-4 py-4">
-                <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search drones..." />
+                <SearchBar value={search} onChange={catalog.setSearch} placeholder="Search drones..." />
             </div>
 
             <div className="container mx-auto px-4 pb-12">
@@ -188,9 +101,8 @@ export default function MarketPage() {
                     <div className="hidden lg:block lg:w-80 flex-shrink-0">
                         <FilterSidebar
                             filters={filters}
-                            onFiltersChange={handleFiltersChange}
-                            onClearFilters={clearAllFilters}
-                            availableFilters={availableFilters}
+                            onFiltersChange={catalog.setFilters}
+                            facets={facets}
                         />
                     </div>
 
@@ -198,32 +110,34 @@ export default function MarketPage() {
                         <ActiveFilters
                             filters={filters}
                             onRemoveFilter={removeFilter}
-                            onClearAll={clearAllFilters}
+                            onClearAll={catalog.clearAll}
                         />
 
                         <div className="mb-6 flex justify-between items-center">
                             <p className="text-[color-mix(in_oklab,var(--foreground)_60%,transparent)] theme-transition-colors">
-                                Showing {products.length} of {totalProducts} results
+                                Showing {result.items.length} of {result.total} results
                             </p>
                         </div>
+
+                        {error && (
+                            <div className="mb-6 p-4 rounded-xl border border-red-400 bg-red-500/10 text-red-500">
+                                Could not load products. Is the API running?
+                            </div>
+                        )}
 
                         {isLoading ? (
                             <div className="flex justify-center py-20">
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
                             </div>
                         ) : (
-                            <ProductGrid
-                                products={products}
-                                title=""
-                                subtitle=""
-                            />
+                            <ProductGrid products={result.items} />
                         )}
 
                         <div className="mt-12">
                             <Pagination
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
+                                currentPage={page}
+                                totalPages={result.pages}
+                                onPageChange={catalog.setPage}
                             />
                         </div>
                     </div>
@@ -235,11 +149,10 @@ export default function MarketPage() {
                 onClose={closeMobileSheet}
                 mode={mobileSheet.mode}
                 filters={filters}
-                onFiltersChange={handleFiltersChange}
-                onClearFilters={clearAllFilters}
-                sortBy={sortBy}
-                onSortChange={setSortBy}
-                availableFilters={availableFilters}
+                onFiltersChange={catalog.setFilters}
+                sortBy={sort}
+                onSortChange={catalog.setSort}
+                facets={facets}
             />
         </div>
     );

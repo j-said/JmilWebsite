@@ -13,7 +13,12 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
             case 'categories': return value;
             case 'brands': return `Brand: ${value}`;
             case 'features': return value;
-            case 'priceRange': return `Price: $${filters.priceRange.min} - $${filters.priceRange.max}`;
+            case 'priceRange': {
+                const { min, max } = filters.priceRange;
+                if (min === undefined) return `Price: up to $${max}`;
+                if (max === undefined) return `Price: from $${min}`;
+                return `Price: $${min} - $${max}`;
+            }
             default: return value;
         }
     };
@@ -37,7 +42,7 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
 
                     return getFilterValues(type, values).map((value) => (
                         <span
-                            key={`${type}-${value}`}
+                            key={type === 'priceRange' ? type : `${type}-${value}`}
                             className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-brand-orange/10 text-brand-orange theme-transition-colors"
                         >
                             {getFilterLabel(type, value)}

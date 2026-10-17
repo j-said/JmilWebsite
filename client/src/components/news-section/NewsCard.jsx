@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 export default function NewsCard({ post, isActive, className = "" }) {
     const imageUrl = post.imageUrl || `https://placehold.co/600x400/1a1a1a/FFA500?text=${encodeURIComponent(post.title)}`;
 
-    const formattedDate = post.created_at
-        ? new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const formattedDate = post.createdAt
+        ? new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
         : '';
 
     return (

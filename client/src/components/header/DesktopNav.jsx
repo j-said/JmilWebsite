@@ -1,16 +1,11 @@
 import { Link } from 'react-router-dom';
+import { NAV_ITEMS } from '../../constants/navItems';
 
-const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/shop', label: 'Shop' },
-    { path: '/education', label: 'Education' },
-    { path: '/about', label: 'About' }
-];
 
 export default function DesktopNav() {
     return (
         <div className="space-x-6 hidden md:block">
-            {navItems.map((item) => (
+            {NAV_ITEMS.map((item) => (
                 <Link 
                     key={item.path}
                     to={item.path} 

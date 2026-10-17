@@ -24,37 +24,33 @@ export default function ProductPage() {
     const { isInWishlist, toggleWishlist } = useWishlist();
 
     useEffect(() => {
-        const fetchProductData = async () => {
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        async function fetchProductData() {
             setIsLoading(true);
             setError(null);
             try {
-                const productData = await shopService.getProductById(id);
+                const productData = await shopService.getProductById(id, { signal });
                 setProduct(productData);
 
-                if (productData && productData.category) {
-                    const similarData = await shopService.getProducts({
-                        category: productData.category,
-                        limit: 5 // Беремо трохи більше, щоб потім відфільтрувати поточний
-                    });
-
-                    // Filter current
-                    const filteredSimilar = (similarData.products || [])
-                        .filter(p => p.id !== productData.id)
-                        .slice(0, 4);
-
-                    setSimilarProducts(filteredSimilar);
-                }
+                const similar = await shopService.getProducts(
+                    { category: [productData.category], limit: 5 },
+                    { signal }
+                );
+                setSimilarProducts(similar.items.filter((p) => p.id !== productData.id).slice(0, 4));
             } catch (err) {
-                console.error("Error loading product:", err);
-                setError("Product not found or server error");
-            } finally {
+                if (signal.aborted) return;
+                setError(err.response?.status === 404 ? 'Product not found' : 'Could not load the product');
+            }
+            if (!signal.aborted) {
                 setIsLoading(false);
-                // Scroll to the top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        };
+        }
 
         fetchProductData();
+        return () => controller.abort();
     }, [id]);
 
     if (isLoading) {

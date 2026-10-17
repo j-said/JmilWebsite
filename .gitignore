@@ -25,3 +25,7 @@ __pycache__/
 *.njsproj
 *.sln
 *.sw?
+
+# Python tooling
+.pytest_cache/
+.ruff_cache/

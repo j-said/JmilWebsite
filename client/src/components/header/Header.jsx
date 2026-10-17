@@ -1,36 +1,28 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import ThemeToggle from './ThemeToggle';
 import BurgerButton from './BurgerButton';
 import CartBadge from '../market/cart/CartBadge';
 import Logo from '../ui/Logo';
+import AccountLink from './AccountLink';
 
 export default function Header() {
-    const [isDark, setIsDark] = useState(true);
+    // The initial theme class is set by an inline script in index.html (before first paint).
+    const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
-
-    useEffect(() => {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const savedTheme = localStorage.getItem('theme');
-
-        if (savedTheme) {
-            setIsDark(savedTheme === 'dark');
-            document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-        } else {
-            setIsDark(prefersDark);
-            document.documentElement.classList.toggle('dark', prefersDark);
-        }
-    }, []);
 
     const toggleTheme = () => {
         const newIsDark = !isDark;
         setIsDark(newIsDark);
         document.documentElement.classList.toggle('dark', newIsDark);
-        localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+        try {
+            localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+        } catch {
+            // Theme just won't persist.
+        }
     };
 
     const toggleMobileMenu = () => {
@@ -61,6 +53,7 @@ export default function Header() {
                     <div className="flex items-center space-x-4">
                         {/* Show CartBadge only on market page */}
                         {showCartBadge && <CartBadge />}
+                        <AccountLink className="hidden md:inline font-medium" />
 
                         <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
                         <BurgerButton

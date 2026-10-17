@@ -1,5 +1,3 @@
-import NewsFeed from '../components/news-section/NewsFeed';
-
 export default function AboutPage() {
     return (
         <div className="min-h-screen theme-transition-colors">
@@ -85,11 +83,6 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
-
-            {/* News Section */}
-            {/* <div className="pt-8">
-                <NewsFeed />
-            </div> */}
         </div>
     );
 }

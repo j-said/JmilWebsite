@@ -23,11 +23,12 @@ export default function ProductCard({ product }) {
         e.stopPropagation();
         addToCart(product);
         setIsBouncing(true);
-        setTimeout(() => setIsBouncing(false), 500);
     };
 
     return (
-        <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isBouncing ? 'animate-bounce-gentle' : ''}`}>
+        <div className={`group relative border border-[var(--muted)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full ${isBouncing ? 'animate-bounce-gentle' : ''}`}
+            onAnimationEnd={() => setIsBouncing(false)}
+        >
             <Link to={`/shop/${product.id}`} className="block flex-1">
                 <div className="relative overflow-hidden rounded-t-xl">
                     <img
@@ -58,7 +59,6 @@ export default function ProductCard({ product }) {
                         </svg>
                     </button>
 
-                    {/* Badges rendering code... (без змін) */}
                     {product.onSale && (
                         <div className="absolute top-3 left-3 bg-brand-orange text-brand-black px-2 py-1 rounded-md text-sm font-bold shadow-sm">
                             Sale
@@ -71,7 +71,6 @@ export default function ProductCard({ product }) {
                     )}
                 </div>
 
-                {/* Product Info code... (без змін) */}
                 <div className="p-4">
                     <h3 className="font-bold text-[var(--foreground)] mb-2 line-clamp-2 theme-transition-colors group-hover:text-brand-orange">
                         {product.name}
@@ -81,7 +80,7 @@ export default function ProductCard({ product }) {
                     </p>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex flex-col">
-                            {product.originalPrice && (
+                            {product.onSale && (
                                 <span className="text-xs text-[color-mix(in_oklab,var(--foreground)_50%,transparent)] line-through">
                                     ${product.originalPrice}
                                 </span>
