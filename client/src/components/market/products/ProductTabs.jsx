@@ -1,43 +1,44 @@
 import { useState } from 'react';
 
-export default function ProductTabs({ product }) {
-    const [activeTab, setActiveTab] = useState('about');
+// Defined at module level: a component declared inside another one is re-created
+// on every render, which remounts it and wipes its state.
+function FAQItem({ question, answer }) {
+    const [isOpen, setIsOpen] = useState(false);
 
-    // FAQ Accordion Item Component
-    const FAQItem = ({ question, answer }) => {
-        const [isOpen, setIsOpen] = useState(false);
-
-        return (
-            <div className="border border-[var(--muted)] rounded-xl overflow-hidden bg-[var(--background)] theme-transition-colors">
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="w-full px-6 py-4 flex justify-between items-center text-left font-bold text-[var(--foreground)] hover:bg-[var(--muted)]/10 transition-colors"
-                >
-                    <span>{question}</span>
-                    <span className={`transform transition-transform duration-300 text-brand-orange ${isOpen ? 'rotate-180' : ''}`}>
-                        ▼
-                    </span>
-                </button>
-                <div
-                    className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
-                >
-                    <div className="overflow-hidden">
-                        <div className="px-6 pb-4 text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] leading-relaxed">
-                            {answer}
-                        </div>
+    return (
+        <div className="border border-[var(--muted)] rounded-xl overflow-hidden bg-[var(--background)] theme-transition-colors">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full px-6 py-4 flex justify-between items-center text-left font-bold text-[var(--foreground)] hover:bg-[var(--muted)]/10 transition-colors"
+            >
+                <span>{question}</span>
+                <span className={`transform transition-transform duration-300 text-brand-orange ${isOpen ? 'rotate-180' : ''}`}>
+                    ▼
+                </span>
+            </button>
+            <div
+                className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+            >
+                <div className="overflow-hidden">
+                    <div className="px-6 pb-4 text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] leading-relaxed">
+                        {answer}
                     </div>
                 </div>
             </div>
-        );
-    };
+        </div>
+    );
+}
+
+export default function ProductTabs({ product }) {
+    const [activeTab, setActiveTab] = useState('about');
 
     const renderContent = () => {
         switch (activeTab) {
             case 'specs':
                 return (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fadeIn">
-                        {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-4 bg-[var(--muted)]/20 rounded-xl border border-[var(--muted)]/50">
+                        {product.features.map((feature) => (
+                            <div key={feature} className="flex items-center justify-between p-4 bg-[var(--muted)]/20 rounded-xl border border-[var(--muted)]/50">
                                 <span className="font-medium text-[var(--foreground)]">{feature}</span>
                                 <span className="text-brand-orange font-bold">✓</span>
                             </div>

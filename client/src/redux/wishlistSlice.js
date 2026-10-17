@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Load initial state from localStorage
 const loadWishlist = () => {
   try {
     const saved = localStorage.getItem("jmil_wishlist");
     return saved ? JSON.parse(saved) : [];
-  } catch (e) {
+  } catch {
     return [];
   }
 };
@@ -24,8 +23,6 @@ const wishlistSlice = createSlice({
       } else {
         state.items.push(product);
       }
-      // Side effect: save to localStorage
-      localStorage.setItem("jmil_wishlist", JSON.stringify(state.items));
     },
   },
 });

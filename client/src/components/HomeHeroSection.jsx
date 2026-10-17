@@ -7,7 +7,7 @@ export default function HeroSection() {
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 text-brand-orange dark:text-brand-yellow theme-transition-colors">
                     Welcome to JmilDrones
                 </h1>
-                <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed text-[color-mix(in_oklab,var(--foreground)_80%,transparent) theme-transition-colors]">
+                <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed text-[color-mix(in_oklab,var(--foreground)_80%,transparent)] theme-transition-colors">
                     Your one-stop destination for e-commerce, education, and insights into the world of drones.
                     Explore cutting-edge technology and join the future of autonomous flight.
                 </p>

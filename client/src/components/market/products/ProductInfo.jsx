@@ -40,7 +40,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                     <span className="text-3xl font-bold text-brand-orange theme-transition-colors">
                         ${product.price}
                     </span>
-                    {product.originalPrice && (
+                    {product.onSale && (
                         <span className="text-lg line-through text-[color-mix(in_oklab,var(--foreground)_50%,transparent)] theme-transition-colors">
                             ${product.originalPrice}
                         </span>
@@ -50,7 +50,7 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                 <div className="flex items-center space-x-1 bg-[var(--muted)]/30 px-3 py-1.5 rounded-lg theme-transition-colors">
                     <span className="text-yellow-400">⭐</span>
                     <span className="font-medium text-[var(--foreground)]">
-                        {product.rating} ({product.reviewCount} reviews)
+                        {product.rating ?? '—'} ({product.reviewCount} reviews)
                     </span>
                 </div>
 
@@ -76,8 +76,8 @@ export default function ProductInfo({ product, addToCart, toggleWishlist, isWish
                     <span className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
                         #{product.category.replace(/\s+/g, '')}
                     </span>
-                    {product.features.slice(0, 3).map((f, i) => (
-                        <span key={i} className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
+                    {product.features.slice(0, 3).map((f) => (
+                        <span key={f} className="text-xs px-3 py-1.5 bg-[var(--muted)] rounded-full text-[var(--foreground)] theme-transition-colors">
                             #{f.replace(/\s+/g, '')}
                         </span>
                     ))}

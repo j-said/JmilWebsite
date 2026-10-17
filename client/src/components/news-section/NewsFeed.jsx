@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import NewsCard from './NewsCard';
 import Pagination from '../ui/Pagination';
+import { newsService } from '../../services/newsService';
 
 export default function NewsSection() {
   const [carouselPosts, setCarouselPosts] = useState([]);
@@ -14,59 +15,39 @@ export default function NewsSection() {
   const [showAllNews, setShowAllNews] = useState(false);
   const [gridPosts, setGridPosts] = useState([]);
   const [gridPage, setGridPage] = useState(1);
-  const [totalPosts, setTotalPosts] = useState(0);
+  const [totalGridPages, setTotalGridPages] = useState(0);
   const [isLoadingGrid, setIsLoadingGrid] = useState(false);
   const [error, setError] = useState(null);
 
   const CAROUSEL_LIMIT = 5;
   const GRID_LIMIT = 6;
 
-  // Initial Fetch
+  // Carousel: the latest posts
   useEffect(() => {
-    async function fetchCarousel() {
-      try {
-        const response = await fetch(`http://localhost:3001/api/news?limit=${CAROUSEL_LIMIT}&offset=0`);
-        const result = await response.json();
-        const posts = Array.isArray(result) ? result : result.data;
-        const total = result.pagination ? result.pagination.total : posts.length;
-        setCarouselPosts(posts);
-        setTotalPosts(total);
-      } catch (e) {
-        setError(e.message);
-        // Fallback data...
-        setCarouselPosts([
-          { id: 1, title: 'New Drone Technology', content: 'Discover...', created_at: '2025-10-05' },
-          { id: 2, title: 'FPV Racing', content: 'Join us...', created_at: '2025-10-04' },
-          { id: 3, title: 'Photography Tips', content: 'Learn...', created_at: '2025-10-03' },
-          { id: 4, title: 'Agri Drones', content: 'Transforming...', created_at: '2025-10-02' },
-          { id: 5, title: 'Safety Update', content: 'Regulations...', created_at: '2025-10-01' },
-        ]);
-      }
-    }
-    fetchCarousel();
+    newsService
+      .getNews({ page: 1, limit: CAROUSEL_LIMIT })
+      .then((data) => setCarouselPosts(data.items))
+      .catch(() => setError('Could not load news.'));
   }, []);
 
-  // Grid Fetch
+  // Grid: paginated, loaded only once the user expands it
   useEffect(() => {
     if (!showAllNews) return;
-
-    async function fetchGrid() {
-      setIsLoadingGrid(true);
-      try {
-        const offset = (gridPage - 1) * GRID_LIMIT;
-        const response = await fetch(`http://localhost:3001/api/news?limit=${GRID_LIMIT}&offset=${offset}`);
-        const result = await response.json();
-        setGridPosts(result.data || []);
-      } catch (e) {
-        console.error("Grid fetch error", e);
-      } finally {
-        setIsLoadingGrid(false);
-      }
-    }
-    fetchGrid();
+    let ignore = false;
+    setIsLoadingGrid(true);
+    newsService
+      .getNews({ page: gridPage, limit: GRID_LIMIT })
+      .then((data) => {
+        if (ignore) return;
+        setGridPosts(data.items);
+        setTotalGridPages(data.pages);
+      })
+      .catch(() => !ignore && setError('Could not load news.'))
+      .finally(() => !ignore && setIsLoadingGrid(false));
+    return () => {
+      ignore = true;
+    };
   }, [showAllNews, gridPage]);
-
-  const totalGridPages = Math.ceil(totalPosts / GRID_LIMIT);
 
   // Handle Page Change with "Smoother" Scroll
   const handlePageChange = (newPage) => {
@@ -114,6 +95,7 @@ export default function NewsSection() {
         <h2 className="text-4xl font-bold mb-4 text-center text-brand-orange theme-transition-colors">
           Latest News
         </h2>
+        {error && <p className="text-center text-red-500 mb-6">{error}</p>}
 
         {/* Carousel Container */}
         <div className="relative max-w-6xl mx-auto mb-12">
@@ -155,11 +137,6 @@ export default function NewsSection() {
               <div className="text-center py-12 text-xl text-[var(--foreground)]">Loading...</div>
             ) : (
               <>
-                {/* <Pagination
-                  currentPage={gridPage}
-                  totalPages={totalGridPages}
-                  onPageChange={handlePageChange}
-                /> */}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
                   {gridPosts.map(post => (

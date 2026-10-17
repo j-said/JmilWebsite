@@ -7,8 +7,6 @@ export default function CartItem({ item }) {
         updateQuantity(item.id, newQuantity);
     };
 
-    const subtotal = item.price * item.quantity;
-
     return (
         <div className="flex items-center space-x-4 p-3 bg-[color-mix(in_oklab,var(--background)_95%,var(--muted))] rounded-lg theme-transition-colors">
             {/* Product Image */}

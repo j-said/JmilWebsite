@@ -1,178 +1,124 @@
 # 🚁 JmilDrones
 
-JmilDrones — це сучасний Full-Stack E-commerce застосунок для продажу дронів та комплектуючих. Проєкт реалізовано як SPA (Single Page Application) з використанням React 19 та високопродуктивного асинхронного бекенду на FastAPI (Python).
+Інтернет-магазин дронів: SPA на React + REST API на FastAPI + PostgreSQL.
 
-## 🛠️ Технологічний Стек
+Функціонал: реєстрація та вхід (JWT), каталог із пошуком, фільтрами, сортуванням і пагінацією, кошик, оформлення замовлення (лише для авторизованих), історія замовлень у профілі, новини.
 
-### Frontend (/client)
+## Стек
 
-- **Core:** React 19, Vite
-- **Styling:** Tailwind CSS v4
-- **State Management:** Redux Toolkit (Cart & Wishlist persistence)
-- **Routing:** React Router v7
-- **Forms:** Formik + Yup validation
-- **HTTP Client:** Axios
+| Частина | Технології |
+|---|---|
+| Frontend (`client/`) | React 19, Vite, Tailwind CSS v4, Redux Toolkit, React Router v7, Formik + Yup, Axios |
+| Backend (`api/`) | FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, PyJWT, pwdlib (Argon2) |
+| БД | PostgreSQL 17 |
+| Тести | pytest + httpx (інтеграційні, на реальному Postgres) |
 
-### Backend (/api)
-
-- **Framework:** FastAPI
-- **Server:** Uvicorn (ASGI)
-- **Database ORM:** SQLAlchemy (Async)
-- **Validation:** Pydantic v2
-- **DB Driver:** asyncpg (PostgreSQL)
-- **Testing:** Pytest
-
-### Database
-
-- **System:** PostgreSQL
-
-## 📂 Структура Проєкту
-
-Проєкт розділено на дві основні частини:
-
-### 1. Backend Structure (/api)
-
-Використовується "Flat Layout" для простоти та швидкості розробки мікросервісу.
+## Структура бекенду
 
 ```
 api/
-├── config.py      # Налаштування (Pydantic Settings). Читає змінні з .env.
-├── database.py    # Ініціалізація підключення до БД та опис ORM моделей (Tables).
-├── schemas.py     # Pydantic моделі (DTO) для валідації вхідних/вихідних даних.
-├── crud.py        # Вся бізнес-логіка та SQL-запити до бази даних.
-├── main.py        # Точка входу. Визначення FastAPI app, CORS та маршрутів (Routes).
-├── req.txt        # Список Python-залежностей.
-└── tests/         # Тести (Pytest) та SQL скрипти для ініціалізації.
+├── app/
+│   ├── main.py            # create_app(): middleware, CORS, роутери, lifespan
+│   ├── core/              # config (env), database (engine/session), security (JWT, хеші),
+│   │                      # exceptions (доменні помилки → HTTP), logging
+│   ├── models/            # ORM-моделі: User, Product, Order, OrderItem, NewsPost
+│   ├── schemas/           # Pydantic DTO (JSON у camelCase), Page[T], query-моделі
+│   ├── services/          # бізнес-логіка; нічого не знає про HTTP
+│   ├── api/
+│   │   ├── deps.py        # SessionDep, CurrentUser, PageDep (Annotated-залежності)
+│   │   ├── health.py      # /health, /health/ready
+│   │   └── v1/            # auth, users, products, orders, news
+│   ├── seed.py            # ідемпотентне заповнення демо-даними
+│   └── seed_data.json
+├── alembic/               # міграції схеми
+├── tests/
+├── requirements.txt       # runtime-залежності
+└── requirements-dev.txt   # + тести та ruff
 ```
 
-**Особливості реалізації:**
+Шари: **api** (HTTP: валідація, статус-коди, залежності) → **services** (правила: ціни беруться з БД, чуже замовлення = 404, …) → **models** (SQLAlchemy). Сервіси кидають `NotFoundError` / `ConflictError` / `ValidationError` / `AuthenticationError`, а єдиний exception handler перетворює їх на відповідь.
 
-- **Асинхронність:** Всі запити до БД виконуються асинхронно (await db.execute).
-- **Type Safety:** Сувора типізація даних на вході та виході завдяки Pydantic.
-- **Dependency Injection:** Сесія бази даних передається в роути через Depends(get_db).
+## API
 
-### 2. Frontend Structure (/client)
+Повна інтерактивна документація: `http://localhost:8000/docs` (Swagger, кнопка **Authorize** працює з логіном нижче).
 
+| Метод | Шлях | Auth | Опис |
+|---|---|---|---|
+| GET | `/health` | | liveness (для health check балансувальника) |
+| GET | `/health/ready` | | readiness: перевіряє з'єднання з БД |
+| POST | `/api/v1/auth/register` | | реєстрація (JSON) → 201 |
+| POST | `/api/v1/auth/login` | | OAuth2 password flow (form: `username`=email, `password`) → JWT |
+| GET / PATCH | `/api/v1/users/me` | ✅ | профіль / оновлення імені й телефону |
+| GET | `/api/v1/products` | | каталог: `page`, `limit`, `search`, `sort`, `category`, `brand`, `feature` (повторювані), `minPrice`, `maxPrice`, `inStock` |
+| GET | `/api/v1/products/facets` | | значення для фільтрів |
+| GET | `/api/v1/products/{id}` | | товар |
+| POST | `/api/v1/orders` | ✅ | створити замовлення: `{firstName, lastName, phone, notes, items: [{productId, quantity}]}` |
+| GET | `/api/v1/orders` | ✅ | мої замовлення (пагінація) |
+| GET | `/api/v1/orders/{id}` | ✅ | моє замовлення |
+| GET | `/api/v1/news`, `/api/v1/news/{id}` | | новини |
+
+Списки повертають `{items, total, page, limit, pages}`. Без токена захищені ендпоінти відповідають `401`.
+
+## Запуск локально
+
+### 1. PostgreSQL
+
+```bash
+docker run -d --name jmil-pg -e POSTGRES_USER=jmil -e POSTGRES_PASSWORD=jmil -e POSTGRES_DB=jmil -p 5432:5432 postgres:17-alpine
 ```
-client/src/
-├── api/           # Налаштування Axios інстансу.
-├── assets/        # Статичні файли (SVG, images).
-├── components/    # Перевикористовувані компоненти UI.
-│   ├── header/    # Навігація, теми, мобільне меню.
-│   ├── market/    # Компоненти магазину (картки, фільтри, кошик).
-│   │   ├── filters/ # Логіка фільтрації (Desktop & Mobile).
-│   │   ├── products/# Відображення товарів.
-│   │   └── checkout/# Форми оформлення замовлення.
-│   └── ui/        # Загальні UI елементи (Loader, Pagination, etc.).
-├── constants/     # Константи (наприклад, опції сортування).
-├── data/          # Мокові дані (для розробки).
-├── hooks/         # Кастомні хуки (useCart, useWishlist).
-├── pages/         # Сторінки (HomePage, MarketPage, CheckoutPage тощо).
-├── redux/         # Слайси Redux (cart, wishlist) та store.
-└── services/      # API сервіси для комунікації з бекендом.
-```
 
-## 🚀 Встановлення та Запуск
-
-### Крок 1: Налаштування Бази Даних (PostgreSQL)
-
-1. Встановіть PostgreSQL.
-2. Створіть базу даних та користувача.
-3. Виконайте SQL скрипти для створення таблиць:
-    - Знайдіть файл `api/tests/create-db.sql` (або `api/create-db.sql`).
-    - Запустіть його вміст у вашій базі даних.
-    - Якщо є файл `update-db.sql` (для таблиці замовлень), виконайте його також.
-
-### Крок 2: Запуск Бекенду
-
-Перейдіть у папку api:
+### 2. Backend
 
 ```bash
 cd api
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+cp .env.example .env          # за потреби поправте DB_* і JWT_SECRET
+alembic upgrade head          # створити схему
+python -m app.seed            # демо-дані + користувач demo@jmil.dev / demo12345
+uvicorn app.main:app --reload --port 8000
 ```
 
-Створіть файл `.env` на основі прикладу:
-
-```env
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=spa_bd
-LOG_LEVEL=INFO
-```
-
-Створіть віртуальне оточення та встановіть залежності:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate  # Для Windows: .venv\Scripts\activate
-pip install -r req.txt
-```
-
-Запустіть сервер:
-
-```bash
-uvicorn main:app --reload --port 3001
-```
-
-- **API:** http://localhost:3001
-- **Документація (Swagger):** http://localhost:3001/docs
-
-### Крок 3: Запуск Фронтенду
-
-Відкрийте новий термінал та перейдіть у папку client:
+### 3. Frontend
 
 ```bash
 cd client
-```
-
-Встановіть залежності:
-
-```bash
 npm install
+npm run dev                   # http://localhost:5173
 ```
 
-Запустіть режим розробки:
+Vite проксіює `/api` на `http://localhost:8000`, тому в dev CORS не потрібен. Для іншої адреси API: `VITE_API_URL=https://api.example.com/api/v1 npm run build`.
+
+### Тести та лінтер
 
 ```bash
-npm run dev
+cd api
+pytest            # потрібен запущений Postgres; тести самі створять БД <DB_NAME>_test
+ruff check . && ruff format --check .
 ```
-
-Клієнт буде доступний за адресою: http://localhost:5173
-
-## ✨ Основний Функціонал
-
-### Каталог Товарів
-
-- Пагінація, пошук та сортування.
-- Динамічні фільтри (Ціна, Бренд, Категорія, Характеристики).
-- Синхронізація стану фільтрів з URL (можна ділитися посиланням).
-
-### Адаптивність
-
-- Повноцінна мобільна версія з нижньою панеллю фільтрів (Bottom Sheet).
-- Бургер-меню та адаптивний хедер.
-
-### Кошик та Checkout
-
-- Збереження кошика в LocalStorage.
-- Валідація форми замовлення (Formik + Yup).
-- Відправка замовлення на сервер.
-
-### Темна Тема
-
-- Підтримка системних налаштувань та ручне перемикання.
-
-## 🧪 Тестування (Backend)
-
-Проєкт використовує pytest для тестування API.
-
-1. Створіть тестову базу даних `test_db` у Postgres.
-2. Запустіть тести з папки api:
 
 ```bash
-pytest -v
+cd client
+npm run lint && npm run build
 ```
+
+## Конфігурація (змінні середовища)
+
+| Змінна | За замовчуванням | Призначення |
+|---|---|---|
+| `DATABASE_URL` | — | повний URL (`postgresql+asyncpg://…`); якщо не задано — збирається з `DB_*` |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | `localhost`, `5432`, `jmil`, `jmil`, `jmil` | частини підключення (пароль екранується коректно) |
+| `DB_POOL_SIZE`, `DB_MAX_OVERFLOW` | `5`, `5` | розмір пулу на один екземпляр застосунку |
+| `JWT_SECRET` | dev-значення | **обов'язково змінити** в хмарі (`openssl rand -hex 32`) |
+| `JWT_EXPIRE_MINUTES` | `1440` | час життя токена |
+| `CORS_ORIGINS` | `http://localhost:5173` | дозволені origin через кому |
+| `LOG_LEVEL` | `INFO` | логи йдуть у stdout одним рядком на запит |
+
+## Нотатки для хмарного розгортання
+
+- Застосунок stateless (JWT, без сесій у пам'яті) — його можна масштабувати горизонтально.
+- Міграції (`alembic upgrade head`) і сід (`python -m app.seed`) — окремі команди; їх зручно запускати перед стартом сервісу або окремою задачею.
+- `SIGTERM` обробляється коректно: uvicorn дочікується поточних запитів, `lifespan` закриває пул з'єднань.
+- Типовий сценарій навантаження «один запис — багато читань» уже покривається API: `POST /orders` + `GET /products`, `GET /products/{id}`, `GET /orders/{id}`, `GET /users/me`.
 
 #Developed by J-Said

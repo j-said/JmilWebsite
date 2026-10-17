@@ -5,6 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jmil Drones</title>
+    <script>
+      // Apply the saved/system theme before first paint to avoid a light/dark flash.
+      try {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

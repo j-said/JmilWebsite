@@ -1,0 +1,506 @@
+{
+  "news": [
+    {
+      "title": "First Post",
+      "content": "This is the content of the first post."
+    },
+    {
+      "title": "Postgres API Ready",
+      "content": "The new backend is up and running."
+    },
+    {
+      "title": "New Drone Models Arrive",
+      "content": "We have just received the latest shipment of DJI and Autel drones. Check them out in the shop!"
+    },
+    {
+      "title": "Education Section Launch",
+      "content": "Our new Education portal is live, featuring courses on drone cinematography and FAA regulations."
+    },
+    {
+      "title": "Maintenance Tips",
+      "content": "Learn how to properly care for your drone batteries to extend their lifespan and ensure flight safety."
+    },
+    {
+      "title": "Upcoming Workshop",
+      "content": "Sign up for our \"Intro to FPV\" workshop happening next month. Spots are limited!"
+    },
+    {
+      "title": "Black Friday Sneak Peek",
+      "content": "Get ready for our biggest sale of the year. Deals on drones, accessories, and more."
+    },
+    {
+      "title": "Community Spotlight",
+      "content": "Check out this amazing footage captured by one of our customers, Jane Doe, using the Mavic 3 Pro."
+    }
+  ],
+  "products": [
+    {
+      "name": "DJI Mavic 3 Pro",
+      "description": "Professional drone with Hasselblad camera and 4/3 CMOS sensor. Perfect for aerial photography and videography.",
+      "price": 2199,
+      "original_price": 2499,
+      "rating": 4.8,
+      "review_count": 342,
+      "category": "Professional Drones",
+      "brand": "DJI",
+      "features": [
+        "4K Camera",
+        "GPS",
+        "Obstacle Avoidance",
+        "Follow Me Mode",
+        "Auto Return Home",
+        "Long Battery Life"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Main",
+      "images": [
+        "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Front",
+        "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Side"
+      ]
+    },
+    {
+      "name": "Autel Robotics Evo Lite+",
+      "description": "Premium drone with 6K camera and night vision capabilities. Ideal for professional filmmakers.",
+      "price": 1799,
+      "original_price": null,
+      "rating": 4.6,
+      "review_count": 128,
+      "category": "Professional Drones",
+      "brand": "Autel Robotics",
+      "features": [
+        "6K Camera",
+        "GPS",
+        "Obstacle Avoidance",
+        "Night Vision",
+        "Auto Return Home"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Evo+Lite+",
+      "images": [
+        "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Front"
+      ]
+    },
+    {
+      "name": "DJI Inspire 3",
+      "description": "Cinematic drone with dual operator support and 8K video recording. For professional film production.",
+      "price": 12499,
+      "original_price": null,
+      "rating": 4.9,
+      "review_count": 56,
+      "category": "Professional Drones",
+      "brand": "DJI",
+      "features": [
+        "8K Camera",
+        "Dual Operator",
+        "GPS",
+        "Obstacle Avoidance",
+        "Cinematic Mode"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=DJI+Inspire+3",
+      "images": []
+    },
+    {
+      "name": "iFlight Nazgul Evoque F5",
+      "description": "High-performance FPV racing drone with digital HD system. Built for speed and agility.",
+      "price": 399,
+      "original_price": 499,
+      "rating": 4.5,
+      "review_count": 89,
+      "category": "FPV Racing Drones",
+      "brand": "iFlight",
+      "features": [
+        "First Person View",
+        "High Speed",
+        "Acro Mode",
+        "Digital HD",
+        "Racing Kit"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Nazgul+Evoque+F5",
+      "images": []
+    },
+    {
+      "name": "BetaFPV Cetus Pro Kit",
+      "description": "Complete FPV starter kit for beginners. Includes drone, goggles, and controller.",
+      "price": 299,
+      "original_price": null,
+      "rating": 4.3,
+      "review_count": 156,
+      "category": "FPV Racing Drones",
+      "brand": "BetaFPV",
+      "features": [
+        "Beginner Friendly",
+        "Complete Kit",
+        "First Person View",
+        "Protection Frame"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Cetus+Pro+Kit",
+      "images": []
+    },
+    {
+      "name": "GEPRC Mark5 HD",
+      "description": "Competition-grade FPV drone with digital HD video transmission and long range.",
+      "price": 649,
+      "original_price": null,
+      "rating": 4.7,
+      "review_count": 67,
+      "category": "FPV Racing Drones",
+      "brand": "GEPRC",
+      "features": [
+        "Digital HD",
+        "Long Range",
+        "Competition Grade",
+        "High Performance"
+      ],
+      "in_stock": false,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=GEPRC+Mark5+HD",
+      "images": []
+    },
+    {
+      "name": "DJI Mini 4 Pro",
+      "description": "Ultra-light camera drone with 4K HDR video and advanced obstacle sensing.",
+      "price": 759,
+      "original_price": 899,
+      "rating": 4.8,
+      "review_count": 423,
+      "category": "Camera Drones",
+      "brand": "DJI",
+      "features": [
+        "4K HDR",
+        "Obstacle Avoidance",
+        "Foldable Design",
+        "Under 250g",
+        "Follow Me Mode"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Mini+4+Pro",
+      "images": []
+    },
+    {
+      "name": "Autel Robotics Evo Nano+",
+      "description": "Compact drone with 48MP camera and three-way obstacle avoidance system.",
+      "price": 899,
+      "original_price": null,
+      "rating": 4.4,
+      "review_count": 94,
+      "category": "Camera Drones",
+      "brand": "Autel Robotics",
+      "features": [
+        "48MP Camera",
+        "Three-way Obstacle Avoidance",
+        "Compact Design",
+        "GPS"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Evo+Nano+Plus",
+      "images": []
+    },
+    {
+      "name": "Holy Stone HS720G",
+      "description": "4K GPS drone with brushless motors and 2-axis gimbal for stable footage.",
+      "price": 329,
+      "original_price": null,
+      "rating": 4.2,
+      "review_count": 287,
+      "category": "Camera Drones",
+      "brand": "Holy Stone",
+      "features": [
+        "4K Camera",
+        "GPS",
+        "Brushless Motors",
+        "2-Axis Gimbal",
+        "Auto Return"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=HS720G+4K+GPS",
+      "images": []
+    },
+    {
+      "name": "DJI Tello",
+      "description": "Educational drone perfect for beginners. Programmable with Scratch.",
+      "price": 99,
+      "original_price": null,
+      "rating": 4.1,
+      "review_count": 512,
+      "category": "Beginner Drones",
+      "brand": "DJI",
+      "features": [
+        "Beginner Friendly",
+        "Programmable",
+        "Stable Flight",
+        "720p Camera"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Tello",
+      "images": []
+    },
+    {
+      "name": "Ryze Tech Tello Boost Combo",
+      "description": "Complete starter kit with extra batteries and propeller guards.",
+      "price": 149,
+      "original_price": null,
+      "rating": 4.3,
+      "review_count": 198,
+      "category": "Beginner Drones",
+      "brand": "Ryze Tech",
+      "features": [
+        "Complete Kit",
+        "Extra Batteries",
+        "Propeller Guards",
+        "Beginner Friendly"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Tello+Boost+Combo",
+      "images": []
+    },
+    {
+      "name": "Holy Stone HS175",
+      "description": "GPS drone with altitude hold and one-key takeoff/landing for easy operation.",
+      "price": 199,
+      "original_price": null,
+      "rating": 4.0,
+      "review_count": 156,
+      "category": "Beginner Drones",
+      "brand": "Holy Stone",
+      "features": [
+        "GPS",
+        "Altitude Hold",
+        "One-key Control",
+        "Beginner Friendly"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=HS175+Beginner",
+      "images": []
+    },
+    {
+      "name": "DJI Smart Controller",
+      "description": "High-brightness screen controller with built-in Android system.",
+      "price": 749,
+      "original_price": null,
+      "rating": 4.6,
+      "review_count": 87,
+      "category": "Accessories",
+      "brand": "DJI",
+      "features": [
+        "High Brightness",
+        "Android System",
+        "Long Battery Life",
+        "Wireless Connectivity"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Smart+Controller",
+      "images": []
+    },
+    {
+      "name": "FPV Goggles V2",
+      "description": "Digital HD FPV goggles with low latency and high-quality display.",
+      "price": 649,
+      "original_price": null,
+      "rating": 4.5,
+      "review_count": 134,
+      "category": "Accessories",
+      "brand": "DJI",
+      "features": [
+        "Digital HD",
+        "Low Latency",
+        "High Quality Display",
+        "Comfortable Fit"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=FPV+Goggles+V2",
+      "images": []
+    },
+    {
+      "name": "Professional Drone Backpack",
+      "description": "Waterproof backpack with custom compartments for drone and accessories.",
+      "price": 129,
+      "original_price": null,
+      "rating": 4.4,
+      "review_count": 76,
+      "category": "Accessories",
+      "brand": "Generic",
+      "features": [
+        "Waterproof",
+        "Custom Compartments",
+        "Comfortable",
+        "Durable"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Drone+Backpack",
+      "images": []
+    },
+    {
+      "name": "DJI Mavic 3 Pro Battery",
+      "description": "Original smart battery for DJI Mavic 3 Pro with 45-minute flight time.",
+      "price": 199,
+      "original_price": null,
+      "rating": 4.7,
+      "review_count": 45,
+      "category": "Spare Parts",
+      "brand": "DJI",
+      "features": [
+        "Original",
+        "Smart Battery",
+        "45-min Flight",
+        "Safety Features"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Mavic+3+Battery",
+      "images": []
+    },
+    {
+      "name": "Propeller Set (4 Pairs)",
+      "description": "High-quality replacement propellers for various drone models.",
+      "price": 29,
+      "original_price": null,
+      "rating": 4.2,
+      "review_count": 89,
+      "category": "Spare Parts",
+      "brand": "Generic",
+      "features": [
+        "4 Pairs",
+        "High Quality",
+        "Multiple Models",
+        "Easy Installation"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Propeller+Set",
+      "images": []
+    },
+    {
+      "name": "FPV Drone Frame Kit",
+      "description": "Carbon fiber frame kit for custom FPV drone builds.",
+      "price": 79,
+      "original_price": null,
+      "rating": 4.3,
+      "review_count": 23,
+      "category": "Spare Parts",
+      "brand": "iFlight",
+      "features": [
+        "Carbon Fiber",
+        "Lightweight",
+        "Durable",
+        "Custom Build"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=FPV+Frame+Kit",
+      "images": []
+    },
+    {
+      "name": "Multi-Battery Charging Hub",
+      "description": "Charge up to 4 batteries simultaneously with intelligent power management.",
+      "price": 89,
+      "original_price": null,
+      "rating": 4.5,
+      "review_count": 67,
+      "category": "Batteries & Chargers",
+      "brand": "DJI",
+      "features": [
+        "4-Battery Charging",
+        "Intelligent Management",
+        "Fast Charging",
+        "Safety Features"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Charging+Hub",
+      "images": []
+    },
+    {
+      "name": "Car Charger Adapter",
+      "description": "Charge your drone batteries on the go with this car power adapter.",
+      "price": 39,
+      "original_price": null,
+      "rating": 4.1,
+      "review_count": 34,
+      "category": "Batteries & Chargers",
+      "brand": "Generic",
+      "features": [
+        "Car Charging",
+        "Portable",
+        "Fast Charging",
+        "Universal"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Car+Charger",
+      "images": []
+    },
+    {
+      "name": "Battery Maintenance Kit",
+      "description": "Complete kit for proper battery care and maintenance.",
+      "price": 49,
+      "original_price": null,
+      "rating": 4.4,
+      "review_count": 28,
+      "category": "Batteries & Chargers",
+      "brand": "Generic",
+      "features": [
+        "Battery Care",
+        "Storage Bags",
+        "Maintenance Tools",
+        "Safety Guide"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Battery+Kit",
+      "images": []
+    },
+    {
+      "name": "ND Filter Set",
+      "description": "Professional ND filter set for cinematic aerial photography.",
+      "price": 89,
+      "original_price": null,
+      "rating": 4.6,
+      "review_count": 56,
+      "category": "Camera Equipment",
+      "brand": "Freewell",
+      "features": [
+        "ND Filters",
+        "Cinematic",
+        "Professional Grade",
+        "Multi-coating"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=ND+Filter+Set",
+      "images": []
+    },
+    {
+      "name": "Camera Gimbal Protector",
+      "description": "Protective cover for drone camera gimbals during transport.",
+      "price": 19,
+      "original_price": null,
+      "rating": 4.0,
+      "review_count": 42,
+      "category": "Camera Equipment",
+      "brand": "Generic",
+      "features": [
+        "Gimbal Protection",
+        "Easy Installation",
+        "Durable",
+        "Universal Fit"
+      ],
+      "in_stock": true,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Gimbal+Protector",
+      "images": []
+    },
+    {
+      "name": "PolarPro Cinema Series",
+      "description": "Premium filter collection for professional aerial cinematography.",
+      "price": 149,
+      "original_price": null,
+      "rating": 4.8,
+      "review_count": 31,
+      "category": "Camera Equipment",
+      "brand": "PolarPro",
+      "features": [
+        "Premium Quality",
+        "Cinema Series",
+        "Color Accuracy",
+        "Scratch Resistant"
+      ],
+      "in_stock": false,
+      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Cinema+Series",
+      "images": []
+    }
+  ]
+}
