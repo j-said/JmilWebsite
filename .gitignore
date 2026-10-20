@@ -29,3 +29,12 @@ __pycache__/
 # Python tooling
 .pytest_cache/
 .ruff_cache/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!*.tfvars.example
+*.tfplan
