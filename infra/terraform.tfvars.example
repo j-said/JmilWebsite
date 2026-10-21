@@ -1,0 +1,11 @@
+alert_email = "you@example.com"
+
+# image_tag:
+#   terraform apply -var="image_tag=$(git rev-parse HEAD)"
+
+# project       = "jmil"
+# region        = "eu-central-1"
+# desired_count = 1
+# db_name       = "jmil"
+# db_username   = "jmil"
+# github_repo   = "j-said/JmilWebsite"
