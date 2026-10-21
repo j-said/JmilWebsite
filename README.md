@@ -1,124 +1,119 @@
-# 🚁 JmilDrones
+# JmilDrones
 
-Інтернет-магазин дронів: SPA на React + REST API на FastAPI + PostgreSQL.
+Інтернет-магазин дронів: SPA на React, REST API на FastAPI, PostgreSQL. API розгорнуто в AWS у межах лабораторної роботи №1 з хмарних технологій.
 
-Функціонал: реєстрація та вхід (JWT), каталог із пошуком, фільтрами, сортуванням і пагінацією, кошик, оформлення замовлення (лише для авторизованих), історія замовлень у профілі, новини.
+- Адреса: http://jmil-alb-388472145.eu-central-1.elb.amazonaws.com (актуальна: `terraform -chdir=infra output -raw alb_url`)
+- Swagger: `/docs`
 
 ## Стек
 
 | Частина | Технології |
 |---|---|
-| Frontend (`client/`) | React 19, Vite, Tailwind CSS v4, Redux Toolkit, React Router v7, Formik + Yup, Axios |
-| Backend (`api/`) | FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, PyJWT, pwdlib (Argon2) |
-| БД | PostgreSQL 17 |
-| Тести | pytest + httpx (інтеграційні, на реальному Postgres) |
+| Frontend (`client/`) | React 19, Vite, Tailwind CSS v4, Redux Toolkit, React Router v7 |
+| Backend (`api/`) | FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, PyJWT, Argon2 |
+| БД | PostgreSQL 18 |
+| Інфраструктура | Docker, AWS (ECS Fargate, RDS, ALB, ECR, CloudWatch), Terraform, GitHub Actions |
 
-## Структура бекенду
+## Структура
 
 ```
-api/
-├── app/
-│   ├── main.py            # create_app(): middleware, CORS, роутери, lifespan
-│   ├── core/              # config (env), database (engine/session), security (JWT, хеші),
-│   │                      # exceptions (доменні помилки → HTTP), logging
-│   ├── models/            # ORM-моделі: User, Product, Order, OrderItem, NewsPost
-│   ├── schemas/           # Pydantic DTO (JSON у camelCase), Page[T], query-моделі
-│   ├── services/          # бізнес-логіка; нічого не знає про HTTP
-│   ├── api/
-│   │   ├── deps.py        # SessionDep, CurrentUser, PageDep (Annotated-залежності)
-│   │   ├── health.py      # /health, /health/ready
-│   │   └── v1/            # auth, users, products, orders, news
-│   ├── seed.py            # ідемпотентне заповнення демо-даними
-│   └── seed_data.json
-├── alembic/               # міграції схеми
-├── tests/
-├── requirements.txt       # runtime-залежності
-└── requirements-dev.txt   # + тести та ruff
+.github/workflows/deploy.yml   CI/CD
+api/                           FastAPI: app/, alembic/, tests/, Dockerfile, docker-entrypoint.sh
+client/                        SPA (у хмару не розгортається)
+infra/                         Terraform: network, security, ecr, rds, secrets, ecs, alb,
+                               github_oidc, monitoring; bootstrap/ — бюджет (окремий state)
+compose.yaml, .env.example     локальний запуск
 ```
 
-Шари: **api** (HTTP: валідація, статус-коди, залежності) → **services** (правила: ціни беруться з БД, чуже замовлення = 404, …) → **models** (SQLAlchemy). Сервіси кидають `NotFoundError` / `ConflictError` / `ValidationError` / `AuthenticationError`, а єдиний exception handler перетворює їх на відповідь.
+Бекенд розділено на шари: `api` (HTTP) → `services` (бізнес-логіка) → `models` (SQLAlchemy). Доменні винятки сервісів перетворює на HTTP-відповіді єдиний handler.
 
 ## API
 
-Повна інтерактивна документація: `http://localhost:8000/docs` (Swagger, кнопка **Authorize** працює з логіном нижче).
-
 | Метод | Шлях | Auth | Опис |
 |---|---|---|---|
-| GET | `/health` | | liveness (для health check балансувальника) |
-| GET | `/health/ready` | | readiness: перевіряє з'єднання з БД |
-| POST | `/api/v1/auth/register` | | реєстрація (JSON) → 201 |
-| POST | `/api/v1/auth/login` | | OAuth2 password flow (form: `username`=email, `password`) → JWT |
-| GET / PATCH | `/api/v1/users/me` | ✅ | профіль / оновлення імені й телефону |
-| GET | `/api/v1/products` | | каталог: `page`, `limit`, `search`, `sort`, `category`, `brand`, `feature` (повторювані), `minPrice`, `maxPrice`, `inStock` |
-| GET | `/api/v1/products/facets` | | значення для фільтрів |
-| GET | `/api/v1/products/{id}` | | товар |
-| POST | `/api/v1/orders` | ✅ | створити замовлення: `{firstName, lastName, phone, notes, items: [{productId, quantity}]}` |
-| GET | `/api/v1/orders` | ✅ | мої замовлення (пагінація) |
-| GET | `/api/v1/orders/{id}` | ✅ | моє замовлення |
-| GET | `/api/v1/news`, `/api/v1/news/{id}` | | новини |
+| GET | `/health`, `/health/ready` | | liveness / readiness (з перевіркою БД) |
+| POST | `/api/v1/auth/register`, `/api/v1/auth/login` | | реєстрація / вхід (OAuth2 form) → JWT |
+| GET, PATCH | `/api/v1/users/me` | так | профіль |
+| GET | `/api/v1/products`, `/products/facets`, `/products/{id}` | | каталог з пошуком, фільтрами, пагінацією |
+| GET, POST | `/api/v1/orders`, `/orders/{id}` | так | замовлення користувача |
+| GET | `/api/v1/news`, `/news/{id}` | | новини |
 
-Списки повертають `{items, total, page, limit, pages}`. Без токена захищені ендпоінти відповідають `401`.
+Без токена захищені ендпоінти повертають `401`. Демо-користувач: `demo@jmil.dev` / `demo12345`.
 
-## Запуск локально
-
-### 1. PostgreSQL
+## Локальний запуск
 
 ```bash
-docker run -d --name jmil-pg -e POSTGRES_USER=jmil -e POSTGRES_PASSWORD=jmil -e POSTGRES_DB=jmil -p 5432:5432 postgres:17-alpine
+cp .env.example .env            # задати DB_PASSWORD і JWT_SECRET
+docker compose up -d --build    # API на http://localhost:8000
 ```
 
-### 2. Backend
+Compose піднімає `postgres:18-alpine` (дані у volume `pgdata`, порт не публікується) і API, який стартує після healthcheck бази. Entrypoint виконує міграції та сід. `docker compose down` зберігає дані, `down -v` видаляє.
+
+Тести: `cd api && pytest && ruff check .` (потрібен запущений Postgres).
+
+Образ: `python:3.12-slim-bookworm`, залежності встановлюються окремим шаром до коду, процес працює від користувача `app` (UID 10001).
+
+## Конфігурація
+
+Через змінні середовища: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` (або `DATABASE_URL`), `JWT_SECRET`, `CORS_ORIGINS`, `LOG_LEVEL`, `RUN_MIGRATIONS`, `RUN_SEED`. Повний перелік і значення за замовчуванням: `api/app/core/config.py`.
+
+## AWS
+
+```
+Інтернет → ALB :80 (публічні підмережі)
+         → ECS Fargate :8000 (публічні підмережі, SG: лише від ALB)
+         → RDS PostgreSQL :5432 (приватні підмережі, SG: лише від ECS)
+```
+
+- Регіон `eu-central-1`, дві зони доступності.
+- ECR: незмінні теги (SHA коміту), сканування при push.
+- ECS: 0.25 vCPU / 512 МБ, circuit breaker з автовідкатом.
+- RDS `db.t4g.micro`: без публічного доступу, зашифрований диск.
+- ALB: health check `/health`.
+- Секрети: пароль БД генерує RDS (Secrets Manager), `JWT_SECRET` генерує Terraform (SSM). У task definition лише ARN, значення підставляє ECS при старті.
+- `.env`, `*.tfvars`, `*.tfstate` не комітяться.
+
+Перше розгортання:
 
 ```bash
-cd api
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements-dev.txt
-cp .env.example .env          # за потреби поправте DB_* і JWT_SECRET
-alembic upgrade head          # створити схему
-python -m app.seed            # демо-дані + користувач demo@jmil.dev / demo12345
-uvicorn app.main:app --reload --port 8000
+export AWS_PROFILE=<профіль>
+cp infra/terraform.tfvars.example infra/terraform.tfvars    # alert_email
+terraform -chdir=infra init
+terraform -chdir=infra apply -target=aws_ecr_repository.api -var="image_tag=bootstrap"
+
+TAG=$(git rev-parse HEAD)
+REPO=$(terraform -chdir=infra output -raw ecr_repository_url)
+aws ecr get-login-password | docker login --username AWS --password-stdin "${REPO%%/*}"
+docker build --platform linux/amd64 -t "$REPO:$TAG" api && docker push "$REPO:$TAG"
+
+terraform -chdir=infra apply -var="image_tag=$TAG"
 ```
 
-### 3. Frontend
+Видалення: `terraform -chdir=infra destroy -var="image_tag=x"` (дані RDS і образи ECR видаляються).
+
+## CI/CD
+
+На push у `master`: ruff + pytest → OIDC-вхід в AWS → збірка й push образу з тегом SHA → нова ревізія task definition → оновлення сервісу ECS з очікуванням health check. AWS-ключі в GitHub не зберігаються; потрібна лише змінна `AWS_ROLE_ARN`:
 
 ```bash
-cd client
-npm install
-npm run dev                   # http://localhost:5173
+gh variable set AWS_ROLE_ARN --body "$(terraform -chdir=infra output -raw github_deploy_role_arn)"
 ```
 
-Vite проксіює `/api` на `http://localhost:8000`, тому в dev CORS не потрібен. Для іншої адреси API: `VITE_API_URL=https://api.example.com/api/v1 npm run build`.
+## Моніторинг
 
-### Тести та лінтер
+CloudWatch Logs (`/ecs/jmil-api`), дашборд `jmil-dashboard` (запити, 5xx, затримка, CPU/пам'ять), алерти на email: 5xx від застосунку та відсутність здорових задач. Бюджет 10 USD/міс.
 
-```bash
-cd api
-pytest            # потрібен запущений Postgres; тести самі створять БД <DB_NAME>_test
-ruff check . && ruff format --check .
-```
+## Лабораторна робота №1
 
-```bash
-cd client
-npm run lint && npm run build
-```
+| Завдання | Реалізація |
+|---|---|
+| 1. Контейнер | `api/Dockerfile`, `compose.yaml` |
+| 2. Terraform | `infra/`: ECR, RDS, ECS |
+| 3. Мережева ізоляція | RDS у приватних підмережах, SG від SG |
+| 4. Load balancer | ALB, health check `/health` |
+| 5. CD | GitHub Actions + OIDC |
+| 6*. Безпека доступу | JWT, `401` без токена |
+| 7*. Моніторинг | логи, дашборд, алерти |
+| 8*. Документація API | `/docs` |
 
-## Конфігурація (змінні середовища)
-
-| Змінна | За замовчуванням | Призначення |
-|---|---|---|
-| `DATABASE_URL` | — | повний URL (`postgresql+asyncpg://…`); якщо не задано — збирається з `DB_*` |
-| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | `localhost`, `5432`, `jmil`, `jmil`, `jmil` | частини підключення (пароль екранується коректно) |
-| `DB_POOL_SIZE`, `DB_MAX_OVERFLOW` | `5`, `5` | розмір пулу на один екземпляр застосунку |
-| `JWT_SECRET` | dev-значення | **обов'язково змінити** в хмарі (`openssl rand -hex 32`) |
-| `JWT_EXPIRE_MINUTES` | `1440` | час життя токена |
-| `CORS_ORIGINS` | `http://localhost:5173` | дозволені origin через кому |
-| `LOG_LEVEL` | `INFO` | логи йдуть у stdout одним рядком на запит |
-
-## Нотатки для хмарного розгортання
-
-- Застосунок stateless (JWT, без сесій у пам'яті) — його можна масштабувати горизонтально.
-- Міграції (`alembic upgrade head`) і сід (`python -m app.seed`) — окремі команди; їх зручно запускати перед стартом сервісу або окремою задачею.
-- `SIGTERM` обробляється коректно: uvicorn дочікується поточних запитів, `lifespan` закриває пул з'єднань.
-- Типовий сценарій навантаження «один запис — багато читань» уже покривається API: `POST /orders` + `GET /products`, `GET /products/{id}`, `GET /orders/{id}`, `GET /users/me`.
-
-#Developed by J-Said
+Автор: J-Said
