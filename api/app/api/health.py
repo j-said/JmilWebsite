@@ -1,8 +1,9 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.api.deps import SessionDep
+from app.core.config import settings
 
 router = APIRouter(tags=["health"])
 
@@ -24,3 +25,13 @@ async def readiness(session: SessionDep):
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     return {"status": "ok", "database": "up"}
+
+
+@router.get("/health/version")
+async def version(request: Request):
+    """Which build is running. Handy for checking that a deploy went out."""
+    return {
+        "app": settings.APP_NAME,
+        "version": request.app.version,
+        "environment": settings.ENVIRONMENT,
+    }
