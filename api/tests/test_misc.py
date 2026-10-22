@@ -6,6 +6,12 @@ async def test_health(client):
     assert (await client.get("/health/ready")).json()["database"] == "up"
 
 
+async def test_version(client):
+    body = (await client.get("/health/version")).json()
+    assert body["version"] == "2.0.0"
+    assert set(body) == {"app", "version", "environment"}
+
+
 async def test_news_list_and_detail(client, session):
     session.add_all([NewsPost(title=f"Post {i}", content="...") for i in range(3)])
     await session.commit()
