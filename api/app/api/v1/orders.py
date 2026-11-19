@@ -1,12 +1,16 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Header, status
+from redis.asyncio import Redis
 
 from app.api.deps import CurrentUser, PageDep, SessionDep
+from app.core import queue
+from app.core.exceptions import ServiceUnavailableError
 from app.core.idempotency import StoredResponse, run_idempotent
 from app.core.redis import RedisDep
 from app.schemas.common import Page
-from app.schemas.order import OrderCreate, OrderRead
+from app.schemas.order import OrderCreate, OrderRead, OrderRequestRead
+from app.services import order_requests
 from app.services import orders as order_service
 
 router = APIRouter(prefix="/orders", tags=["orders"])
@@ -51,6 +55,53 @@ async def create_order(
         payload=data.model_dump_json(),
         handler=execute,
     )
+
+
+def _require_redis(redis: Redis | None) -> Redis:
+    if redis is None:
+        raise ServiceUnavailableError("Asynchronous orders are not configured")
+    return redis
+
+
+@router.post(
+    "/async",
+    response_model=OrderRequestRead,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={503: {"description": "Queue is not configured"}},
+)
+async def create_order_async(
+    data: OrderCreate,
+    user: CurrentUser,
+    redis: RedisDep,
+    idempotency_key: IdempotencyKey = None,
+):
+    """Queue the order and answer 202 right away.
+
+    `Location` points to the request status: `queued`, then `completed` or `failed`.
+    """
+    if not queue.is_enabled():
+        raise ServiceUnavailableError("Asynchronous orders are not configured")
+    redis = _require_redis(redis)
+
+    async def enqueue() -> StoredResponse:
+        record = await order_requests.submit(redis, user, data)
+        body = OrderRequestRead.model_validate(record).model_dump_json(by_alias=True)
+        location = f"/api/v1/orders/requests/{record['request_id']}"
+        return StoredResponse(202, body, {"Location": location})
+
+    return await run_idempotent(
+        redis,
+        scope=f"orders-async:{user.id}",
+        key=idempotency_key,
+        payload=data.model_dump_json(),
+        handler=enqueue,
+    )
+
+
+@router.get("/requests/{request_id}", response_model=OrderRequestRead, responses={404: {}})
+async def get_order_request(request_id: str, user: CurrentUser, redis: RedisDep):
+    """Status of an order accepted by `POST /orders/async`."""
+    return await order_requests.get_for_user(_require_redis(redis), request_id, user.id)
 
 
 @router.get("", response_model=Page[OrderRead])

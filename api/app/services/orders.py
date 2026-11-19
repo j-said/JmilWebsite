@@ -14,7 +14,9 @@ from app.schemas.order import OrderCreate
 logger = logging.getLogger(__name__)
 
 
-async def create_order(session: AsyncSession, user: User, data: OrderCreate) -> Order:
+async def create_order(
+    session: AsyncSession, user: User, data: OrderCreate, request_id: str | None = None
+) -> Order:
     # Merge duplicate lines ("2x id=5" + "1x id=5" -> "3x id=5").
     quantities = Counter()
     for line in data.items:
@@ -41,6 +43,7 @@ async def create_order(session: AsyncSession, user: User, data: OrderCreate) -> 
         last_name=data.last_name,
         phone=data.phone,
         notes=data.notes,
+        request_id=request_id,
         total=sum((i.unit_price * i.quantity for i in items), Decimal(0)),
         items=items,
     )
@@ -48,6 +51,10 @@ async def create_order(session: AsyncSession, user: User, data: OrderCreate) -> 
     await session.commit()
     logger.info("Order %s created by user %s, total=%s", order.id, user.id, order.total)
     return await get_user_order(session, user, order.id)
+
+
+async def find_by_request_id(session: AsyncSession, request_id: str) -> int | None:
+    return await session.scalar(select(Order.id).where(Order.request_id == request_id))
 
 
 async def list_user_orders(

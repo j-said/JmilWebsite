@@ -41,6 +41,8 @@ class Order(TimestampMixin, Base):
     last_name: Mapped[str] = mapped_column(String(50))
     phone: Mapped[str] = mapped_column(String(32))
     notes: Mapped[str | None] = mapped_column(Text)
+    # Set by the queue worker. Unique, so a repeated message can't create a second order.
+    request_id: Mapped[str | None] = mapped_column(String(64), unique=True)
 
     user: Mapped["User"] = relationship(back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship(

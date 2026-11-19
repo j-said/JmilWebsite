@@ -41,6 +41,12 @@ class Settings(BaseSettings):
     CACHE_TTL_SECONDS: int = Field(default=45, ge=1)
     IDEMPOTENCY_TTL_SECONDS: int = 24 * 60 * 60
 
+    # SQS queue for POST /orders/async and app.worker.
+    ORDER_QUEUE_URL: str | None = None
+    AWS_REGION: str = "eu-central-1"
+    WORKER_PROCESSING_SECONDS: float = 1.0
+    WORKER_BATCH_SIZE: int = Field(default=5, ge=1, le=10)
+
     # Comma-separated list, e.g. "http://localhost:5173,https://shop.example.com"
     CORS_ORIGINS: Annotated[list[str], NoDecode] = ["http://localhost:5173"]
 

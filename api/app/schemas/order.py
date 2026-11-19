@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import StrEnum
 
 from pydantic import Field
 
@@ -41,3 +42,18 @@ class OrderRead(CamelModel):
     notes: str | None
     created_at: datetime
     items: list[OrderItemRead]
+
+
+class OrderRequestStatus(StrEnum):
+    QUEUED = "queued"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
+class OrderRequestRead(CamelModel):
+    """Status of an order accepted with 202 and processed by the queue worker."""
+
+    request_id: str
+    status: OrderRequestStatus
+    order_id: int | None = None
+    error: str | None = None
