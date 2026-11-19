@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60 * 24
 
+    # Without Redis there is no cache.
+    REDIS_URL: str | None = None
+    CACHE_ENABLED: bool = True
+    CACHE_TTL_SECONDS: int = Field(default=45, ge=1)
+
     # Comma-separated list, e.g. "http://localhost:5173,https://shop.example.com"
     CORS_ORIGINS: Annotated[list[str], NoDecode] = ["http://localhost:5173"]
 

@@ -8,3 +8,4 @@ asyncpg==0.31.0
 alembic==1.17.2
 PyJWT==2.10.1
 pwdlib[argon2]==0.3.0
+redis==7.4.1

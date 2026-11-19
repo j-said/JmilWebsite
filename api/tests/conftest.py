@@ -3,19 +3,23 @@
 The schema is created once per session. Every test runs inside an outer
 transaction that is rolled back afterwards; `create_savepoint` mode turns the
 services' own `commit()` calls into savepoints, so tests stay isolated.
+Redis: `TEST_REDIS_URL` (db 15 by default), flushed before every test.
 """
 
+import os
 from collections.abc import AsyncIterator
 
 import asyncpg
 import pytest
 from httpx import ASGITransport, AsyncClient
+from redis.asyncio import Redis
 from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 import app.models  # noqa: F401
 from app.core.config import settings
 from app.core.database import Base, get_session
+from app.core.redis import get_redis
 from app.main import app
 from app.models import Product
 
@@ -67,9 +71,21 @@ async def session(engine) -> AsyncIterator[AsyncSession]:
             await trans.rollback()
 
 
+TEST_REDIS_URL = os.environ.get("TEST_REDIS_URL", "redis://localhost:6379/15")
+
+
 @pytest.fixture
-async def client(session) -> AsyncIterator[AsyncClient]:
+async def redis() -> AsyncIterator[Redis]:
+    client = Redis.from_url(TEST_REDIS_URL, decode_responses=True)
+    await client.flushdb()
+    yield client
+    await client.aclose()
+
+
+@pytest.fixture
+async def client(session, redis) -> AsyncIterator[AsyncClient]:
     app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[get_redis] = lambda: redis
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
     app.dependency_overrides.clear()
@@ -103,18 +119,18 @@ async def products(session) -> list[Product]:
     return items
 
 
-@pytest.fixture
-async def auth_headers(client) -> dict[str, str]:
+async def register_and_login(client: AsyncClient, email: str) -> dict[str, str]:
+    """Register a user and return its Authorization header."""
     await client.post(
         "/api/v1/auth/register",
-        json={
-            "email": "pilot@test.dev",
-            "password": "secret123",
-            "firstName": "Ann",
-            "lastName": "Pilot",
-        },
+        json={"email": email, "password": "secret123", "firstName": "Ann", "lastName": "Pilot"},
     )
     resp = await client.post(
-        "/api/v1/auth/login", data={"username": "pilot@test.dev", "password": "secret123"}
+        "/api/v1/auth/login", data={"username": email, "password": "secret123"}
     )
     return {"Authorization": f"Bearer {resp.json()['access_token']}"}
+
+
+@pytest.fixture
+async def auth_headers(client) -> dict[str, str]:
+    return await register_and_login(client, "pilot@test.dev")

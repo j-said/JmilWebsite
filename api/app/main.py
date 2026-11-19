@@ -10,6 +10,7 @@ from app.core.config import settings
 from app.core.database import engine
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import register_access_log, setup_logging
+from app.core.redis import close_redis
 
 setup_logging(settings.LOG_LEVEL)
 logger = logging.getLogger(__name__)
@@ -19,7 +20,8 @@ logger = logging.getLogger(__name__)
 async def lifespan(_: FastAPI):
     logger.info("Starting %s (%s)", settings.APP_NAME, settings.ENVIRONMENT)
     yield
-    # Runs on SIGTERM too: uvicorn finishes in-flight requests, then we close DB connections.
+    # Runs on SIGTERM too: uvicorn finishes current requests, then we close connections.
+    await close_redis()
     await engine.dispose()
     logger.info("Shutdown complete")
 
