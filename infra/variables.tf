@@ -38,10 +38,38 @@ variable "alert_email" {
   type = string
 }
 
+variable "api_min_count" {
+  description = "Autoscaling minimum for the API service"
+  type        = number
+  default     = 1
+}
+
+variable "api_max_count" {
+  description = "Autoscaling maximum for the API service (lab limit: 4)"
+  type        = number
+  default     = 4
+  validation {
+    condition     = var.api_max_count <= 4
+    error_message = "The lab allows at most 4 instances."
+  }
+}
+
+variable "cpu_target" {
+  description = "Target average CPU (%) for target tracking"
+  type        = number
+  default     = 60
+}
+
 variable "cache_enabled" {
   description = "Serve GET /products cache-aside from Redis"
   type        = bool
   default     = true
+}
+
+variable "scheduled_scaling" {
+  description = "Day/night minimum capacity (2 by day, 1 at night)"
+  type        = bool
+  default     = false
 }
 
 variable "worker_processing_seconds" {

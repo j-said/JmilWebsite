@@ -31,3 +31,7 @@ output "redis_endpoint" {
 output "order_queue_url" {
   value = aws_sqs_queue.orders.url
 }
+
+output "dashboard_url" {
+  value = "https://${var.region}.console.aws.amazon.com/cloudwatch/home?region=${var.region}#dashboards/dashboard/${aws_cloudwatch_dashboard.main.dashboard_name}"
+}
