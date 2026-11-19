@@ -23,3 +23,11 @@ output "github_deploy_role_arn" {
 output "db_endpoint" {
   value = aws_db_instance.main.address
 }
+
+output "redis_endpoint" {
+  value = aws_elasticache_replication_group.main.primary_endpoint_address
+}
+
+output "order_queue_url" {
+  value = aws_sqs_queue.orders.url
+}

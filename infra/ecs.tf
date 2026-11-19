@@ -1,5 +1,11 @@
 resource "aws_ecs_cluster" "main" {
   name = "${var.project}-cluster"
+
+  # Needed for the task count graph (DesiredTaskCount / RunningTaskCount).
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api" {
@@ -52,6 +58,19 @@ resource "aws_iam_role" "task" {
   assume_role_policy = data.aws_iam_policy_document.ecs_tasks_assume.json
 }
 
+resource "aws_iam_role_policy" "task_sqs_send" {
+  name = "send-orders"
+  role = aws_iam_role.task.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["sqs:SendMessage"]
+      Resource = aws_sqs_queue.orders.arn
+    }]
+  })
+}
+
 resource "aws_iam_role_policy" "task_exec" {
   name = "ecs-exec"
   role = aws_iam_role.task.id
@@ -100,6 +119,11 @@ resource "aws_ecs_task_definition" "api" {
       { name = "CORS_ORIGINS", value = "http://${aws_lb.main.dns_name}" },
       { name = "RUN_MIGRATIONS", value = "true" },
       { name = "RUN_SEED", value = "true" },
+      { name = "REDIS_URL", value = local.redis_url },
+      { name = "CACHE_ENABLED", value = tostring(var.cache_enabled) },
+      { name = "CACHE_TTL_SECONDS", value = "45" },
+      { name = "ORDER_QUEUE_URL", value = aws_sqs_queue.orders.url },
+      { name = "AWS_REGION", value = var.region },
     ]
 
     secrets = [
@@ -147,7 +171,8 @@ resource "aws_ecs_service" "api" {
   }
 
   lifecycle {
-    ignore_changes = [task_definition]
+    # CI/CD changes the task definition, autoscaling changes the count.
+    ignore_changes = [task_definition, desired_count]
   }
 
   depends_on = [aws_lb_listener.http]

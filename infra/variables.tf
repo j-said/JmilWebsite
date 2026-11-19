@@ -10,7 +10,7 @@ variable "region" {
 }
 
 variable "image_tag" {
-  type        = string
+  type = string
 }
 
 variable "desired_count" {
@@ -30,10 +30,22 @@ variable "db_username" {
 }
 
 variable "github_repo" {
-  type        = string
-  default     = "j-said/JmilWebsite"
+  type    = string
+  default = "j-said/JmilWebsite"
 }
 
 variable "alert_email" {
-  type        = string
+  type = string
+}
+
+variable "cache_enabled" {
+  description = "Serve GET /products cache-aside from Redis"
+  type        = bool
+  default     = true
+}
+
+variable "worker_processing_seconds" {
+  description = "Simulated slow step per message in the queue worker"
+  type        = number
+  default     = 1
 }

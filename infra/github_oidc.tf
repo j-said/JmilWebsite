@@ -62,13 +62,13 @@ data "aws_iam_policy_document" "github_deploy" {
   statement {
     sid       = "DeployService"
     actions   = ["ecs:UpdateService", "ecs:DescribeServices"]
-    resources = [aws_ecs_service.api.id]
+    resources = [aws_ecs_service.api.id, aws_ecs_service.worker.id]
   }
 
   statement {
     sid       = "PassTaskRoles"
     actions   = ["iam:PassRole"]
-    resources = [aws_iam_role.execution.arn, aws_iam_role.task.arn]
+    resources = [aws_iam_role.execution.arn, aws_iam_role.task.arn, aws_iam_role.worker_task.arn]
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"

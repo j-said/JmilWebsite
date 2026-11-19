@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "main" {
 resource "aws_subnet" "public" {
   count             = 2
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)       # 10.0.0.0/24, 10.0.1.0/24
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index) # 10.0.0.0/24, 10.0.1.0/24
   availability_zone = local.azs[count.index]
   tags              = { Name = "${var.project}-public-${local.azs[count.index]}" }
 }
@@ -44,7 +44,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_subnet" "private" {
   count             = 2
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index + 10)  # 10.0.10.0/24, 10.0.11.0/24
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index + 10) # 10.0.10.0/24, 10.0.11.0/24
   availability_zone = local.azs[count.index]
   tags              = { Name = "${var.project}-private-${local.azs[count.index]}" }
 }

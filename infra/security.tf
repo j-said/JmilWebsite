@@ -53,3 +53,41 @@ resource "aws_vpc_security_group_ingress_rule" "db_from_app" {
   from_port                    = 5432
   to_port                      = 5432
 }
+
+resource "aws_vpc_security_group_ingress_rule" "db_from_worker" {
+  security_group_id            = aws_security_group.db.id
+  referenced_security_group_id = aws_security_group.worker.id
+  ip_protocol                  = "tcp"
+  from_port                    = 5432
+  to_port                      = 5432
+}
+
+resource "aws_security_group" "worker" {
+  name        = "${var.project}-worker"
+  description = "Queue worker: no inbound traffic"
+  vpc_id      = aws_vpc.main.id
+}
+
+resource "aws_vpc_security_group_egress_rule" "worker_all" {
+  security_group_id = aws_security_group.worker.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}
+
+resource "aws_security_group" "cache" {
+  name        = "${var.project}-cache"
+  description = "Redis: only from app and worker"
+  vpc_id      = aws_vpc.main.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "cache_from_app" {
+  for_each = {
+    app    = aws_security_group.app.id
+    worker = aws_security_group.worker.id
+  }
+  security_group_id            = aws_security_group.cache.id
+  referenced_security_group_id = each.value
+  ip_protocol                  = "tcp"
+  from_port                    = 6379
+  to_port                      = 6379
+}
