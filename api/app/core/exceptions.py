@@ -32,6 +32,10 @@ class ValidationError(AppError):
     status_code = status.HTTP_422_UNPROCESSABLE_CONTENT
 
 
+class ServiceUnavailableError(AppError):
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(AppError)
     async def handle_app_error(_: Request, exc: AppError) -> JSONResponse:
