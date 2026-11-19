@@ -14,6 +14,15 @@ services:
       retries: 10
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
   api:
     build: ./api
     environment:
@@ -26,10 +35,13 @@ services:
       CORS_ORIGINS: http://localhost:5173
       RUN_MIGRATIONS: "true"
       RUN_SEED: "true"
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "8000:8000"
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     restart: unless-stopped
 

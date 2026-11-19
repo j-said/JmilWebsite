@@ -17,6 +17,8 @@ env:
   ECS_SERVICE: jmil-api
   TASK_FAMILY: jmil-api
   CONTAINER_NAME: api
+  WORKER_SERVICE: jmil-worker
+  WORKER_FAMILY: jmil-worker
 
 concurrency:
   group: deploy-main
@@ -48,6 +50,16 @@ jobs:
           --health-timeout 5s
           --health-retries 10
 
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -60,6 +72,7 @@ jobs:
       - run: pytest
         env:
           DB_HOST: localhost
+          TEST_REDIS_URL: redis://localhost:6379/15
 
   deploy:
     needs: test
@@ -86,11 +99,14 @@ jobs:
           docker push "$IMAGE"
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
 
-      - name: Download current task definition
+      - name: Download current task definitions
         run: |
           aws ecs describe-task-definition \
             --task-definition "$TASK_FAMILY" \
             --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition \
+            --task-definition "$WORKER_FAMILY" \
+            --query taskDefinition > worker-task-definition.json
 
       - name: Render task definition with new image
         id: render
@@ -105,5 +121,22 @@ jobs:
         with:
           task-definition: ${{ steps.render.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      # Same image, different command (python -m app.worker).
+      - name: Render worker task definition
+        id: render-worker
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: worker-task-definition.json
+          container-name: worker
+          image: ${{ steps.build.outputs.image }}
+
+      - name: Deploy worker
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-worker.outputs.task-definition }}
+          service: ${{ env.WORKER_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
