@@ -7,12 +7,12 @@
 
 ## Стек
 
-| Частина | Технології |
-|---|---|
-| Frontend (`client/`) | React 19, Vite, Tailwind CSS v4, Redux Toolkit, React Router v7 |
-| Backend (`api/`) | FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, PyJWT, Argon2 |
-| БД | PostgreSQL 18 |
-| Інфраструктура | Docker, AWS (ECS Fargate, RDS, ALB, ECR, CloudWatch), Terraform, GitHub Actions |
+| Частина              | Технології                                                                      |
+| -------------------- | ------------------------------------------------------------------------------- |
+| Frontend (`client/`) | React 19, Vite, Tailwind CSS v4, Redux Toolkit, React Router v7                 |
+| Backend (`api/`)     | FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, PyJWT, Argon2    |
+| БД                   | PostgreSQL 18                                                                   |
+| Інфраструктура       | Docker, AWS (ECS Fargate, RDS, ALB, ECR, CloudWatch), Terraform, GitHub Actions |
 
 ## Структура
 
@@ -29,14 +29,14 @@ compose.yaml, .env.example     локальний запуск
 
 ## API
 
-| Метод | Шлях | Auth | Опис |
-|---|---|---|---|
-| GET | `/health`, `/health/ready` | | liveness / readiness (з перевіркою БД) |
-| POST | `/api/v1/auth/register`, `/api/v1/auth/login` | | реєстрація / вхід (OAuth2 form) → JWT |
-| GET, PATCH | `/api/v1/users/me` | так | профіль |
-| GET | `/api/v1/products`, `/products/facets`, `/products/{id}` | | каталог з пошуком, фільтрами, пагінацією |
-| GET, POST | `/api/v1/orders`, `/orders/{id}` | так | замовлення користувача |
-| GET | `/api/v1/news`, `/news/{id}` | | новини |
+| Метод      | Шлях                                                     | Auth | Опис                                     |
+| ---------- | -------------------------------------------------------- | ---- | ---------------------------------------- |
+| GET        | `/health`, `/health/ready`                               |      | liveness / readiness (з перевіркою БД)   |
+| POST       | `/api/v1/auth/register`, `/api/v1/auth/login`            |      | реєстрація / вхід (OAuth2 form) → JWT    |
+| GET, PATCH | `/api/v1/users/me`                                       | так  | профіль                                  |
+| GET        | `/api/v1/products`, `/products/facets`, `/products/{id}` |      | каталог з пошуком, фільтрами, пагінацією |
+| GET, POST  | `/api/v1/orders`, `/orders/{id}`                         | так  | замовлення користувача                   |
+| GET        | `/api/v1/news`, `/news/{id}`                             |      | новини                                   |
 
 Без токена захищені ендпоінти повертають `401`. Демо-користувач: `demo@jmil.dev` / `demo12345`.
 
@@ -105,15 +105,15 @@ CloudWatch Logs (`/ecs/jmil-api`), дашборд `jmil-dashboard` (запити
 
 ## Лабораторна робота №1
 
-| Завдання | Реалізація |
-|---|---|
-| 1. Контейнер | `api/Dockerfile`, `compose.yaml` |
-| 2. Terraform | `infra/`: ECR, RDS, ECS |
+| Завдання             | Реалізація                            |
+| -------------------- | ------------------------------------- |
+| 1. Контейнер         | `api/Dockerfile`, `compose.yaml`      |
+| 2. Terraform         | `infra/`: ECR, RDS, ECS               |
 | 3. Мережева ізоляція | RDS у приватних підмережах, SG від SG |
-| 4. Load balancer | ALB, health check `/health` |
-| 5. CD | GitHub Actions + OIDC |
-| 6*. Безпека доступу | JWT, `401` без токена |
-| 7*. Моніторинг | логи, дашборд, алерти |
-| 8*. Документація API | `/docs` |
+| 4. Load balancer     | ALB, health check `/health`           |
+| 5. CD                | GitHub Actions + OIDC                 |
+| 6*. Безпека доступу  | JWT, `401` без токена                 |
+| 7*. Моніторинг       | логи, дашборд, алерти                 |
+| 8*. Документація API | `/docs`                               |
 
 Автор: J-Said

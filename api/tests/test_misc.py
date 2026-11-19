@@ -8,7 +8,7 @@ async def test_health(client):
 
 async def test_version(client):
     body = (await client.get("/health/version")).json()
-    assert body["version"] == "2.0.0"
+    assert body["version"] == "2.1.0"
     assert set(body) == {"app", "version", "environment"}
 
 

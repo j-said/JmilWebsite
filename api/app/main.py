@@ -29,7 +29,7 @@ async def lifespan(_: FastAPI):
 def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.APP_NAME,
-        version="2.0.0",
+        version="2.1.0",
         description="REST API for the JmilDrones shop: auth, catalog, orders, news.",
         lifespan=lifespan,
     )
