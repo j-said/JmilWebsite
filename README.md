@@ -3,7 +3,7 @@
 Інтернет-магазин дронів: SPA на React, REST API на FastAPI, PostgreSQL. API розгорнуто в AWS у межах лабораторної роботи №1 з хмарних технологій.
 
 - Адреса: https://d1pdcppbq98g6s.cloudfront.net (актуальна: `terraform -chdir=infra output -raw frontend_url`)
-- Swagger: `/docs`
+- Swagger: https://d1pdcppbq98g6s.cloudfront.net/api/docs (локально http://localhost:8000/api/docs)
 
 ## Стек
 
@@ -76,14 +76,14 @@ Compose піднімає `postgres:18-alpine` (дані у volume `pgdata`, по
 
 Поточні ресурси (`terraform -chdir=infra output`):
 
-| Ресурс              | Значення                                                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Сайт (CloudFront)   | https://d1pdcppbq98g6s.cloudfront.net                                                                                                     |
-| CloudFront          | `E2CBL58E4T6219`, домен `d1pdcppbq98g6s.cloudfront.net`                                                                                   |
-| S3 фронтенду        | `jmil-frontend-673d53e2c6c20b17be49703342`                                                                                                |
-| ECS                 | кластер `jmil-cluster`, сервіс `jmil-api`                                                                                                 |
-| Черга SQS           | https://sqs.eu-central-1.amazonaws.com/183364521771/jmil-orders                                                                           |
-| Дашборд             | [jmil-dashboard](https://eu-central-1.console.aws.amazon.com/cloudwatch/home?region=eu-central-1#dashboards/dashboard/jmil-dashboard)     |
+| Ресурс            | Значення                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Сайт (CloudFront) | https://d1pdcppbq98g6s.cloudfront.net                                                                                                 |
+| CloudFront        | `E2CBL58E4T6219`, домен `d1pdcppbq98g6s.cloudfront.net`                                                                               |
+| S3 фронтенду      | `jmil-frontend-673d53e2c6c20b17be49703342`                                                                                            |
+| ECS               | кластер `jmil-cluster`, сервіс `jmil-api`                                                                                             |
+| Черга SQS         | https://sqs.eu-central-1.amazonaws.com/183364521771/jmil-orders                                                                       |
+| Дашборд           | [jmil-dashboard](https://eu-central-1.console.aws.amazon.com/cloudwatch/home?region=eu-central-1#dashboards/dashboard/jmil-dashboard) |
 
 Перше розгортання:
 
@@ -144,6 +144,6 @@ CloudWatch Logs (`/ecs/jmil-api`), дашборд `jmil-dashboard` (запити
 | 5. CD                | GitHub Actions + OIDC                 |
 | 6*. Безпека доступу  | JWT, `401` без токена                 |
 | 7*. Моніторинг       | логи, дашборд, алерти                 |
-| 8*. Документація API | `/docs`                               |
+| 8*. Документація API | `/api/docs`                           |
 
 Автор: J-Said

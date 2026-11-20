@@ -33,6 +33,10 @@ def create_app() -> FastAPI:
         description="REST API for the JmilDrones shop: auth, catalog, orders, news.",
         lifespan=lifespan,
         redirect_slashes=False,
+        # Under /api so CloudFront (which forwards only /api/*) serves them too.
+        docs_url="/api/docs",
+        redoc_url="/api/redoc",
+        openapi_url="/api/openapi.json",
     )
     app.add_middleware(
         CORSMiddleware,
