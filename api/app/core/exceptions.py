@@ -4,8 +4,13 @@ Services know nothing about HTTP; `register_exception_handlers` maps these
 errors to responses in one place.
 """
 
+import logging
+
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
+from redis.exceptions import RedisError
+
+logger = logging.getLogger(__name__)
 
 
 class AppError(Exception):
@@ -41,3 +46,12 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def handle_app_error(_: Request, exc: AppError) -> JSONResponse:
         headers = {"WWW-Authenticate": "Bearer"} if isinstance(exc, AuthenticationError) else None
         return JSONResponse({"detail": exc.detail}, status_code=exc.status_code, headers=headers)
+
+    @app.exception_handler(RedisError)
+    async def handle_redis_error(request: Request, exc: RedisError) -> JSONResponse:
+        logger.warning("redis unavailable on %s %s: %s", request.method, request.url.path, exc)
+        return JSONResponse(
+            {"detail": "Temporarily unavailable, please retry"},
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            headers={"Retry-After": "1"},
+        )

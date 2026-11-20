@@ -1,8 +1,11 @@
 import pytest
+from redis.asyncio import Redis
 from sqlalchemy import func, select
 
 from app.core import queue
 from app.core.config import settings
+from app.core.redis import get_redis
+from app.main import app
 from app.models import Order
 from app.worker import process_message
 from tests.conftest import register_and_login
@@ -100,3 +103,15 @@ async def test_async_endpoint_without_queue_is_unavailable(client, products, aut
         "/api/v1/orders/async", json=order_payload((products[0].id, 1)), headers=auth_headers
     )
     assert resp.status_code == 503
+
+
+async def test_redis_outage_on_status_is_unavailable(client, products, auth_headers, sent):
+    resp = await client.post(
+        "/api/v1/orders/async", json=order_payload((products[0].id, 1)), headers=auth_headers
+    )
+    dead = Redis.from_url("redis://127.0.0.1:1/0", socket_connect_timeout=0.2)
+    app.dependency_overrides[get_redis] = lambda: dead
+    status = await client.get(resp.headers["location"], headers=auth_headers)
+    await dead.aclose()
+    assert status.status_code == 503
+    assert status.headers["retry-after"] == "1"
