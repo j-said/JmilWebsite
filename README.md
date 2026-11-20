@@ -2,7 +2,7 @@
 
 Інтернет-магазин дронів: SPA на React, REST API на FastAPI, PostgreSQL. API розгорнуто в AWS у межах лабораторної роботи №1 з хмарних технологій.
 
-- Адреса: `terraform -chdir=infra output -raw frontend_url`
+- Адреса: https://d1pdcppbq98g6s.cloudfront.net (актуальна: `terraform -chdir=infra output -raw frontend_url`)
 - Swagger: `/docs`
 
 ## Стек
@@ -73,6 +73,17 @@ Compose піднімає `postgres:18-alpine` (дані у volume `pgdata`, по
 - ALB: health check `/health`.
 - Секрети: пароль БД генерує RDS (Secrets Manager), `JWT_SECRET` генерує Terraform (SSM). У task definition лише ARN, значення підставляє ECS при старті.
 - `.env`, `*.tfvars`, `*.tfstate` не комітяться.
+
+Поточні ресурси (`terraform -chdir=infra output`):
+
+| Ресурс              | Значення                                                                                                                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Сайт (CloudFront)   | https://d1pdcppbq98g6s.cloudfront.net                                                                                                     |
+| CloudFront          | `E2CBL58E4T6219`, домен `d1pdcppbq98g6s.cloudfront.net`                                                                                   |
+| S3 фронтенду        | `jmil-frontend-673d53e2c6c20b17be49703342`                                                                                                |
+| ECS                 | кластер `jmil-cluster`, сервіс `jmil-api`                                                                                                 |
+| Черга SQS           | https://sqs.eu-central-1.amazonaws.com/183364521771/jmil-orders                                                                           |
+| Дашборд             | [jmil-dashboard](https://eu-central-1.console.aws.amazon.com/cloudwatch/home?region=eu-central-1#dashboards/dashboard/jmil-dashboard)     |
 
 Перше розгортання:
 

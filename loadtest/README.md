@@ -9,7 +9,7 @@ BASE_URL=http://localhost:8000 VUS=5 RAMP_UP=10s STEADY=20s RAMP_DOWN=5s ./loadt
 
 Needs `k6` or Docker. Results go to `results/<run-name>.txt`, `.json` and `.log`.
 
-After a run, wait until the API is back to 1 task (15–20 min):
+After a run, wait until the API is back to 1 task (15–25 min):
 
 ```bash
 aws ecs describe-services --cluster jmil-cluster --services jmil-api \

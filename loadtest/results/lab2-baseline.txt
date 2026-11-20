@@ -1,0 +1,9 @@
+
+=== lab2-baseline: 40 VUs, 3m up / 5m steady / 2m down, writes=sync ===
+requests        30912  (49.9 req/s avg)
+iterations      3089
+errors          0.00 %
+latency all     p50 179 ms   p95 798 ms   p99 1053 ms   max 3254 ms
+latency reads   p50 115 ms   p95 706 ms   p99 913 ms
+latency writes  p50 500 ms   p95 1082 ms   p99 1294 ms
+cache hit rate  97.4 % (GET /products)

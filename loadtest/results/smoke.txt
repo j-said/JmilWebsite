@@ -1,0 +1,9 @@
+
+=== smoke: 5 VUs, 10s up / 20s steady / 5s down, writes=sync ===
+requests        442  (8.3 req/s avg)
+iterations      42
+errors          0.00 %
+latency all     p50 35 ms   p95 110 ms   p99 895 ms   max 1161 ms
+latency reads   p50 34 ms   p95 43 ms   p99 61 ms
+latency writes  p50 46 ms   p95 81 ms   p99 135 ms
+cache hit rate  90.5 % (GET /products)

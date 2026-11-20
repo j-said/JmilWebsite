@@ -1,0 +1,402 @@
+{
+  "root_group": {
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "path": "::order created 201",
+          "id": "0f8bee1e3d40e3a2ef9030664c18afe8",
+          "passes": 42,
+          "fails": 0,
+          "name": "order created 201"
+        },
+        {
+          "name": "catalog 200",
+          "path": "::catalog 200",
+          "id": "eebf69297bd2d45f982329d2c19ee960",
+          "passes": 126,
+          "fails": 0
+        },
+        {
+          "path": "::product 200",
+          "id": "f4785261ac3a9b6f0cec42b8cbb7b4f9",
+          "passes": 42,
+          "fails": 0,
+          "name": "product 200"
+        },
+        {
+          "path": "::own order 200",
+          "id": "77a354dbd2f25d7f3c790d349e92e1ca",
+          "passes": 42,
+          "fails": 0,
+          "name": "own order 200"
+        },
+        {
+          "fails": 0,
+          "name": "facets 200",
+          "path": "::facets 200",
+          "id": "4f271996e6bc54bda0ccaf5166922e32",
+          "passes": 42
+        },
+        {
+          "path": "::me 200",
+          "id": "30e7556edf82eff0e3762598c402eb40",
+          "passes": 42,
+          "fails": 0,
+          "name": "me 200"
+        },
+        {
+          "name": "news 200",
+          "path": "::news 200",
+          "id": "11a86d9c68b7024a2c04f7843867e3d3",
+          "passes": 42,
+          "fails": 0
+        },
+        {
+          "name": "ordered product 200",
+          "path": "::ordered product 200",
+          "id": "376bf5e61156e0f0c491b849554060f5",
+          "passes": 42,
+          "fails": 0
+        }
+      ],
+    "name": ""
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "p(90)",
+      "p(95)",
+      "p(99)",
+      "max"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 53154.443714
+  },
+  "metrics": {
+    "cache_hit": {
+      "contains": "default",
+      "values": {
+        "rate": 0.9047619047619048,
+        "passes": 114,
+        "fails": 12
+      },
+      "type": "rate"
+    },
+    "data_sent": {
+      "contains": "data",
+      "values": {
+        "count": 88559,
+        "rate": 1666.0695477596546
+      },
+      "type": "counter"
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 3460.0995494999997,
+        "p(99)": 3516.3024112999997,
+        "max": 3550.869786,
+        "avg": 3382.4990903333332,
+        "min": 3343.353285,
+        "med": 3366.556959,
+        "p(90)": 3426.97622
+      }
+    },
+    "http_req_duration{kind:read}": {
+      "thresholds": {
+        "p(95)<2000": {
+          "ok": true
+        }
+      },
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 43.388939949999994,
+        "p(99)": 61.38917193000023,
+        "max": 136.841901,
+        "avg": 35.51424197619051,
+        "min": 29.082958,
+        "med": 34.140595000000005,
+        "p(90)": 41.1934647
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 442,
+        "rate": 8.315391322279693
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0,
+        "p(99)": 26.141155169999987,
+        "max": 35.200554,
+        "avg": 0.39587288461538467,
+        "min": 0,
+        "med": 0,
+        "p(90)": 0
+      }
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 42,
+        "rate": 0.7901503066419617
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 46.7701058,
+        "p(95)": 110.06716904999976,
+        "p(99)": 894.8399749899992,
+        "max": 1160.995164,
+        "avg": 74.4226320361991,
+        "min": 29.082958,
+        "med": 34.7960295
+      }
+    },
+    "http_req_waiting": {
+      "contains": "time",
+      "values": {
+        "p(90)": 46.6436855,
+        "p(95)": 109.93480449999976,
+        "p(99)": 894.7380135999992,
+        "max": 1160.910853,
+        "avg": 74.3126273529412,
+        "min": 28.929137,
+        "med": 34.670463
+      },
+      "type": "trend"
+    },
+    "http_req_duration{kind:write}": {
+      "contains": "time",
+      "values": {
+        "avg": 51.037223785714275,
+        "min": 43.918519,
+        "med": 46.067251999999996,
+        "p(90)": 53.69362359999999,
+        "p(95)": 80.9186433999999,
+        "p(99)": 135.31505990999972,
+        "max": 167.122347
+      },
+      "thresholds": {
+        "p(95)<3000": {
+          "ok": true
+        }
+      },
+      "type": "trend"
+    },
+    "http_req_receiving": {
+      "contains": "time",
+      "values": {
+        "avg": 0.08442987782805428,
+        "min": 0.010144,
+        "med": 0.0671585,
+        "p(90)": 0.12396890000000003,
+        "p(95)": 0.1541251,
+        "p(99)": 0.6229727899999964,
+        "max": 1.11985
+      },
+      "type": "trend"
+    },
+    "checks": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 420,
+        "fails": 0
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 442
+      },
+      "thresholds": {
+        "rate<0.01": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "values": {
+        "min": 29.082958,
+        "med": 34.7960295,
+        "p(90)": 46.7701058,
+        "p(95)": 110.06716904999976,
+        "p(99)": 894.8399749899992,
+        "max": 1160.995164,
+        "avg": 74.4226320361991
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_sending": {
+      "values": {
+        "p(95)": 0.04796479999999998,
+        "p(99)": 0.08761722999999966,
+        "max": 0.172296,
+        "avg": 0.025574805429864265,
+        "min": 0.005153,
+        "med": 0.021371,
+        "p(90)": 0.0408568
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 1,
+        "min": 0,
+        "max": 5
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "p(90)": 0,
+        "p(95)": 0,
+        "p(99)": 0,
+        "max": 0
+      }
+    },
+    "vus_max": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 5,
+        "min": 5,
+        "max": 5
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.4306054502262444,
+        "min": 0.002089,
+        "med": 0.0073445,
+        "p(90)": 0.0147819,
+        "p(95)": 0.016502899999999997,
+        "p(99)": 26.493620549999996,
+        "max": 37.250759
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 787044,
+        "rate": 14806.739474778957
+      }
+    }
+  },
+  "setup_data": {
+    "allIds": [
+      2,
+      8,
+      21,
+      5,
+      23,
+      20,
+      3,
+      1,
+      16,
+      7,
+      13,
+      10,
+      18,
+      14,
+      6,
+      12,
+      9,
+      4,
+      19,
+      22,
+      24,
+      15,
+      17,
+      11
+    ],
+    "catalogQueries": [
+      "",
+      "",
+      "",
+      "",
+      "?page=2",
+      "?sort=price",
+      "?sort=price-desc",
+      "?sort=rating",
+      "?sort=newest",
+      "?inStock=true",
+      "?category=Accessories",
+      "?category=Batteries%20%26%20Chargers",
+      "?category=Beginner%20Drones",
+      "?brand=Autel%20Robotics",
+      "?brand=BetaFPV"
+    ],
+    "inStock": [
+      2,
+      8,
+      21,
+      5,
+      23,
+      20,
+      3,
+      1,
+      16,
+      7,
+      13,
+      10,
+      18,
+      14,
+      12,
+      9,
+      4,
+      19,
+      22,
+      15,
+      17,
+      11
+    ],
+    "tokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzk1MTMxNzg0LCJleHAiOjE3OTUyMTgxODR9.VxZJcs5dxJgd26HPEHiE6sej0cpoUtSUG9HYdCRM_fI",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzk1MTMxNzg2LCJleHAiOjE3OTUyMTgxODZ9.8GQPB-eAj6CcAUBOCdB4IHFYeVtvrpzohhRX0erjX0s",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzk1MTMxNzg3LCJleHAiOjE3OTUyMTgxODd9.ECL0Bh3IPB86cr_q7zwhlI9v1R-lneyhJv3oPCC3R6Q",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzk1MTMxNzg5LCJleHAiOjE3OTUyMTgxODl9.WCmz4KXe825s7pn0cbdSIiAZOwuHuwoGydkN-jLUytY",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzk1MTMxNzkxLCJleHAiOjE3OTUyMTgxOTF9.KFZ9OjR0ymNSId8WNb3ct0H26COAEKcQF5GYp3GYAWU",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzk1MTMxNzkyLCJleHAiOjE3OTUyMTgxOTJ9.ClIU3nNQPBAiXEQqY2dPdjAh3dGsA4YfyzvV95CagNE",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiaWF0IjoxNzk1MTMxNzk0LCJleHAiOjE3OTUyMTgxOTR9.SMOlGlO2NG_TFpn-8zzg6mGQXO9XbZtasiDf5w6MPX4",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzk1MTMxNzk2LCJleHAiOjE3OTUyMTgxOTZ9.L-1uhQ5onm65eXRIill3URe4P1Skz1j4Y4Va6Fl3_uc",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMCIsImlhdCI6MTc5NTEzMTc5OCwiZXhwIjoxNzk1MjE4MTk4fQ.WnwsAqLbmOAG-ZIXm9rBv3pONBICO0NMVLDnQloChbM",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMSIsImlhdCI6MTc5NTEzMTgwMCwiZXhwIjoxNzk1MjE4MjAwfQ.BKOQVrAiwiXzOqe8VIQxSZiqUqTaTHpPsoX8JRrmjmo"
+    ]
+  }
+}

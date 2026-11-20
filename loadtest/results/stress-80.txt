@@ -1,0 +1,9 @@
+
+=== stress-80: 80 VUs, 3m up / 5m steady / 2m down, writes=sync ===
+requests        54651  (88.4 req/s avg)
+iterations      5463
+errors          0.00 %
+latency all     p50 304 ms   p95 982 ms   p99 1482 ms   max 3394 ms
+latency reads   p50 296 ms   p95 899 ms   p99 1402 ms
+latency writes  p50 519 ms   p95 1197 ms   p99 1707 ms
+cache hit rate  0.0 % (GET /products)

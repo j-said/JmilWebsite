@@ -3,14 +3,14 @@
 #
 #   ./loadtest/run.sh [run-name]
 #
-# Target defaults to the ALB from Terraform outputs (or http://localhost:8000).
+# Target defaults to frontend_url from Terraform outputs (or http://localhost:8000).
 # Uses a local k6 if installed, otherwise the official grafana/k6 Docker image.
 # Knobs (env): BASE_URL VUS RAMP_UP STEADY RAMP_DOWN WRITE_MODE USERS THINK
 set -euo pipefail
 
 cd "$(dirname "$0")"
 NAME="${1:-run-$(date -u +%Y%m%d-%H%M%S)}"
-BASE_URL="${BASE_URL:-$(terraform -chdir=../infra output -raw alb_url 2>/dev/null || echo http://localhost:8000)}"
+BASE_URL="${BASE_URL:-$(terraform -chdir=../infra output -raw frontend_url 2>/dev/null || echo http://localhost:8000)}"
 K6_IMAGE="grafana/k6:1.3.0"
 mkdir -p results
 

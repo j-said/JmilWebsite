@@ -1,0 +1,9 @@
+
+=== lab2-async: 40 VUs, 3m up / 5m steady / 2m down, writes=async ===
+requests        26322  (42.4 req/s avg)
+iterations      2630
+errors          0.02 %
+latency all     p50 210 ms   p95 1098 ms   p99 1392 ms   max 2000 ms
+latency reads   p50 203 ms   p95 1073 ms   p99 1329 ms
+latency writes  p50 498 ms   p95 1295 ms   p99 1608 ms
+cache hit rate  97.1 % (GET /products)
