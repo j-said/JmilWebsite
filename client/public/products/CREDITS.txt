@@ -1,0 +1,206 @@
+Product photos are from Wikimedia Commons, used under the licenses listed below.
+Some photos show a similar model, not the exact product sold.
+
+dji-mavic-3-pro-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_-_Drohne_Mavic_3.JPG
+  Author: C.Stadler/Bwag
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mavic-3-pro-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024-10-_DJI_Mavic_3_Pro_-_10.jpg
+  Author: A.BourgeoisP
+  License: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mavic-3-pro-3.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_Mavic_3.jpg
+  Author: HKesteloo
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+autel-evo-lite-plus-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Autel_EVO_II_Pro_V2_(2-19-2023).jpg
+  Author: ZLEA
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-inspire-3-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:2019-03-23_-_DJI_Inspire_2_-3986.jpg
+  Author: Sven Teschke
+  License: CC BY-SA 3.0 de (https://creativecommons.org/licenses/by-sa/3.0/de/deed.en)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-inspire-3-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:2016-02-27_DJI_Inspire_inflight.jpg
+  Author: Wo st 01
+  License: CC BY-SA 3.0 de (https://creativecommons.org/licenses/by-sa/3.0/de/deed.en)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+iflight-nazgul-evoque-f5-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:FPV_Quadrocopter.jpg
+  Author: Clicklabs
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+betafpv-cetus-pro-kit-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Whoop_drone_Meteor65.jpg
+  Author: SokilFPV
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+betafpv-cetus-pro-kit-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:BetaFPV_LiteRadio_2.jpg
+  Author: SokilFPV
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+geprc-mark5-hd-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:XLabs_Shrike_V2_200_mm_quadcopter_frame_with_components.jpg
+  Author: Lucasbosch
+  License: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mini-4-pro-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024_Dron_DJI_Mini_4_Pro_(01).jpg
+  Author: Jacek Halicki
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mini-4-pro-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024_Dron_DJI_Mini_4_Pro_(17).jpg
+  Author: Jacek Halicki
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mini-4-pro-3.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024_Dron_DJI_Mini_4_Pro_(14).jpg
+  Author: Jacek Halicki
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+autel-evo-nano-plus-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Zdj%C4%99cie_produktowe_packshot_-_dron_Autel_Nano_Plus.jpg
+  Author: Chimoridan
+  License: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+holy-stone-hs720g-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Dji_Spark_(216743491).jpeg
+  Author: Jp Valery
+  License: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-tello-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Ryze_Tello.jpg
+  Author: SimonWaldherr
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-tello-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:Ryze-DJI_TLW004_Tello_(cn_0TQZH91EU05DWY)_(1-19-2026).jpg
+  Author: ZLEA
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+ryze-tello-boost-combo-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Ryze_Tello_and_Tello_EDUs_(1-19-2026).jpg
+  Author: ZLEA
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+ryze-tello-boost-combo-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:Ryze-DJI_TLW004_Tello_EDU_(cn_0TQ3HAA0HSX126)_(1-19-2026).jpg
+  Author: ZLEA
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+holy-stone-hs175-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Remote_controlled_flying_machine_with_four_helicopter_blades.jpg
+  Author: Tomwsulcer
+  License: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-smart-controller-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_Phantom_4Pro_04-2017_img1_RC.jpg
+  Author: A.Savin
+  License: FAL (http://artlibre.org/licence/lal/en)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-fpv-goggles-v2-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_FPV_Goggles_V2.jpg
+  Author: KKPCW
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-fpv-goggles-v2-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_FPV_and_FPV_Goggles_V2.jpg
+  Author: KKPCW
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+drone-backpack-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Gopro_Karma_Rucksack_Backpack_(173850829).jpeg
+  Author: Dronepicr
+  License: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+dji-mavic-3-pro-battery-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:DJI_Mavic2Pro.jpg
+  Author: SimonWaldherr
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+propeller-set-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Propeller_top.JPG
+  Author: Mgraves7452
+  License: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+fpv-frame-kit-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:ImpulseRC_Alien_5%E2%80%B3_FPV_quad_with_components_collage.jpg
+  Author: Lucasbosch
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+charging-hub-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:ToolkitRC_M8S_LiPo_battery_charger.jpg
+  Author: SokilFPV
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+car-charger-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:Car_charger,_2_automobile_auxiliary_power_outlets_and_2_USB_sockets-9824.jpg
+  Author: Raimond Spekking
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+battery-maintenance-kit-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:LIPO_Charger.JPG
+  Author: KundaliniZero
+  License: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+battery-maintenance-kit-2.webp
+  Source: https://commons.wikimedia.org/wiki/File:Charger_Battery.JPG
+  Author: KundaliniZero
+  License: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+nd-filter-set-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024_Filtry_ND-PL_Freewell_do_drona_DJI_Mini_4_Pro.jpg
+  Author: Jacek Halicki
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+gimbal-protector-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:2024_Dron_DJI_Mini_4_Pro_(13).jpg
+  Author: Jacek Halicki
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP
+
+polarpro-cinema-series-1.webp
+  Source: https://commons.wikimedia.org/wiki/File:ND_Filter.jpg
+  Author: Gaurav Dhwaj Khadka
+  License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Changes: cropped to 3:2, resized, converted to WebP

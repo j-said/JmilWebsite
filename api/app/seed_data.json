@@ -52,10 +52,10 @@
         "Long Battery Life"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Main",
+      "image_url": "/products/dji-mavic-3-pro-1.webp",
       "images": [
-        "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Front",
-        "https://placehold.co/600x400/1a1a1a/FFA500?text=Mavic+3+Pro+Side"
+        "/products/dji-mavic-3-pro-2.webp",
+        "/products/dji-mavic-3-pro-3.webp"
       ]
     },
     {
@@ -75,10 +75,8 @@
         "Auto Return Home"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Evo+Lite+",
-      "images": [
-        "https://placehold.co/600x400/1a1a1a/FFA500?text=Autel+Front"
-      ]
+      "image_url": "/products/autel-evo-lite-plus-1.webp",
+      "images": []
     },
     {
       "name": "DJI Inspire 3",
@@ -97,8 +95,10 @@
         "Cinematic Mode"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/600x400/1a1a1a/FFA500?text=DJI+Inspire+3",
-      "images": []
+      "image_url": "/products/dji-inspire-3-1.webp",
+      "images": [
+        "/products/dji-inspire-3-2.webp"
+      ]
     },
     {
       "name": "iFlight Nazgul Evoque F5",
@@ -117,7 +117,7 @@
         "Racing Kit"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Nazgul+Evoque+F5",
+      "image_url": "/products/iflight-nazgul-evoque-f5-1.webp",
       "images": []
     },
     {
@@ -136,8 +136,10 @@
         "Protection Frame"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Cetus+Pro+Kit",
-      "images": []
+      "image_url": "/products/betafpv-cetus-pro-kit-1.webp",
+      "images": [
+        "/products/betafpv-cetus-pro-kit-2.webp"
+      ]
     },
     {
       "name": "GEPRC Mark5 HD",
@@ -155,7 +157,7 @@
         "High Performance"
       ],
       "in_stock": false,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=GEPRC+Mark5+HD",
+      "image_url": "/products/geprc-mark5-hd-1.webp",
       "images": []
     },
     {
@@ -175,8 +177,11 @@
         "Follow Me Mode"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Mini+4+Pro",
-      "images": []
+      "image_url": "/products/dji-mini-4-pro-1.webp",
+      "images": [
+        "/products/dji-mini-4-pro-2.webp",
+        "/products/dji-mini-4-pro-3.webp"
+      ]
     },
     {
       "name": "Autel Robotics Evo Nano+",
@@ -194,7 +199,7 @@
         "GPS"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Evo+Nano+Plus",
+      "image_url": "/products/autel-evo-nano-plus-1.webp",
       "images": []
     },
     {
@@ -214,7 +219,7 @@
         "Auto Return"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=HS720G+4K+GPS",
+      "image_url": "/products/holy-stone-hs720g-1.webp",
       "images": []
     },
     {
@@ -233,8 +238,10 @@
         "720p Camera"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=DJI+Tello",
-      "images": []
+      "image_url": "/products/dji-tello-1.webp",
+      "images": [
+        "/products/dji-tello-2.webp"
+      ]
     },
     {
       "name": "Ryze Tech Tello Boost Combo",
@@ -252,8 +259,10 @@
         "Beginner Friendly"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Tello+Boost+Combo",
-      "images": []
+      "image_url": "/products/ryze-tello-boost-combo-1.webp",
+      "images": [
+        "/products/ryze-tello-boost-combo-2.webp"
+      ]
     },
     {
       "name": "Holy Stone HS175",
@@ -271,7 +280,7 @@
         "Beginner Friendly"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=HS175+Beginner",
+      "image_url": "/products/holy-stone-hs175-1.webp",
       "images": []
     },
     {
@@ -290,7 +299,7 @@
         "Wireless Connectivity"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Smart+Controller",
+      "image_url": "/products/dji-smart-controller-1.webp",
       "images": []
     },
     {
@@ -309,8 +318,10 @@
         "Comfortable Fit"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=FPV+Goggles+V2",
-      "images": []
+      "image_url": "/products/dji-fpv-goggles-v2-1.webp",
+      "images": [
+        "/products/dji-fpv-goggles-v2-2.webp"
+      ]
     },
     {
       "name": "Professional Drone Backpack",
@@ -328,7 +339,7 @@
         "Durable"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Drone+Backpack",
+      "image_url": "/products/drone-backpack-1.webp",
       "images": []
     },
     {
@@ -347,7 +358,7 @@
         "Safety Features"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Mavic+3+Battery",
+      "image_url": "/products/dji-mavic-3-pro-battery-1.webp",
       "images": []
     },
     {
@@ -366,7 +377,7 @@
         "Easy Installation"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Propeller+Set",
+      "image_url": "/products/propeller-set-1.webp",
       "images": []
     },
     {
@@ -385,7 +396,7 @@
         "Custom Build"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=FPV+Frame+Kit",
+      "image_url": "/products/fpv-frame-kit-1.webp",
       "images": []
     },
     {
@@ -404,7 +415,7 @@
         "Safety Features"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Charging+Hub",
+      "image_url": "/products/charging-hub-1.webp",
       "images": []
     },
     {
@@ -423,7 +434,7 @@
         "Universal"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Car+Charger",
+      "image_url": "/products/car-charger-1.webp",
       "images": []
     },
     {
@@ -442,8 +453,10 @@
         "Safety Guide"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Battery+Kit",
-      "images": []
+      "image_url": "/products/battery-maintenance-kit-1.webp",
+      "images": [
+        "/products/battery-maintenance-kit-2.webp"
+      ]
     },
     {
       "name": "ND Filter Set",
@@ -461,7 +474,7 @@
         "Multi-coating"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=ND+Filter+Set",
+      "image_url": "/products/nd-filter-set-1.webp",
       "images": []
     },
     {
@@ -480,7 +493,7 @@
         "Universal Fit"
       ],
       "in_stock": true,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Gimbal+Protector",
+      "image_url": "/products/gimbal-protector-1.webp",
       "images": []
     },
     {
@@ -499,7 +512,7 @@
         "Scratch Resistant"
       ],
       "in_stock": false,
-      "image_url": "https://placehold.co/400x300/1a1a1a/FFA500?text=Cinema+Series",
+      "image_url": "/products/polarpro-cinema-series-1.webp",
       "images": []
     }
   ]
