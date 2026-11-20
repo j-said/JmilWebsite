@@ -9,3 +9,8 @@ alert_email = "you@example.com"
 # db_name       = "jmil"
 # db_username   = "jmil"
 # github_repo   = "j-said/JmilWebsite"
+
+# Frontend (CloudFront):
+# domain_name         = "shop.example.com"
+# route53_zone_id     = "Z0123456789ABCDEFGHIJ"   # leave empty if DNS is not in Route 53
+# alb_cloudfront_only = false   # open the ALB to the internet again

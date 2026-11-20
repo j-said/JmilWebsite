@@ -1,6 +1,10 @@
+locals {
+  alb_url = "http://${aws_lb.main.dns_name}"
+}
+
 output "alb_url" {
   description = "public"
-  value       = "http://${aws_lb.main.dns_name}"
+  value       = local.alb_url
 }
 
 output "ecr_repository_url" {
@@ -34,4 +38,33 @@ output "order_queue_url" {
 
 output "dashboard_url" {
   value = "https://${var.region}.console.aws.amazon.com/cloudwatch/home?region=${var.region}#dashboards/dashboard/${aws_cloudwatch_dashboard.main.dashboard_name}"
+}
+
+output "frontend_url" {
+  value = local.frontend_url
+}
+
+output "cloudfront_domain" {
+  value = aws_cloudfront_distribution.main.domain_name
+}
+
+output "cloudfront_distribution_id" {
+  description = "GitHub → Settings → Variables → CLOUDFRONT_DISTRIBUTION_ID"
+  value       = aws_cloudfront_distribution.main.id
+}
+
+output "frontend_bucket" {
+  description = "GitHub → Settings → Variables → FRONTEND_BUCKET"
+  value       = aws_s3_bucket.frontend.bucket
+}
+
+output "acm_validation_records" {
+  description = "CNAMEs for ACM validation (no Route 53)"
+  value = !local.use_route53 ? [
+    for dvo in flatten(aws_acm_certificate.frontend[*].domain_validation_options) : {
+      name  = dvo.resource_record_name
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  ] : []
 }

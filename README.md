@@ -2,7 +2,7 @@
 
 Інтернет-магазин дронів: SPA на React, REST API на FastAPI, PostgreSQL. API розгорнуто в AWS у межах лабораторної роботи №1 з хмарних технологій.
 
-- Адреса: http://jmil-alb-388472145.eu-central-1.elb.amazonaws.com (актуальна: `terraform -chdir=infra output -raw alb_url`)
+- Адреса: `terraform -chdir=infra output -raw frontend_url`
 - Swagger: `/docs`
 
 ## Стек
@@ -17,11 +17,12 @@
 ## Структура
 
 ```
-.github/workflows/deploy.yml   CI/CD
+.github/workflows/deploy.yml   CI/CD бекенду
+.github/workflows/frontend.yml CI/CD фронтенду (S3 + CloudFront)
 api/                           FastAPI: app/, alembic/, tests/, Dockerfile, docker-entrypoint.sh
-client/                        SPA (у хмару не розгортається)
+client/                        SPA (S3 + CloudFront)
 infra/                         Terraform: network, security, ecr, rds, secrets, ecs, alb,
-                               github_oidc, monitoring; bootstrap/ — бюджет (окремий state)
+                               github_oidc, monitoring, frontend; bootstrap/ — бюджет (окремий state)
 compose.yaml, .env.example     локальний запуск
 ```
 
@@ -60,7 +61,7 @@ Compose піднімає `postgres:18-alpine` (дані у volume `pgdata`, по
 ## AWS
 
 ```
-Інтернет → ALB :80 (публічні підмережі)
+Інтернет → CloudFront (HTTPS) → ALB :80 (публічні підмережі, SG: лише CloudFront)
          → ECS Fargate :8000 (публічні підмережі, SG: лише від ALB)
          → RDS PostgreSQL :5432 (приватні підмережі, SG: лише від ECS)
 ```
@@ -98,6 +99,24 @@ terraform -chdir=infra apply -var="image_tag=$TAG"
 ```bash
 gh variable set AWS_ROLE_ARN --body "$(terraform -chdir=infra output -raw github_deploy_role_arn)"
 ```
+
+### Фронтенд
+
+CloudFront — єдина публічна точка входу: `/api/*` іде на ALB (без кешу), решта — статика з приватного S3 (OAC). SPA і API на одному origin, тож клієнт лишається з відносним `/api/v1`, CORS не потрібен. Шляхи без розширення CloudFront Function переписує на `/index.html`.
+
+На push у `master` зі змінами в `client/`: lint → build → `s3 sync` (`assets/*` — `immutable` на рік, `index.html` — `no-cache`) → інвалідація `/index.html` → видалення бандлів, старших за 7 днів. Поки змінні не задані, job пропускається. Потрібні ще дві змінні:
+
+```bash
+gh variable set FRONTEND_BUCKET --body "$(terraform -chdir=infra output -raw frontend_bucket)"
+gh variable set CLOUDFRONT_DISTRIBUTION_ID --body "$(terraform -chdir=infra output -raw cloudfront_distribution_id)"
+```
+
+TLS: без домену сайт працює на `https://<id>.cloudfront.net` із сертифікатом CloudFront. Для свого домену задайте `domain_name` — Terraform випустить ACM-сертифікат у `us-east-1` (вимога CloudFront) з DNS-валідацією:
+
+- з `route53_zone_id` валідаційні записи й alias A/AAAA створюються автоматично;
+- без нього `terraform apply` чекає на сертифікат — додайте CNAME з output `acm_validation_records` у свого DNS-провайдера, а після apply — CNAME домену на `cloudfront_domain` (для apex-домену потрібен ALIAS/ANAME).
+
+ALB відкритий лише для CloudFront (managed prefix list); для прямого доступу — `alb_cloudfront_only = false`. k6 за замовчуванням б'є у `frontend_url`. Регіон для workflows можна змінити змінною `AWS_REGION` (за замовчуванням `eu-central-1`).
 
 ## Моніторинг
 

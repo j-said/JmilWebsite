@@ -5,11 +5,12 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+  count             = var.alb_cloudfront_only ? 0 : 1
   security_group_id = aws_security_group.alb.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "tcp"
-  from_port         = 80
-  to_port           = 80
+  from_port         = aws_lb_listener.http.port
+  to_port           = aws_lb_listener.http.port
 }
 
 resource "aws_vpc_security_group_egress_rule" "alb_to_app" {
@@ -18,6 +19,11 @@ resource "aws_vpc_security_group_egress_rule" "alb_to_app" {
   ip_protocol                  = "tcp"
   from_port                    = 8000
   to_port                      = 8000
+}
+
+moved {
+  from = aws_vpc_security_group_ingress_rule.alb_http
+  to   = aws_vpc_security_group_ingress_rule.alb_http[0]
 }
 
 resource "aws_security_group" "app" {

@@ -32,6 +32,7 @@ def create_app() -> FastAPI:
         version="2.1.0",
         description="REST API for the JmilDrones shop: auth, catalog, orders, news.",
         lifespan=lifespan,
+        redirect_slashes=False,
     )
     app.add_middleware(
         CORSMiddleware,

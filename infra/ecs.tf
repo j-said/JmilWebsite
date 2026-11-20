@@ -116,7 +116,7 @@ resource "aws_ecs_task_definition" "api" {
       { name = "DB_PORT", value = tostring(aws_db_instance.main.port) },
       { name = "DB_NAME", value = var.db_name },
       { name = "DB_USER", value = var.db_username },
-      { name = "CORS_ORIGINS", value = "http://${aws_lb.main.dns_name}" },
+      { name = "CORS_ORIGINS", value = local.alb_url },
       { name = "RUN_MIGRATIONS", value = "true" },
       { name = "RUN_SEED", value = "true" },
       { name = "REDIS_URL", value = local.redis_url },

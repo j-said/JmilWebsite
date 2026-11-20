@@ -77,3 +77,21 @@ variable "worker_processing_seconds" {
   type        = number
   default     = 1
 }
+
+variable "domain_name" {
+  description = "Custom domain; empty = *.cloudfront.net"
+  type        = string
+  default     = ""
+}
+
+variable "route53_zone_id" {
+  description = "Route 53 zone for domain_name; empty = manual DNS"
+  type        = string
+  default     = ""
+}
+
+variable "alb_cloudfront_only" {
+  description = "ALB reachable only from CloudFront"
+  type        = bool
+  default     = true
+}
